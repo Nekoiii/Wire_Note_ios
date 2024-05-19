@@ -1,0 +1,78 @@
+# gitignore for ios projects
+#
+
+# Xcode
+# User settings
+xcuserdata/
+*.xcuserstate
+
+# Build directories
+build/
+DerivedData/
+
+# Various settings and temporary files
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.moved-aside
+*.swp
+*~.nib
+*.local
+*.lock
+*.xcworkspacedata
+*.xcuserdatad/
+*.xcscmblueprint
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Symbols
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Swift Package Manager
+.swiftpm/
+Package.resolved
+
+# Xcode warnings
+!default.xctoolchain
+
+# AppCode
+.idea/
+
+# Generated code
+*.hmap
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Certificates
+*.p12
+*.mobileprovision
+
+# Xcode automatic provisioning profiles
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcshareddata/
+
+# JetBrains IDEs
+.idea/
+*.iml
