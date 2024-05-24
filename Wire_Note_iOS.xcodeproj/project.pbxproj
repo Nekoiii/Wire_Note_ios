@@ -13,6 +13,16 @@
 		4B3941552BF9FC4100A5B694 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941542BF9FC4100A5B694 /* Preview Assets.xcassets */; };
 		4B3941572BF9FC4100A5B694 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941562BF9FC4100A5B694 /* Persistence.swift */; };
 		4B39415A2BF9FC4100A5B694 /* Wire_Note_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941582BF9FC4100A5B694 /* Wire_Note_iOS.xcdatamodeld */; };
+		4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941612BF9FECB00A5B694 /* wire_model.mlpackage */; };
+		4B3941652BF9FEF200A5B694 /* VideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941642BF9FEF200A5B694 /* VideoController.swift */; };
+		4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941662BF9FEFD00A5B694 /* VideoCapture.swift */; };
+		4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941672BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift */; };
+		4B39416C2BF9FF9E00A5B694 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39416B2BF9FF9E00A5B694 /* CameraView.swift */; };
+		4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39416E2BF9FFFF00A5B694 /* Views.swift */; };
+		4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39416F2BF9FFFF00A5B694 /* Buttons.swift */; };
+		4B3941732BFA007D00A5B694 /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941722BFA007D00A5B694 /* CameraControlsView.swift */; };
+		4B3941762BFA057200A5B694 /* WireDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941752BFA057200A5B694 /* WireDetector.swift */; };
+		4B3941792BFA100F00A5B694 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3941782BFA100F00A5B694 /* Images.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +33,16 @@
 		4B3941542BF9FC4100A5B694 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4B3941562BF9FC4100A5B694 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		4B3941592BF9FC4100A5B694 /* Wire_Note_iOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Wire_Note_iOS.xcdatamodel; sourceTree = "<group>"; };
+		4B3941612BF9FECB00A5B694 /* wire_model.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = wire_model.mlpackage; sourceTree = "<group>"; };
+		4B3941642BF9FEF200A5B694 /* VideoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoController.swift; sourceTree = "<group>"; };
+		4B3941662BF9FEFD00A5B694 /* VideoCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCapture.swift; sourceTree = "<group>"; };
+		4B3941672BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AVCaptureVideoOrientation+Extension.swift"; sourceTree = "<group>"; };
+		4B39416B2BF9FF9E00A5B694 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		4B39416E2BF9FFFF00A5B694 /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		4B39416F2BF9FFFF00A5B694 /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		4B3941722BFA007D00A5B694 /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
+		4B3941752BFA057200A5B694 /* WireDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetector.swift; sourceTree = "<group>"; };
+		4B3941782BFA100F00A5B694 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +75,11 @@
 		4B39414C2BF9FC4000A5B694 /* Wire_Note_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4B3941742BFA056300A5B694 /* ML */,
+				4B39416D2BF9FFE500A5B694 /* Extensions */,
+				4B39416A2BF9FF8300A5B694 /* Views */,
+				4B3941632BF9FED300A5B694 /* Camera */,
+				4B3941602BF9FE9A00A5B694 /* Model */,
 				4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */,
 				4B39414F2BF9FC4000A5B694 /* ContentView.swift */,
 				4B3941512BF9FC4100A5B694 /* Assets.xcassets */,
@@ -71,6 +96,51 @@
 				4B3941542BF9FC4100A5B694 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4B3941602BF9FE9A00A5B694 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4B3941612BF9FECB00A5B694 /* wire_model.mlpackage */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4B3941632BF9FED300A5B694 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				4B3941642BF9FEF200A5B694 /* VideoController.swift */,
+				4B3941672BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift */,
+				4B3941662BF9FEFD00A5B694 /* VideoCapture.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		4B39416A2BF9FF8300A5B694 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4B39416B2BF9FF9E00A5B694 /* CameraView.swift */,
+				4B3941722BFA007D00A5B694 /* CameraControlsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4B39416D2BF9FFE500A5B694 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4B39416F2BF9FFFF00A5B694 /* Buttons.swift */,
+				4B39416E2BF9FFFF00A5B694 /* Views.swift */,
+				4B3941782BFA100F00A5B694 /* Images.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4B3941742BFA056300A5B694 /* ML */ = {
+			isa = PBXGroup;
+			children = (
+				4B3941752BFA057200A5B694 /* WireDetector.swift */,
+			);
+			path = ML;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,10 +213,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
+				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
+				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
+				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
+				4B39416C2BF9FF9E00A5B694 /* CameraView.swift in Sources */,
+				4B3941652BF9FEF200A5B694 /* VideoController.swift in Sources */,
+				4B3941762BFA057200A5B694 /* WireDetector.swift in Sources */,
+				4B3941792BFA100F00A5B694 /* Images.swift in Sources */,
 				4B39415A2BF9FC4100A5B694 /* Wire_Note_iOS.xcdatamodeld in Sources */,
 				4B3941572BF9FC4100A5B694 /* Persistence.swift in Sources */,
 				4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */,
+				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,
 				4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */,
+				4B3941732BFA007D00A5B694 /* CameraControlsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +363,7 @@
 				DEVELOPMENT_TEAM = WZ2328U4W4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera to recognize wire.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -312,6 +393,7 @@
 				DEVELOPMENT_TEAM = WZ2328U4W4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera to recognize wire.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
