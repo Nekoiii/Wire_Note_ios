@@ -12,10 +12,14 @@ struct HomePageView: View {
     var body:some View{
         NavigationView{
             VStack{
-                Text("♪ ♩ ♫ ♬ ♭ ♮ ♯ 𝄪 𝄫 𝄞 🎶")
-                    .font(.system(size: 26))
-                    .padding()
-                
+                HStack{
+                    ForEach(musicalNotes, id: \.symbol) { note in
+                        Text(note.symbol)
+                            .font(.largeTitle)
+                            
+                    }
+                }.padding()
+//                
                 NavigationLink(destination: CameraView()) {
                     Text("Open Camera")
                         .foregroundColor(.black)

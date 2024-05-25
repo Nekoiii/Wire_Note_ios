@@ -58,7 +58,7 @@ class WireDetector {
                 let detection = Detection(box: box, confidence: result.confidence, label: label, color: colors[colorIndex])
                 detections.append(detection)
             }
-            let drawImage = drawRectsOnImage(ciContext:ciContext,detections:detections, pixelBuffer:pixelBuffer)
+            let drawImage = visualizeDetectResults(ciContext:ciContext,detections:detections, pixelBuffer:pixelBuffer)
             return drawImage
         } catch let error {
             print(error)

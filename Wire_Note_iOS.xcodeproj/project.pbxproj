@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00AC98932C027FA600C3F325 /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98922C027FA600C3F325 /* HomePageView.swift */; };
 		00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */; };
+		00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98992C028E4000C3F325 /* MusicalNotes.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		00AC98922C027FA600C3F325 /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectResultVisualization.swift; sourceTree = "<group>"; };
+		00AC98992C028E4000C3F325 /* MusicalNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicalNotes.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 		00AC98942C02836A00C3F325 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				00AC98982C028E3300C3F325 /* Others */,
 				00AC98952C0283BE00C3F325 /* Drawing */,
 			);
 			path = Utils;
@@ -74,6 +77,14 @@
 				00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */,
 			);
 			path = Drawing;
+			sourceTree = "<group>";
+		};
+		00AC98982C028E3300C3F325 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				00AC98992C028E4000C3F325 /* MusicalNotes.swift */,
+			);
+			path = Others;
 			sourceTree = "<group>";
 		};
 		4B3941412BF9FC4000A5B694 = {
@@ -249,6 +260,7 @@
 				4B3941572BF9FC4100A5B694 /* Persistence.swift in Sources */,
 				4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */,
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,
+				00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */,
 				4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */,
 				4B3941732BFA007D00A5B694 /* CameraControlsView.swift in Sources */,
 			);

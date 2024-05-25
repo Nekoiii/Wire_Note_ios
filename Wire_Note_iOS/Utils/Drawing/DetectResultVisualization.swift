@@ -8,7 +8,7 @@
 import UIKit
 import Vision
 
-func drawRectsOnImage(ciContext:CIContext,detections: [Detection],pixelBuffer: CVPixelBuffer) -> UIImage? {
+func visualizeDetectResults(ciContext:CIContext,detections: [Detection],pixelBuffer: CVPixelBuffer) -> UIImage? {
     let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
     let cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent)!
     let size = ciImage.extent.size
@@ -21,16 +21,16 @@ func drawRectsOnImage(ciContext:CIContext,detections: [Detection],pixelBuffer: C
                                     bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
     cgContext.draw(cgImage, in: CGRect(origin: .zero, size: size))
     for detection in detections {
-        DrawBBox(detection,cgContext,size)
-        
+        let invertedBox = CGRect(x: detection.box.minX, y: size.height - detection.box.maxY, width: detection.box.width, height: detection.box.height)
+        drawBBox(detection,invertedBox,cgContext,size)
+        drawNote(detection,invertedBox,cgContext,size)
     }
     
     guard let newImage = cgContext.makeImage() else { return nil }
     return UIImage(cgImage: newImage)
 }
 
-func DrawBBox(_ detection: Detection,_ cgContext:CGContext,_ size:CGSize){
-    let invertedBox = CGRect(x: detection.box.minX, y: size.height - detection.box.maxY, width: detection.box.width, height: detection.box.height)
+func drawBBox(_ detection: Detection,_ invertedBox:CGRect,_ cgContext:CGContext,_ size:CGSize){
     if let labelText = detection.label {
         cgContext.textMatrix = .identity
         
@@ -56,11 +56,35 @@ func DrawBBox(_ detection: Detection,_ cgContext:CGContext,_ size:CGSize){
         CTFrameDraw(frame, cgContext)
         
         cgContext.setStrokeColor(detection.color.cgColor)
-        cgContext.setLineWidth(9)
+        cgContext.setLineWidth(3)
         cgContext.stroke(invertedBox)
     }
 }
-func drawNote(){
+func drawNote(_ detection: Detection,_ invertedBox:CGRect,_ cgContext:CGContext,_ size:CGSize){
+    guard detection.label == "cable" else {
+        return
+    }
+    let randomNote = weightedRandomNote()
+    let noteFontSize = invertedBox.width * 0.8
+    let noteFont = UIFont.systemFont(ofSize: noteFontSize)
+    let noteAttributes: [NSAttributedString.Key: Any] = [
+        .font: noteFont,
+        .foregroundColor: detection.color
+    ]
     
+    let astr = NSAttributedString(string: randomNote, attributes: noteAttributes)
+    let noteSize = astr.size()
+    let noteRect = CGRect(
+        x: invertedBox.midX - noteSize.width / 2,
+        y: invertedBox.midY - noteSize.height / 2,
+        width: noteSize.width,
+        height: noteSize.height
+    )
+
+    let setter = CTFramesetterCreateWithAttributedString(astr)
+    let path = CGPath(rect: noteRect, transform: nil)
+    let frame = CTFramesetterCreateFrame(setter, CFRange(), path, nil)
+    cgContext.textMatrix = CGAffineTransform.identity
+    CTFrameDraw(frame, cgContext)
     
 }
