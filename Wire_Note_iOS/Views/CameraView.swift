@@ -35,7 +35,7 @@ struct CameraView: View {
             DispatchQueue.main.async {
                 img = image
             }
-            print("Image loaded")
+//            print("Image loaded")
         }
     }
 }
