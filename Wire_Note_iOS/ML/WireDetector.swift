@@ -37,7 +37,7 @@ class WireDetector {
         }
     }()
     
-
+    
     
     func detection(pixelBuffer: CVPixelBuffer, videoSize: CGSize) -> UIImage? {
         do {
@@ -50,69 +50,23 @@ class WireDetector {
             for result in results {
                 let flippedBox = CGRect(x: result.boundingBox.minX, y: 1 - result.boundingBox.maxY, width: result.boundingBox.width, height: result.boundingBox.height)
                 let box = VNImageRectForNormalizedRect(flippedBox, Int(videoSize.width), Int(videoSize.height))
-
+                
                 guard let label = result.labels.first?.identifier as? String,
-                        let colorIndex = classes.firstIndex(of: label) else {
-                        return nil
+                      let colorIndex = classes.firstIndex(of: label) else {
+                    return nil
                 }
                 let detection = Detection(box: box, confidence: result.confidence, label: label, color: colors[colorIndex])
                 detections.append(detection)
             }
-            let drawImage = drawRectsOnImage(detections, pixelBuffer)
+            let drawImage = drawRectsOnImage(ciContext:ciContext,detections:detections, pixelBuffer:pixelBuffer)
             return drawImage
         } catch let error {
-            return nil
             print(error)
+            return nil
         }
     }
     
-    func drawRectsOnImage(_ detections: [Detection], _ pixelBuffer: CVPixelBuffer) -> UIImage? {
-        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-        let cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent)!
-        let size = ciImage.extent.size
-        guard let cgContext = CGContext(data: nil,
-                                        width: Int(size.width),
-                                        height: Int(size.height),
-                                        bitsPerComponent: 8,
-                                        bytesPerRow: 4 * Int(size.width),
-                                        space: CGColorSpaceCreateDeviceRGB(),
-                                        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
-        cgContext.draw(cgImage, in: CGRect(origin: .zero, size: size))
-        for detection in detections {
-            let invertedBox = CGRect(x: detection.box.minX, y: size.height - detection.box.maxY, width: detection.box.width, height: detection.box.height)
-            if let labelText = detection.label {
-                cgContext.textMatrix = .identity
-                
-                let text = "\(labelText) : \(round(detection.confidence*100))"
-                
-                let textRect  = CGRect(x: invertedBox.minX + size.width * 0.01, y: invertedBox.minY - size.width * 0.01, width: invertedBox.width, height: invertedBox.height)
-                let textStyle = NSMutableParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
-                
-                let textFontAttributes = [
-                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: textRect.width * 0.1, weight: .bold),
-                    NSAttributedString.Key.foregroundColor: detection.color,
-                    NSAttributedString.Key.paragraphStyle: textStyle
-                ]
-                
-                cgContext.saveGState()
-                defer { cgContext.restoreGState() }
-                let astr = NSAttributedString(string: text, attributes: textFontAttributes)
-                let setter = CTFramesetterCreateWithAttributedString(astr)
-                let path = CGPath(rect: textRect, transform: nil)
-                
-                let frame = CTFramesetterCreateFrame(setter, CFRange(), path, nil)
-                cgContext.textMatrix = CGAffineTransform.identity
-                CTFrameDraw(frame, cgContext)
-                
-                cgContext.setStrokeColor(detection.color.cgColor)
-                cgContext.setLineWidth(9)
-                cgContext.stroke(invertedBox)
-            }
-        }
-        
-        guard let newImage = cgContext.makeImage() else { return nil }
-        return UIImage(cgImage: newImage)
-    }
+    
 }
 
 

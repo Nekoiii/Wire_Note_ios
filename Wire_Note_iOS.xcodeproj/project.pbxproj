@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00AC98932C027FA600C3F325 /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98922C027FA600C3F325 /* HomePageView.swift */; };
+		00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		00AC98922C027FA600C3F325 /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
+		00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectResultVisualization.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -58,6 +60,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00AC98942C02836A00C3F325 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				00AC98952C0283BE00C3F325 /* Drawing */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		00AC98952C0283BE00C3F325 /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */,
+			);
+			path = Drawing;
+			sourceTree = "<group>";
+		};
 		4B3941412BF9FC4000A5B694 = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +95,7 @@
 		4B39414C2BF9FC4000A5B694 /* Wire_Note_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				00AC98942C02836A00C3F325 /* Utils */,
 				4B3941742BFA056300A5B694 /* ML */,
 				4B39416D2BF9FFE500A5B694 /* Extensions */,
 				4B39416A2BF9FF8300A5B694 /* Views */,
@@ -220,6 +239,7 @@
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
+				00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */,
 				00AC98932C027FA600C3F325 /* HomePageView.swift in Sources */,
 				4B39416C2BF9FF9E00A5B694 /* CameraView.swift in Sources */,
 				4B3941652BF9FEF200A5B694 /* VideoController.swift in Sources */,
