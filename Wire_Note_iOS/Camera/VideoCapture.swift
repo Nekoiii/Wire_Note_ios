@@ -41,7 +41,7 @@ class VideoCapture: NSObject {
     let videoOutput = AVCaptureVideoDataOutput()
 
     /// The current camera's position.
-    var cameraPostion = AVCaptureDevice.Position.front
+    var cameraPostion = AVCaptureDevice.Position.back
     
     var curDevice: AVCaptureDevice?
     

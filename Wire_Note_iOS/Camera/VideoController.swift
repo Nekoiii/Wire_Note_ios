@@ -51,18 +51,6 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
         }
     }
     
-    //    func videoCapture(_ videoCapture: VideoCapture, didCaptureFrame capturedImage: CGImage?) {
-//            guard currentFrame == nil else {
-//                print("Dropping frame")
-//                return
-//            }
-    //        guard let image = capturedImage else {
-    //            fatalError("Captured image is null")
-    //        }
-    //        currentFrame = image
-    //        currentImage = UIImage(cgImage: image)
-    //        currentFrame = nil
-    //    }
     
     func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
         guard let image = self.wireDetector.detection(pixelBuffer: sampleBuffer, videoSize: videoSize)
