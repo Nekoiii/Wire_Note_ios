@@ -111,9 +111,8 @@ class WireDetector {
         }
         
         guard let newImage = cgContext.makeImage() else { return nil }
-        return UIImage(ciImage: CIImage(cgImage: newImage))
+        return UIImage(cgImage: newImage)
     }
-    
 }
 
 
