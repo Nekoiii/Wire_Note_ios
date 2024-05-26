@@ -63,8 +63,8 @@ struct GenerateMusicView: View {
         let title = title.isEmpty ? "My Song" : title
         let makeInstrumental = makeInstrumental
         let waitAudio = true
+        let generateMode = generateMode
         
-        let generateMode = GenerateMode.customGenerate
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
         sunoGenerateAPI.generatemAudio(generateMode:generateMode,prompt: prompt, tags: tags, title: title, makeInstrumental: makeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
             DispatchQueue.main.async {
