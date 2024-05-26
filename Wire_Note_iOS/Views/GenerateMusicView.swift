@@ -1,21 +1,37 @@
 import SwiftUI
 
 struct GenerateMusicView: View {
-    @State private var lyrics: String = ""
-    @State private var genre: String = ""
+    @State private var generateMode: GenerateMode = .generate
+    @State private var prompt: String = ""
+    @State private var style: String = ""
+    @State private var title: String = ""
+    @State private var makeInstrumental: Bool = false
     @State private var generatedAudioUrls: [String] = []
     
     var body: some View {
         VStack(spacing: 20) {
-            TextField("Enter lyrics", text: $lyrics)
+            Picker("Generate Mode", selection: $generateMode) {
+                Text("Generate").tag(GenerateMode.generate)
+                Text("Custom Generate").tag(GenerateMode.customGenerate)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
+            
+            TextField("Enter \(generateMode == .customGenerate ? "lyrics":"prompt")", text: $prompt)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
-            TextField("Enter genre", text: $genre)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button(action: generateCustomAudio) {
+            if generateMode == .customGenerate {
+                TextField("Enter style", text: $style)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                TextField("Enter title", text: $title)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+            }
+            Button(action: generatemAudio) {
                 Text("Generate")
                     .font(.headline)
                     .foregroundColor(.white)
@@ -23,29 +39,39 @@ struct GenerateMusicView: View {
                     .background(Color.blue)
                     .cornerRadius(10)
             }
-            Text("Generated Audios: ")
-                .padding()
-            ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
-                AudioPlayerView(url:URL(string:AudioUrl)! )
+            
+            
+            Toggle(isOn: $makeInstrumental) {
+                Text("Make Instrumental")
+            }
+            .padding()
+            
+            if !generatedAudioUrls.isEmpty {
+                Text("Generated Audios: ")
+                    .padding()
+                ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
+                    AudioPlayerView(url:URL(string:AudioUrl)! )
+                }
             }
         }
         .padding()
     }
     
-    func generateCustomAudio() {
-        let prompt = lyrics
-        let tags = genre
-        let title = "Custom Song"
-        let makeInstrumental = false
+    func generatemAudio() {
+        let prompt = prompt.isEmpty ? "Happy" : prompt
+        let tags = style.isEmpty ? "kpop,Chinese" : style
+        let title = title.isEmpty ? "My Song" : title
+        let makeInstrumental = makeInstrumental
         let waitAudio = true
         
-        let CustomGenerateAPI = CustomGenerateAPI()
-        CustomGenerateAPI.generateCustomAudio(prompt: prompt, tags: tags, title: title, makeInstrumental: makeInstrumental, waitAudio: waitAudio) { customGenerateResponses, error in
+        let generateMode = GenerateMode.customGenerate
+        let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
+        sunoGenerateAPI.generatemAudio(generateMode:generateMode,prompt: prompt, tags: tags, title: title, makeInstrumental: makeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
             DispatchQueue.main.async {
                 if let error = error {
                     print("Error generating audio: \(error)")
                     self.generatedAudioUrls = ["Error generating audio"]
-                } else if let responses = customGenerateResponses{
+                } else if let responses = sunoGenerateResponses{
                     self.generatedAudioUrls = responses.compactMap { $0.audioUrl }
                     if self.generatedAudioUrls.isEmpty {
                         self.generatedAudioUrls = ["No audio URL found"]
