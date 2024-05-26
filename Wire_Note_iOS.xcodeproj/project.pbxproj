@@ -12,6 +12,8 @@
 		00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98992C028E4000C3F325 /* MusicalNotes.swift */; };
 		00AC989F2C02F1C200C3F325 /* CustomGenerateAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC989E2C02F1C200C3F325 /* CustomGenerateAPI.swift */; };
 		00AC98A12C02F1F000C3F325 /* GenerateMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */; };
+		00AC98A32C03305800C3F325 /* GenerateAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A22C03305800C3F325 /* GenerateAPI.swift */; };
+		00AC98A52C03309100C3F325 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A42C03309100C3F325 /* AudioPlayerView.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -36,6 +38,8 @@
 		00AC98992C028E4000C3F325 /* MusicalNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicalNotes.swift; sourceTree = "<group>"; };
 		00AC989E2C02F1C200C3F325 /* CustomGenerateAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGenerateAPI.swift; sourceTree = "<group>"; };
 		00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateMusicView.swift; sourceTree = "<group>"; };
+		00AC98A22C03305800C3F325 /* GenerateAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAPI.swift; sourceTree = "<group>"; };
+		00AC98A42C03309100C3F325 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -95,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				00AC989E2C02F1C200C3F325 /* CustomGenerateAPI.swift */,
+				00AC98A22C03305800C3F325 /* GenerateAPI.swift */,
 			);
 			path = SunoAPI;
 			sourceTree = "<group>";
@@ -168,6 +173,7 @@
 				00AC98922C027FA600C3F325 /* HomePageView.swift */,
 				4B3941722BFA007D00A5B694 /* CameraControlsView.swift */,
 				00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */,
+				00AC98A42C03309100C3F325 /* AudioPlayerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -261,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
+				00AC98A32C03305800C3F325 /* GenerateAPI.swift in Sources */,
 				00AC989F2C02F1C200C3F325 /* CustomGenerateAPI.swift in Sources */,
 				00AC98A12C02F1F000C3F325 /* GenerateMusicView.swift in Sources */,
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
@@ -273,6 +280,7 @@
 				4B3941762BFA057200A5B694 /* WireDetector.swift in Sources */,
 				4B3941792BFA100F00A5B694 /* Images.swift in Sources */,
 				4B39415A2BF9FC4100A5B694 /* Wire_Note_iOS.xcdatamodeld in Sources */,
+				00AC98A52C03309100C3F325 /* AudioPlayerView.swift in Sources */,
 				4B3941572BF9FC4100A5B694 /* Persistence.swift in Sources */,
 				4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */,
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,

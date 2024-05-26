@@ -10,11 +10,11 @@ struct GenerateMusicView: View {
             TextField("Enter lyrics", text: $lyrics)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-
+            
             TextField("Enter genre", text: $genre)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-
+            
             Button(action: generateCustomAudio) {
                 Text("Generate")
                     .font(.headline)
@@ -23,10 +23,10 @@ struct GenerateMusicView: View {
                     .background(Color.blue)
                     .cornerRadius(10)
             }
-
-            ForEach(generatedAudioUrls, id: \.self) { url in
-                Text("Generated Audio: \(url)")
-                    .padding()
+            Text("Generated Audios: ")
+                .padding()
+            ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
+                AudioPlayerView(url:URL(string:AudioUrl)! )
             }
         }
         .padding()
