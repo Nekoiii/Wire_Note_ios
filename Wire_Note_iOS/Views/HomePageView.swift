@@ -19,7 +19,16 @@ struct HomePageView: View {
                             
                     }
                 }.padding()
-//                
+                NavigationLink(destination: GenerateMusicView()) {
+                    Text("Generate Music")
+                        .foregroundColor(.black)
+                        .background(.white)
+                        .padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.black, lineWidth: 2)
+                        )
+                }
                 NavigationLink(destination: CameraView()) {
                     Text("Open Camera")
                         .foregroundColor(.black)

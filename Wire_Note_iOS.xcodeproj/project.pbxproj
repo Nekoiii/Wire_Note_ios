@@ -10,6 +10,8 @@
 		00AC98932C027FA600C3F325 /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98922C027FA600C3F325 /* HomePageView.swift */; };
 		00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */; };
 		00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98992C028E4000C3F325 /* MusicalNotes.swift */; };
+		00AC989F2C02F1C200C3F325 /* CustomGenerateAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC989E2C02F1C200C3F325 /* CustomGenerateAPI.swift */; };
+		00AC98A12C02F1F000C3F325 /* GenerateMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -32,6 +34,8 @@
 		00AC98922C027FA600C3F325 /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectResultVisualization.swift; sourceTree = "<group>"; };
 		00AC98992C028E4000C3F325 /* MusicalNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicalNotes.swift; sourceTree = "<group>"; };
+		00AC989E2C02F1C200C3F325 /* CustomGenerateAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGenerateAPI.swift; sourceTree = "<group>"; };
+		00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateMusicView.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,9 +91,18 @@
 			path = Others;
 			sourceTree = "<group>";
 		};
+		00AC989D2C02F1AB00C3F325 /* SunoAPI */ = {
+			isa = PBXGroup;
+			children = (
+				00AC989E2C02F1C200C3F325 /* CustomGenerateAPI.swift */,
+			);
+			path = SunoAPI;
+			sourceTree = "<group>";
+		};
 		4B3941412BF9FC4000A5B694 = {
 			isa = PBXGroup;
 			children = (
+				00AC989D2C02F1AB00C3F325 /* SunoAPI */,
 				4B39414C2BF9FC4000A5B694 /* Wire_Note_iOS */,
 				4B39414B2BF9FC4000A5B694 /* Products */,
 			);
@@ -154,6 +167,7 @@
 				4B39416B2BF9FF9E00A5B694 /* CameraView.swift */,
 				00AC98922C027FA600C3F325 /* HomePageView.swift */,
 				4B3941722BFA007D00A5B694 /* CameraControlsView.swift */,
+				00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -247,6 +261,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
+				00AC989F2C02F1C200C3F325 /* CustomGenerateAPI.swift in Sources */,
+				00AC98A12C02F1F000C3F325 /* GenerateMusicView.swift in Sources */,
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
