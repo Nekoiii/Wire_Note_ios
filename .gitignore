@@ -1,6 +1,14 @@
 # gitignore for ios projects
 #
 
+# Mac
+.DS_Store
+
+# Python Virtual Environment
+venv/
+Wire_Note_ios/
+flask_backend/wire_note_venv/
+
 # Xcode
 # User settings
 xcuserdata/

@@ -60,7 +60,7 @@ struct GenerateMusicView: View {
     }
     
     func generatemMusic() {
-        let generatePrompt = prompt.isEmpty ? "Happy" : prompt
+        let generatePrompt = prompt.isEmpty ? "Good morning" : prompt
         let generateTags = style.isEmpty ? "kpop,Chinese" : style
         let generateTitle = title.isEmpty ? "My Song" : title
         let generateMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : makeInstrumental
