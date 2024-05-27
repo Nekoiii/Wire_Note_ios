@@ -15,7 +15,7 @@ struct AudioPlayerView: View {
                 Text("url: \(url)")
                 Text(audioPlayerManager.isCurrentPlayingUrl(url) && audioPlayerManager.isPlaying ? "Pause" : "Play")
                     .padding()
-                    .background(Color.blue)
+                    .background(Color("AccentColor"))
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
