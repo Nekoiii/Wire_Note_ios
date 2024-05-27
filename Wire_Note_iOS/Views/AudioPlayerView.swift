@@ -37,9 +37,9 @@ struct AudioPlayerView: View {
 
 struct AudioPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        if let dataAsset = NSDataAsset(name: "Audio") {
+        if let dataAsset = NSDataAsset(name: "sampleAudio") {
             let tempDir = FileManager.default.temporaryDirectory
-            let tempFileURL = tempDir.appendingPathComponent("Audio.mp3")
+            let tempFileURL = tempDir.appendingPathComponent("sampleAudio.mp3")
             
             do {
                 try dataAsset.data.write(to: tempFileURL)

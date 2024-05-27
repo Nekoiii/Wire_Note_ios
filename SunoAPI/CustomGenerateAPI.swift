@@ -11,6 +11,7 @@ class SunoGenerateAPI {
             self.apiUrl = "\(API.baseUrl)/api/generate"
         }
     }
+    
     func generatemAudio( generateMode: GenerateMode,prompt: String, tags: String, title: String, makeInstrumental: Bool, waitAudio: Bool, completion: @escaping ([SunoResponse]?, Error?) -> Void) {
         guard let url = URL(string: apiUrl) else {
             print("Invalid URL")

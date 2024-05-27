@@ -31,6 +31,7 @@ struct GenerateMusicView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
             }
+            
             Button(action: generatemAudio) {
                 Text("Generate")
                     .font(.headline)
@@ -58,15 +59,14 @@ struct GenerateMusicView: View {
     }
     
     func generatemAudio() {
-        let prompt = prompt.isEmpty ? "Happy" : prompt
-        let tags = style.isEmpty ? "kpop,Chinese" : style
-        let title = title.isEmpty ? "My Song" : title
-        let makeInstrumental = makeInstrumental
+        let generatePrompt = prompt.isEmpty ? "Happy" : prompt
+        let generateTags = style.isEmpty ? "kpop,Chinese" : style
+        let generateTitle = title.isEmpty ? "My Song" : title
+        let generateMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : makeInstrumental
         let waitAudio = true
-        let generateMode = generateMode
         
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-        sunoGenerateAPI.generatemAudio(generateMode:generateMode,prompt: prompt, tags: tags, title: title, makeInstrumental: makeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
+        sunoGenerateAPI.generatemAudio(generateMode:generateMode,prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateMakeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
             DispatchQueue.main.async {
                 if let error = error {
                     print("Error generating audio: \(error)")
