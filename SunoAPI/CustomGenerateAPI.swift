@@ -12,7 +12,7 @@ class SunoGenerateAPI {
         }
     }
     
-    func generatemAudio( generateMode: GenerateMode,prompt: String, tags: String, title: String, makeInstrumental: Bool, waitAudio: Bool, completion: @escaping ([SunoResponse]?, Error?) -> Void) {
+    func generatemMusic( generateMode: GenerateMode,prompt: String, tags: String, title: String, makeInstrumental: Bool, waitAudio: Bool, completion: @escaping ([SunoResponse]?, Error?) -> Void) {
         guard let url = URL(string: apiUrl) else {
             print("Invalid URL")
             completion(nil, NSError(domain: "InvalidURL", code: -1000, userInfo: nil))
