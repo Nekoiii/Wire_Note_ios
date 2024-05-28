@@ -20,6 +20,7 @@
 		00AC98B22C04BFAB00C3F325 /* DescribeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B12C04BFAB00C3F325 /* DescribeImage.swift */; };
 		00AC98B42C04C0C500C3F325 /* DescribeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B32C04C0C500C3F325 /* DescribeImageView.swift */; };
 		00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B62C05F3D900C3F325 /* ImagePicker.swift */; };
+		00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -52,6 +53,7 @@
 		00AC98B12C04BFAB00C3F325 /* DescribeImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescribeImage.swift; sourceTree = "<group>"; };
 		00AC98B32C04C0C500C3F325 /* DescribeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescribeImageView.swift; sourceTree = "<group>"; };
 		00AC98B62C05F3D900C3F325 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButtonStyle.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -149,6 +151,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		00AC98B82C060D4C00C3F325 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
 		4B3941412BF9FC4000A5B694 = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +179,7 @@
 		4B39414C2BF9FC4000A5B694 /* Wire_Note_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				00AC98B82C060D4C00C3F325 /* Styles */,
 				00AC98AE2C0485C400C3F325 /* Managers */,
 				00AC98A62C036A7600C3F325 /* Config */,
 				00AC98942C02836A00C3F325 /* Utils */,
@@ -336,6 +347,7 @@
 				00AC98A52C03309100C3F325 /* AudioPlayerView.swift in Sources */,
 				00AC98AB2C036C4800C3F325 /* SunoResponse.swift in Sources */,
 				4B3941572BF9FC4100A5B694 /* Persistence.swift in Sources */,
+				00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */,
 				00AC98AD2C03759400C3F325 /* GenerateMode.swift in Sources */,
 				4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */,
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,

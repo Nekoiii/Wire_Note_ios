@@ -34,17 +34,12 @@ struct DescribeImageView: View {
                     .cornerRadius(8)
             }
             
+            let isDescribeImageButtonDisable = image == nil
             Button(action: {loadImageAndDescribe()}) {
                 Text("Describe Image")
-                    .padding()
-                    .background(Color.clear)
-                    .foregroundColor(image == nil ? Color("gray3"):Color("AccentColor"))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(image == nil ? Color("gray3"):Color("AccentColor"), lineWidth: 2)
-                    )
             }
-            .disabled(image == nil)
+            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isDescribeImageButtonDisable))
+            .disabled(isDescribeImageButtonDisable)
             
             if let errorMessage = errorMessage {
                 Text("Error: \(errorMessage)")
@@ -54,17 +49,12 @@ struct DescribeImageView: View {
                     .padding()
             }
             
-            
+            let isGenerateMusicButtonDisable = description.isEmpty
             Button(action:{generateMusicWithDescription()}){
                 Text("Generate music with image description")
-                    .padding()
-                    .background(Color.clear)
-                    .foregroundColor(description.isEmpty ? Color("gray3"):Color("AccentColor"))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(description.isEmpty ? Color("gray3"):Color("AccentColor"), lineWidth: 2)
-                    )
-            }.disabled(description.isEmpty)
+            }
+            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isGenerateMusicButtonDisable))
+            .disabled(isGenerateMusicButtonDisable)
             
             Toggle(isOn: $makeInstrumental) {
                 Text("Make It Instrumental")
