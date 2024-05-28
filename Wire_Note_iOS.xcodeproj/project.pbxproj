@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0097DB062C061D14007D3328 /* InstrumentalToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB052C061D14007D3328 /* InstrumentalToggle.swift */; };
 		00AC98932C027FA600C3F325 /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98922C027FA600C3F325 /* HomePageView.swift */; };
 		00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */; };
 		00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98992C028E4000C3F325 /* MusicalNotes.swift */; };
@@ -21,6 +22,7 @@
 		00AC98B42C04C0C500C3F325 /* DescribeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B32C04C0C500C3F325 /* DescribeImageView.swift */; };
 		00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B62C05F3D900C3F325 /* ImagePicker.swift */; };
 		00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */; };
+		00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -40,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0097DB052C061D14007D3328 /* InstrumentalToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentalToggle.swift; sourceTree = "<group>"; };
 		00AC98922C027FA600C3F325 /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectResultVisualization.swift; sourceTree = "<group>"; };
 		00AC98992C028E4000C3F325 /* MusicalNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicalNotes.swift; sourceTree = "<group>"; };
@@ -54,6 +57,7 @@
 		00AC98B32C04C0C500C3F325 /* DescribeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescribeImageView.swift; sourceTree = "<group>"; };
 		00AC98B62C05F3D900C3F325 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButtonStyle.swift; sourceTree = "<group>"; };
+		00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidButtonStyle.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -84,6 +88,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0097DB032C061CC7007D3328 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				4B39416B2BF9FF9E00A5B694 /* CameraView.swift */,
+				4B3941722BFA007D00A5B694 /* CameraControlsView.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		0097DB042C061CE1007D3328 /* GenerateMusic */ = {
+			isa = PBXGroup;
+			children = (
+				00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */,
+				0097DB052C061D14007D3328 /* InstrumentalToggle.swift */,
+			);
+			path = GenerateMusic;
+			sourceTree = "<group>";
+		};
 		00AC98942C02836A00C3F325 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */,
+				00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -227,10 +250,9 @@
 		4B39416A2BF9FF8300A5B694 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4B39416B2BF9FF9E00A5B694 /* CameraView.swift */,
+				0097DB032C061CC7007D3328 /* Camera */,
 				00AC98922C027FA600C3F325 /* HomePageView.swift */,
-				4B3941722BFA007D00A5B694 /* CameraControlsView.swift */,
-				00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */,
+				0097DB042C061CE1007D3328 /* GenerateMusic */,
 				00AC98A42C03309100C3F325 /* AudioPlayerView.swift */,
 				00AC98B32C04C0C500C3F325 /* DescribeImageView.swift */,
 			);
@@ -330,8 +352,10 @@
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
 				00AC98A82C036A8400C3F325 /* Constants.swift in Sources */,
 				00AC989F2C02F1C200C3F325 /* CustomGenerateAPI.swift in Sources */,
+				00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */,
 				00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */,
 				00AC98A12C02F1F000C3F325 /* GenerateMusicView.swift in Sources */,
+				0097DB062C061D14007D3328 /* InstrumentalToggle.swift in Sources */,
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,

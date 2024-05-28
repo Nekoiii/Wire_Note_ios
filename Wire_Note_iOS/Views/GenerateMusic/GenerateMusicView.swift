@@ -5,69 +5,71 @@ struct GenerateMusicView: View {
     @State private var prompt: String = ""
     @State private var style: String = ""
     @State private var title: String = ""
-    @State private var makeInstrumental: Bool = false
+    @State private var isMakeInstrumental: Bool = false
     @State private var generatedAudioUrls: [String] = []
     
     var body: some View {
         VStack(spacing: 20) {
-            Picker("Generate Mode", selection: $generateMode) {
-                Text("Generate").tag(GenerateMode.generate)
-                Text("Custom Generate").tag(GenerateMode.customGenerate)
+            Group{
+                generateModePicker
+                generateFields
+                generatemMusicButton
+                instrumentalToggle
+                generatedAudioSection
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
-            
-            TextField("Enter \(generateMode == .customGenerate ? "lyrics":"prompt")", text: $prompt)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            if generateMode == .customGenerate {
-                TextField("Enter style", text: $style)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                TextField("Enter title", text: $title)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-            }
-            
-            Button(action: generatemMusic) {
-                Text("Generate")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }
-            .padding()
-            
-            
-            Toggle(isOn: $makeInstrumental) {
-                Text("Make It Instrumental")
-            }
-            .padding()
-            
-            if !generatedAudioUrls.isEmpty {
-                Text("Generated Audios: ")
-                    .padding()
-                ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
-                    AudioPlayerView(url:URL(string:AudioUrl)! )
-                }
-            }
+            .padding(.horizontal)
         }
         .padding()
     }
     
+    private var generateModePicker: some View {
+        Picker("Generate Mode", selection: $generateMode) {
+            Text("Generate").tag(GenerateMode.generate)
+            Text("Custom Generate").tag(GenerateMode.customGenerate)
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        .padding(.vertical, 10)
+    }
+    private var generateFields: some View {
+        Group {
+            TextField("Enter \(generateMode == .customGenerate ? "lyrics":"prompt")", text: $prompt)
+            if generateMode == .customGenerate {
+                TextField("Enter style", text: $style)
+                TextField("Enter title", text: $title)
+            }
+        }
+        .textFieldStyle(RoundedBorderTextFieldStyle())
+        .padding(.vertical, 5)
+    }
+    private var instrumentalToggle: some View {
+        InstrumentalToggle(isMakeInstrumental:$isMakeInstrumental)
+    }
+    private var generatemMusicButton: some View {
+        Button(action: generatemMusic) {
+            Text("Generate")
+        }
+        .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor"), isDisable: false))
+    }
+    
+    private var generatedAudioSection: some View {
+        VStack(alignment: .leading) {
+            Text("Generated Audios: ")
+                .padding()
+            ForEach(generatedAudioUrls, id: \.self) { audioUrl in
+                AudioPlayerView(url: URL(string: audioUrl)!)
+            }
+        }
+    }
+    
     func generatemMusic() {
         let generatePrompt = prompt.isEmpty ? "Good morning" : prompt
-        let generateTags = style.isEmpty ? "kpop,Chinese" : style
+        let generateTags = style.isEmpty ? "kpop, Chinese" : style
         let generateTitle = title.isEmpty ? "My Song" : title
-        let generateMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : makeInstrumental
+        let generateIsMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : isMakeInstrumental
         let waitAudio = true
         
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-        sunoGenerateAPI.generatemMusic(generateMode:generateMode,prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateMakeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
+        sunoGenerateAPI.generatemMusic(generateMode:generateMode,prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
             DispatchQueue.main.async {
                 if let error = error {
                     print("Error generating audio: \(error)")

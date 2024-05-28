@@ -8,7 +8,7 @@ struct DescribeImageView: View {
     @State private var errorMessage: String?
     @State private var isLoadingDescription: Bool = false
     
-    @State private var makeInstrumental: Bool = false
+    @State private var isMakeInstrumental: Bool = false
     @State private var generatedAudioUrls: [String] = []
     
     var body: some View {
@@ -56,9 +56,7 @@ struct DescribeImageView: View {
             .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isGenerateMusicButtonDisable))
             .disabled(isGenerateMusicButtonDisable)
             
-            Toggle(isOn: $makeInstrumental) {
-                Text("Make It Instrumental")
-            }
+            InstrumentalToggle(isMakeInstrumental:$isMakeInstrumental)
             .padding()
             
             if !generatedAudioUrls.isEmpty {
@@ -123,13 +121,13 @@ struct DescribeImageView: View {
         let generatePrompt = description
         let generateTags = description //* unfinished
         let generateTitle = "Song"
-        let generateMakeInstrumental = makeInstrumental
+        let generateIsMakeInstrumental = isMakeInstrumental
         let generateMode = GenerateMode.generate
         let waitAudio = true
         
         
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-        sunoGenerateAPI.generatemMusic(generateMode:generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateMakeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
+        sunoGenerateAPI.generatemMusic(generateMode:generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
             DispatchQueue.main.async {
                 if let error = error {
                     print("Error generating audio: \(error)")
