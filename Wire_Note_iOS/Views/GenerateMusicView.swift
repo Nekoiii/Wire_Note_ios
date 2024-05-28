@@ -44,7 +44,7 @@ struct GenerateMusicView: View {
             
             
             Toggle(isOn: $makeInstrumental) {
-                Text("Make Instrumental")
+                Text("Make It Instrumental")
             }
             .padding()
             

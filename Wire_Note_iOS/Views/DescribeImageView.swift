@@ -6,6 +6,10 @@ struct DescribeImageView: View {
     
     @State private var description: String = ""
     @State private var errorMessage: String?
+    @State private var isLoadingDescription: Bool = false
+    
+    @State private var makeInstrumental: Bool = false
+    @State private var generatedAudioUrls: [String] = []
     
     var body: some View {
         VStack {
@@ -30,15 +34,6 @@ struct DescribeImageView: View {
                     .cornerRadius(8)
             }
             
-            
-            if let errorMessage = errorMessage {
-                Text("Error: \(errorMessage)")
-                    .foregroundColor(.red)
-            } else {
-                Text(description)
-                    .padding()
-            }
-            
             Button(action: {loadImageAndDescribe()}) {
                 Text("Describe Image")
                     .padding()
@@ -50,6 +45,41 @@ struct DescribeImageView: View {
                     )
             }
             .disabled(image == nil)
+            
+            if let errorMessage = errorMessage {
+                Text("Error: \(errorMessage)")
+                    .foregroundColor(.red)
+            } else {
+                Text(isLoadingDescription ? "Loading ..." :description)
+                    .padding()
+            }
+            
+            
+            Button(action:{generateMusicWithDescription()}){
+                Text("Generate music with image description")
+                    .padding()
+                    .background(Color.clear)
+                    .foregroundColor(description.isEmpty ? Color("gray3"):Color("AccentColor"))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(description.isEmpty ? Color("gray3"):Color("AccentColor"), lineWidth: 2)
+                    )
+            }.disabled(description.isEmpty)
+            
+            Toggle(isOn: $makeInstrumental) {
+                Text("Make It Instrumental")
+            }
+            .padding()
+            
+            if !generatedAudioUrls.isEmpty {
+                Text("Generated Audios: ")
+                    .padding()
+                ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
+                    AudioPlayerView(url:URL(string:AudioUrl)! )
+                }
+            }
+            
+            
         }
         .sheet(isPresented: $isImagePickerPresented) {
             ImagePicker(image: $image)
@@ -77,7 +107,7 @@ struct DescribeImageView: View {
     }
     
     private func loadImageAndDescribe() {
-        description = "Loading..."
+        isLoadingDescription = true
         
         guard let image = image, let imageData = image.pngData() else {
             errorMessage = "No image selected."
@@ -89,10 +119,41 @@ struct DescribeImageView: View {
             case .success(let description):
                 DispatchQueue.main.async {
                     self.description = description
+                    isLoadingDescription = false
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+    
+    private func generateMusicWithDescription(){
+        let generatePrompt = description
+        let generateTags = description //* unfinished
+        let generateTitle = "Song"
+        let generateMakeInstrumental = makeInstrumental
+        let generateMode = GenerateMode.generate
+        let waitAudio = true
+        
+        
+        let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
+        sunoGenerateAPI.generatemMusic(generateMode:generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateMakeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error generating audio: \(error)")
+                    self.generatedAudioUrls = ["Error generating audio"]
+                } else if let responses = sunoGenerateResponses{
+                    self.generatedAudioUrls = responses.compactMap { $0.audioUrl }
+                    if self.generatedAudioUrls.isEmpty {
+                        self.generatedAudioUrls = ["No audio URL found"]
+                    }
+                    for url in self.generatedAudioUrls {
+                        print("Generated Audio: \(url)")
+                    }
+                } else {
+                    self.generatedAudioUrls = ["No audio generated"]
                 }
             }
         }
