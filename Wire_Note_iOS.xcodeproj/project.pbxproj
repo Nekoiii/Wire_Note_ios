@@ -19,6 +19,7 @@
 		00AC98B02C0485D400C3F325 /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */; };
 		00AC98B22C04BFAB00C3F325 /* DescribeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B12C04BFAB00C3F325 /* DescribeImage.swift */; };
 		00AC98B42C04C0C500C3F325 /* DescribeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B32C04C0C500C3F325 /* DescribeImageView.swift */; };
+		00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B62C05F3D900C3F325 /* ImagePicker.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -50,6 +51,7 @@
 		00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		00AC98B12C04BFAB00C3F325 /* DescribeImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescribeImage.swift; sourceTree = "<group>"; };
 		00AC98B32C04C0C500C3F325 /* DescribeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescribeImageView.swift; sourceTree = "<group>"; };
+		00AC98B62C05F3D900C3F325 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -84,7 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				00AC98982C028E3300C3F325 /* Others */,
-				00AC98952C0283BE00C3F325 /* Drawing */,
+				00AC98B62C05F3D900C3F325 /* ImagePicker.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -137,6 +139,14 @@
 				00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		00AC98B52C05F3C100C3F325 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				00AC98952C0283BE00C3F325 /* Drawing */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		4B3941412BF9FC4000A5B694 = {
@@ -229,6 +239,7 @@
 		4B3941742BFA056300A5B694 /* ML */ = {
 			isa = PBXGroup;
 			children = (
+				00AC98B52C05F3C100C3F325 /* Utils */,
 				4B3941752BFA057200A5B694 /* WireDetector.swift */,
 				00AC98B12C04BFAB00C3F325 /* DescribeImage.swift */,
 			);
@@ -308,6 +319,7 @@
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
 				00AC98A82C036A8400C3F325 /* Constants.swift in Sources */,
 				00AC989F2C02F1C200C3F325 /* CustomGenerateAPI.swift in Sources */,
+				00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */,
 				00AC98A12C02F1F000C3F325 /* GenerateMusicView.swift in Sources */,
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
