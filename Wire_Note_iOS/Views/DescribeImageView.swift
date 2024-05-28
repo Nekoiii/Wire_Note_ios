@@ -6,6 +6,10 @@ struct DescribeImageView: View {
     
     var body: some View {
         VStack {
+            Image("icon-1")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 300, height: 300)
             if let errorMessage = errorMessage {
                 Text("Error: \(errorMessage)")
                     .foregroundColor(.red)
@@ -21,7 +25,7 @@ struct DescribeImageView: View {
     }
     
     private func loadImageAndDescribe() {
-        if let image = UIImage(named: "icon-1"), let imageData = image.pngData() {
+        if let image = UIImage(named: "icon-1"), let imageData = image.pngData() {   
             describeImage(imageData: imageData) { result in
                 switch result {
                 case .success(let description):
