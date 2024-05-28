@@ -16,29 +16,23 @@ struct HomePageView: View {
                     ForEach(musicalNotes, id: \.symbol) { note in
                         Text(note.symbol)
                             .font(.largeTitle)
-                            
+                        
                     }
-                }.padding()
-                NavigationLink(destination: GenerateMusicView()) {
-                    Text("Generate Music")
-                        .foregroundColor(.black)
-                        .background(.white)
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: 2)
-                        )
+                }.padding(.vertical ,30)
+                Group{
+                    NavigationLink(destination: TextToMusicView()) {
+                        Text("Text To Music")
+                    }
+                    NavigationLink(destination: ImageToMusicView()) {
+                        Text("Image To Music")
+                    }
+                    NavigationLink(destination: CameraView()) {
+                        Text("Open Camera")
+                    }
+                    .padding(.top, 50)
                 }
-                NavigationLink(destination: CameraView()) {
-                    Text("Open Camera")
-                        .foregroundColor(.black)
-                        .background(.white)
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(.black, lineWidth: 2)
-                        )
-                }
+                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:false))
+                .padding(.vertical, 10)
             }
         }
     }

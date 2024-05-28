@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DescribeImageView: View {
+struct ImageToMusicView: View {
     @State private var image: UIImage?
     @State private var isImagePickerPresented = false
     
@@ -148,8 +148,8 @@ struct DescribeImageView: View {
     }
 }
 
-struct DescribeImageView_Previews: PreviewProvider {
+struct ImageToMusicView_Previews: PreviewProvider {
     static var previews: some View {
-        DescribeImageView()
+        ImageToMusicView()
     }
 }

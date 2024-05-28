@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct GenerateMusicView: View {
+struct TextToMusicView: View {
     @State private var generateMode: GenerateMode = .generate
     @State private var prompt: String = ""
     @State private var style: String = ""
@@ -90,8 +90,8 @@ struct GenerateMusicView: View {
     }
 }
 
-struct GenerateMusicView_Previews: PreviewProvider {
+struct TextToMusicView_Previews: PreviewProvider {
     static var previews: some View {
-        GenerateMusicView()
+        TextToMusicView()
     }
 }
