@@ -13,29 +13,25 @@ struct ImageToMusicView: View {
     
     var body: some View {
         VStack {
-            if let uiImage = image {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 300, height: 300)
-            } else {
-                Text("Choose a photo")
-                    .foregroundColor(.gray)
-                    .frame(width: 300, height: 300)
-                    .background(Color(UIColor.systemFill))
+            ImagePickerView(image: $image, isImagePickerPresented: $isImagePickerPresented)
+            imageDescribtion
+            musicGeneration
+            GeneratedAudioView(generatedAudioUrls: $generatedAudioUrls)
+        }
+        .sheet(isPresented: $isImagePickerPresented) {
+            ImagePicker(image: $image)
+        }
+        .onChange(of: image) {
+            if let newImage = image {
+                saveImageToDefaultPath(image: newImage)
             }
-            Button(action: {
-                isImagePickerPresented = true
-            }) {
-                Text("Upload Image")
-                    .padding()
-                    .background(Color("AccentColor"))
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            }
-            
+        }
+    }
+    
+    private var imageDescribtion: some View {
+        Group{
             let isDescribeImageButtonDisable = image == nil
-            Button(action: {loadImageAndDescribe()}) {
+            Button(action: {generateImageDescribtion()}) {
                 Text("Describe Image")
             }
             .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isDescribeImageButtonDisable))
@@ -48,7 +44,11 @@ struct ImageToMusicView: View {
                 Text(isLoadingDescription ? "Loading ..." :description)
                     .padding()
             }
-            
+        }
+    }
+    
+    private var musicGeneration: some View {
+        Group{
             let isGenerateMusicButtonDisable = description.isEmpty
             Button(action:{generateMusicWithDescription()}){
                 Text("Generate music with image description")
@@ -56,26 +56,8 @@ struct ImageToMusicView: View {
             .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isGenerateMusicButtonDisable))
             .disabled(isGenerateMusicButtonDisable)
             
-            InstrumentalToggle(isMakeInstrumental:$isMakeInstrumental)
+            InstrumentalToggleView(isMakeInstrumental:$isMakeInstrumental)
             .padding()
-            
-            if !generatedAudioUrls.isEmpty {
-                Text("Generated Audios: ")
-                    .padding()
-                ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
-                    AudioPlayerView(url:URL(string:AudioUrl)! )
-                }
-            }
-            
-            
-        }
-        .sheet(isPresented: $isImagePickerPresented) {
-            ImagePicker(image: $image)
-        }
-        .onChange(of: image) {
-            if let newImage = image {
-                saveImageToDefaultPath(image: newImage)
-            }
         }
     }
     
@@ -94,7 +76,7 @@ struct ImageToMusicView: View {
         }
     }
     
-    private func loadImageAndDescribe() {
+    private func generateImageDescribtion() {
         isLoadingDescription = true
         
         guard let image = image, let imageData = image.pngData() else {
@@ -117,32 +99,17 @@ struct ImageToMusicView: View {
         }
     }
     
+
     private func generateMusicWithDescription(){
         let generatePrompt = description
-        let generateTags = description //* unfinished
-        let generateTitle = "Song"
         let generateIsMakeInstrumental = isMakeInstrumental
         let generateMode = GenerateMode.generate
-        let waitAudio = true
-        
-        
+
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-        sunoGenerateAPI.generatemMusic(generateMode:generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
+
+        sunoGenerateAPI.generatemMusic(generateMode:generateMode, prompt: generatePrompt,  makeInstrumental: generateIsMakeInstrumental) { audioUrls in
             DispatchQueue.main.async {
-                if let error = error {
-                    print("Error generating audio: \(error)")
-                    self.generatedAudioUrls = ["Error generating audio"]
-                } else if let responses = sunoGenerateResponses{
-                    self.generatedAudioUrls = responses.compactMap { $0.audioUrl }
-                    if self.generatedAudioUrls.isEmpty {
-                        self.generatedAudioUrls = ["No audio URL found"]
-                    }
-                    for url in self.generatedAudioUrls {
-                        print("Generated Audio: \(url)")
-                    }
-                } else {
-                    self.generatedAudioUrls = ["No audio generated"]
-                }
+                self.generatedAudioUrls = audioUrls
             }
         }
     }

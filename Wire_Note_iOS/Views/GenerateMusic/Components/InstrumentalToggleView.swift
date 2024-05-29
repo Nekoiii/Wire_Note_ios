@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct InstrumentalToggle: View {
+struct InstrumentalToggleView: View {
     @Binding var isMakeInstrumental: Bool
     
     var body: some View {

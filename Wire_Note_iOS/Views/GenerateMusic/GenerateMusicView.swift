@@ -14,8 +14,8 @@ struct TextToMusicView: View {
                 generateModePicker
                 generateFields
                 generatemMusicButton
-                instrumentalToggle
-                generatedAudioSection
+                InstrumentalToggleView(isMakeInstrumental:$isMakeInstrumental)
+                GeneratedAudioView(generatedAudioUrls: $generatedAudioUrls)
             }
             .padding(.horizontal)
         }
@@ -30,6 +30,7 @@ struct TextToMusicView: View {
         .pickerStyle(SegmentedPickerStyle())
         .padding(.vertical, 10)
     }
+    
     private var generateFields: some View {
         Group {
             TextField("Enter \(generateMode == .customGenerate ? "lyrics":"prompt")", text: $prompt)
@@ -41,9 +42,7 @@ struct TextToMusicView: View {
         .textFieldStyle(RoundedBorderTextFieldStyle())
         .padding(.vertical, 5)
     }
-    private var instrumentalToggle: some View {
-        InstrumentalToggle(isMakeInstrumental:$isMakeInstrumental)
-    }
+
     private var generatemMusicButton: some View {
         Button(action: generatemMusic) {
             Text("Generate")
@@ -51,43 +50,22 @@ struct TextToMusicView: View {
         .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor"), isDisable: false))
     }
     
-    private var generatedAudioSection: some View {
-        VStack(alignment: .leading) {
-            Text("Generated Audios: ")
-                .padding()
-            ForEach(generatedAudioUrls, id: \.self) { audioUrl in
-                AudioPlayerView(url: URL(string: audioUrl)!)
-            }
-        }
-    }
-    
     func generatemMusic() {
         let generatePrompt = prompt.isEmpty ? "Good morning" : prompt
         let generateTags = style.isEmpty ? "kpop, Chinese" : style
         let generateTitle = title.isEmpty ? "My Song" : title
         let generateIsMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : isMakeInstrumental
-        let waitAudio = true
-        
+
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-        sunoGenerateAPI.generatemMusic(generateMode:generateMode,prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental, waitAudio: waitAudio) { sunoGenerateResponses, error in
+        
+        sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental) { audioUrls in
             DispatchQueue.main.async {
-                if let error = error {
-                    print("Error generating audio: \(error)")
-                    self.generatedAudioUrls = ["Error generating audio"]
-                } else if let responses = sunoGenerateResponses{
-                    self.generatedAudioUrls = responses.compactMap { $0.audioUrl }
-                    if self.generatedAudioUrls.isEmpty {
-                        self.generatedAudioUrls = ["No audio URL found"]
-                    }
-                    for url in self.generatedAudioUrls {
-                        print("Generated Audio: \(url)")
-                    }
-                } else {
-                    self.generatedAudioUrls = ["No audio generated"]
-                }
+                self.generatedAudioUrls = audioUrls
             }
         }
     }
+    
+
 }
 
 struct TextToMusicView_Previews: PreviewProvider {

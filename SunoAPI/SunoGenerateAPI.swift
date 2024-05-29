@@ -12,10 +12,10 @@ class SunoGenerateAPI {
         }
     }
     
-    func generatemMusic( generateMode: GenerateMode,prompt: String, tags: String, title: String, makeInstrumental: Bool, waitAudio: Bool, completion: @escaping ([SunoResponse]?, Error?) -> Void) {
+    func generatemMusic( generateMode: GenerateMode,prompt: String, tags: String = "", title: String = "", makeInstrumental: Bool = true, waitAudio: Bool = true, completion: @escaping ([String]) -> Void) {
         guard let url = URL(string: apiUrl) else {
             print("Invalid URL")
-            completion(nil, NSError(domain: "InvalidURL", code: -1000, userInfo: nil))
+            completion([])
             return
         }
         
@@ -48,7 +48,7 @@ class SunoGenerateAPI {
             print("Request body: \(String(data: request.httpBody!, encoding: .utf8)!)")
         } catch {
             print("Error serializing JSON: \(error)")
-            completion(nil, error)
+            completion([])
             return
         }
         
@@ -56,13 +56,13 @@ class SunoGenerateAPI {
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Request error: \(error)")
-                completion(nil, error)
+                completion([])
                 return
             }
             
             guard let data = data, !data.isEmpty else {
                 print("No data returned from API")
-                completion(nil, NSError(domain: "NoData", code: -1001, userInfo: nil))
+                completion([])
                 return
             }
             
@@ -74,12 +74,33 @@ class SunoGenerateAPI {
             
             do {
                 let responses = try JSONDecoder().decode([SunoResponse].self, from: data)
-                completion(responses, nil)
+                let audioUrls = self.extractAudioUrlsFromResponse(sunoGenerateResponses: responses, error: error)
+                completion(audioUrls)
             } catch let jsonError {
                 print("JSON decoding error: \(jsonError)")
-                completion(nil, jsonError)
+                completion([])
             }
         }
         task.resume()
+    }
+    
+    
+    func extractAudioUrlsFromResponse(sunoGenerateResponses: [SunoResponse]?, error: Error?) -> [String] {
+        var generatedAudioUrls: [String]
+        if let error = error {
+            print("Error generating audio: \(error)")
+            generatedAudioUrls = ["Error generating audio"]
+        } else if let responses = sunoGenerateResponses{
+            generatedAudioUrls = responses.compactMap { $0.audioUrl }
+            if generatedAudioUrls.isEmpty {
+                generatedAudioUrls = ["No audio URL found"]
+            }
+            for url in generatedAudioUrls {
+                print("Generated Audio: \(url)")
+            }
+        } else {
+            generatedAudioUrls = ["No audio generated"]
+        }
+        return generatedAudioUrls
     }
 }
