@@ -26,6 +26,9 @@
 		00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */; };
 		00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */; };
 		00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CBF2C0744D900EE7EDA /* DownloadAndSaveFile.swift */; };
+		00D32CC22C075AE300EE7EDA /* HistoryAudiosPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */; };
+		00D32CC52C07631800EE7EDA /* FileTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC42C07631800EE7EDA /* FileTypes.swift */; };
+		00D32CC72C07663500EE7EDA /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC62C07663500EE7EDA /* Paths.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -64,6 +67,9 @@
 		00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButtonStyle.swift; sourceTree = "<group>"; };
 		00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidButtonStyle.swift; sourceTree = "<group>"; };
 		00D32CBF2C0744D900EE7EDA /* DownloadAndSaveFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAndSaveFile.swift; sourceTree = "<group>"; };
+		00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAudiosPage.swift; sourceTree = "<group>"; };
+		00D32CC42C07631800EE7EDA /* FileTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypes.swift; sourceTree = "<group>"; };
+		00D32CC62C07663500EE7EDA /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -117,7 +123,6 @@
 			isa = PBXGroup;
 			children = (
 				0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */,
-				00AC98A42C03309100C3F325 /* AudioPlayerView.swift */,
 				0097DB0D2C072B64007D3328 /* GeneratedAudioView.swift */,
 			);
 			path = Components;
@@ -126,6 +131,7 @@
 		0097DB0A2C072663007D3328 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				00AC98A42C03309100C3F325 /* AudioPlayerView.swift */,
 				0097DB0B2C07267E007D3328 /* ImagePickerView.swift */,
 			);
 			path = Components;
@@ -137,6 +143,8 @@
 				00D32CBE2C07420D00EE7EDA /* ML */,
 				00AC98B62C05F3D900C3F325 /* ImagePicker.swift */,
 				00AC98992C028E4000C3F325 /* MusicalNotes.swift */,
+				00D32CC42C07631800EE7EDA /* FileTypes.swift */,
+				00D32CC62C07663500EE7EDA /* Paths.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -192,6 +200,15 @@
 				00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */,
 			);
 			path = ML;
+			sourceTree = "<group>";
+		};
+		00D32CC32C075AF200EE7EDA /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				00AC98922C027FA600C3F325 /* HomePageView.swift */,
+				00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */,
+			);
+			path = Pages;
 			sourceTree = "<group>";
 		};
 		4B3941412BF9FC4000A5B694 = {
@@ -261,9 +278,9 @@
 		4B39416A2BF9FF8300A5B694 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				00D32CC32C075AF200EE7EDA /* Pages */,
 				0097DB0A2C072663007D3328 /* Components */,
 				0097DB032C061CC7007D3328 /* Camera */,
-				00AC98922C027FA600C3F325 /* HomePageView.swift */,
 				0097DB042C061CE1007D3328 /* GenerateMusic */,
 			);
 			path = Views;
@@ -358,6 +375,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00D32CC22C075AE300EE7EDA /* HistoryAudiosPage.swift in Sources */,
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
 				00AC98A82C036A8400C3F325 /* Constants.swift in Sources */,
 				0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */,
@@ -370,6 +388,7 @@
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
 				00AC98B22C04BFAB00C3F325 /* DescribeImage.swift in Sources */,
+				00D32CC52C07631800EE7EDA /* FileTypes.swift in Sources */,
 				00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */,
 				00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */,
 				00AC98932C027FA600C3F325 /* HomePageView.swift in Sources */,
@@ -386,6 +405,7 @@
 				00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */,
 				00AC98AD2C03759400C3F325 /* GenerateMode.swift in Sources */,
 				4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */,
+				00D32CC72C07663500EE7EDA /* Paths.swift in Sources */,
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,
 				00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */,
 				4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */,

@@ -109,7 +109,12 @@ class SunoGenerateAPI {
     private func downloadAndSaveFiles(audioUrls: [URL]) async {
         var localUrls: [URL] = []
         for audioUrl in audioUrls {
-            if let localUrl = await downloadAndSaveFile(from: audioUrl) {
+            guard let queryItems = URLComponents(url: audioUrl, resolvingAgainstBaseURL: true)?.queryItems,
+                  let itemId = queryItems.first(where: { $0.name == "item_id" })?.value else {
+                print("Failed to extract item_id from URL")
+                continue
+            }
+            if let localUrl = await downloadAndSaveFile(from: audioUrl, to: Paths.DownloadedFilesFolderPath,fileName: "\(itemId)", withExtension: "mp3") {
                 localUrls.append(localUrl)
             }
         }
