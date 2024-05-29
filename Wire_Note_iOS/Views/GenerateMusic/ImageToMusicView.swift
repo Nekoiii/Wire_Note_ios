@@ -9,7 +9,7 @@ struct ImageToMusicView: View {
     @State private var isLoadingDescription: Bool = false
     
     @State private var isMakeInstrumental: Bool = false
-    @State private var generatedAudioUrls: [String] = []
+    @State private var generatedAudioUrls: [URL] = []
     
     var body: some View {
         VStack {
@@ -50,7 +50,11 @@ struct ImageToMusicView: View {
     private var musicGeneration: some View {
         Group{
             let isGenerateMusicButtonDisable = description.isEmpty
-            Button(action:{generateMusicWithDescription()}){
+            Button(action:{
+                Task{
+                    await generateMusicWithDescription()
+                }
+            }){
                 Text("Generate music with image description")
             }
             .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isGenerateMusicButtonDisable))
@@ -100,18 +104,16 @@ struct ImageToMusicView: View {
     }
     
 
-    private func generateMusicWithDescription(){
+    private func generateMusicWithDescription() async {
         let generatePrompt = description
         let generateIsMakeInstrumental = isMakeInstrumental
         let generateMode = GenerateMode.generate
 
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
 
-        sunoGenerateAPI.generatemMusic(generateMode:generateMode, prompt: generatePrompt,  makeInstrumental: generateIsMakeInstrumental) { audioUrls in
-            DispatchQueue.main.async {
-                self.generatedAudioUrls = audioUrls
-            }
-        }
+        let audioUrls = await   sunoGenerateAPI.generatemMusic(generateMode:generateMode, prompt: generatePrompt,  makeInstrumental: generateIsMakeInstrumental)
+        self.generatedAudioUrls = audioUrls
+        
     }
 }
 

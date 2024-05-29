@@ -25,6 +25,7 @@
 		00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B62C05F3D900C3F325 /* ImagePicker.swift */; };
 		00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */; };
 		00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */; };
+		00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CBF2C0744D900EE7EDA /* DownloadAndSaveFile.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -62,6 +63,7 @@
 		00AC98B62C05F3D900C3F325 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButtonStyle.swift; sourceTree = "<group>"; };
 		00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidButtonStyle.swift; sourceTree = "<group>"; };
+		00D32CBF2C0744D900EE7EDA /* DownloadAndSaveFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAndSaveFile.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			children = (
 				4B3941742BFA056300A5B694 /* ML */,
 				00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */,
+				00D32CBF2C0744D900EE7EDA /* DownloadAndSaveFile.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
 				00AC98B22C04BFAB00C3F325 /* DescribeImage.swift in Sources */,
+				00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */,
 				00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */,
 				00AC98932C027FA600C3F325 /* HomePageView.swift in Sources */,
 				4B39416C2BF9FF9E00A5B694 /* CameraView.swift in Sources */,

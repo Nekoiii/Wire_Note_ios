@@ -12,11 +12,10 @@ class SunoGenerateAPI {
         }
     }
     
-    func generatemMusic( generateMode: GenerateMode,prompt: String, tags: String = "", title: String = "", makeInstrumental: Bool = true, waitAudio: Bool = true, completion: @escaping ([String]) -> Void) {
+    func generatemMusic( generateMode: GenerateMode,prompt: String, tags: String = "", title: String = "", makeInstrumental: Bool = true, waitAudio: Bool = true) async -> [URL]{
         guard let url = URL(string: apiUrl) else {
             print("Invalid URL")
-            completion([])
-            return
+            return []
         }
         
         var request = URLRequest(url: url)
@@ -48,22 +47,16 @@ class SunoGenerateAPI {
             print("Request body: \(String(data: request.httpBody!, encoding: .utf8)!)")
         } catch {
             print("Error serializing JSON: \(error)")
-            completion([])
-            return
+            return []
         }
         
         let session = URLSession.shared
-        let task = session.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Request error: \(error)")
-                completion([])
-                return
-            }
+        do{
+            let (data, _) = try await session.data(for: request)
             
-            guard let data = data, !data.isEmpty else {
+            guard !data.isEmpty else {
                 print("No data returned from API")
-                completion([])
-                return
+                return []
             }
             
             if let responseString = String(data: data, encoding: .utf8) {
@@ -74,33 +67,52 @@ class SunoGenerateAPI {
             
             do {
                 let responses = try JSONDecoder().decode([SunoResponse].self, from: data)
-                let audioUrls = self.extractAudioUrlsFromResponse(sunoGenerateResponses: responses, error: error)
-                completion(audioUrls)
-            } catch let jsonError {
-                print("JSON decoding error: \(jsonError)")
-                completion([])
+                let audioUrls = self.extractAudioUrlsFromResponse(responses: responses)
+                
+                Task {
+                    await self.downloadAndSaveFiles(audioUrls: audioUrls)
+                }
+                
+                return(audioUrls)
+                
+            } catch {
+                print("JSON decoding error: \(error)")
+                return []
             }
+        } catch {
+            print("Request error: \(error)")
+            return []
         }
-        task.resume()
     }
     
     
-    func extractAudioUrlsFromResponse(sunoGenerateResponses: [SunoResponse]?, error: Error?) -> [String] {
-        var generatedAudioUrls: [String]
-        if let error = error {
-            print("Error generating audio: \(error)")
-            generatedAudioUrls = ["Error generating audio"]
-        } else if let responses = sunoGenerateResponses{
-            generatedAudioUrls = responses.compactMap { $0.audioUrl }
+    func extractAudioUrlsFromResponse(responses: [SunoResponse]?) -> [URL] {
+        var generatedAudioUrls: [URL] = []
+        if let responses = responses{
+            generatedAudioUrls = responses.compactMap {
+                guard let urlString = $0.audioUrl else { return nil }
+                return URL(string: urlString)
+            }
+            
             if generatedAudioUrls.isEmpty {
-                generatedAudioUrls = ["No audio URL found"]
+                print("No audio URL found")
             }
             for url in generatedAudioUrls {
                 print("Generated Audio: \(url)")
             }
         } else {
-            generatedAudioUrls = ["No audio generated"]
+            print("No audio generated")
         }
-        return generatedAudioUrls
+        return  generatedAudioUrls
+    }
+    
+    private func downloadAndSaveFiles(audioUrls: [URL]) async {
+        var localUrls: [URL] = []
+        for audioUrl in audioUrls {
+            if let localUrl = await downloadAndSaveFile(from: audioUrl) {
+                localUrls.append(localUrl)
+            }
+        }
+        print("Files downloaded: \(localUrls)")
     }
 }
