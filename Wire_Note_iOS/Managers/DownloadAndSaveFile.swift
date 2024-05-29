@@ -3,12 +3,12 @@ import Foundation
 func downloadAndSaveFile(from url: URL, to folderPath: URL, fileName: String, withExtension fileExtension: String) async -> URL? {
     let session = URLSession.shared
     do {
+        print("Begin to download file: \(url) to folder: \(folderPath)")
+        
         let (tempLocalPath, _) = try await session.download(from: url)
         let fileManager = FileManager.default
         let savedPath = folderPath.appendingPathComponent(fileName).appendingPathExtension(fileExtension)
-        
-        print("Begin to download file: \(url) to folder: \(folderPath), savedPath: \(savedPath)")
-        
+          
         if !fileManager.fileExists(atPath: folderPath.path) {
              try fileManager.createDirectory(at: folderPath, withIntermediateDirectories: true, attributes: nil)
          }
