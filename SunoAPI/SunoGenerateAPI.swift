@@ -6,9 +6,9 @@ class SunoGenerateAPI {
     init(generateMode: GenerateMode = .generate) {
         switch generateMode {
         case .customGenerate:
-            self.apiUrl = "\(API.baseUrl)/api/custom_generate"
+            self.apiUrl = "\(Constants.sunoApiBaseUrl)/api/custom_generate"
         case .generate:
-            self.apiUrl = "\(API.baseUrl)/api/generate"
+            self.apiUrl = "\(Constants.sunoApiBaseUrl)/api/generate"
         }
     }
     
@@ -109,7 +109,6 @@ class SunoGenerateAPI {
     private func downloadAndSaveFiles(audioUrls: [URL]) async {
         var localUrls: [URL] = []
         for audioUrl in audioUrls {
-            print("Begin to extract item_id from url.")
             guard let queryItems = URLComponents(url: audioUrl, resolvingAgainstBaseURL: true)?.queryItems,
                   let itemId = queryItems.first(where: { $0.name == "item_id" })?.value else {
                 print("Failed to extract item_id from URL")

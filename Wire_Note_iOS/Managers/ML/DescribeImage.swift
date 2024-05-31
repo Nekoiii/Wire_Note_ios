@@ -1,7 +1,7 @@
 import UIKit
 
 func describeImage(imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
-    guard let url = URL(string: "http://127.0.0.1:5001/describe") else {
+    guard let url = URL(string: "\(Constants.flaskServiceBaseUrl)/img_to_text") else {
         print("Invalid URL")
         return
     }

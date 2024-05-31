@@ -93,13 +93,13 @@ struct ImageToMusicView: View {
             case .success(let description):
                 DispatchQueue.main.async {
                     self.description = description
-                    isLoadingDescription = false
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.errorMessage = error.localizedDescription
                 }
             }
+            isLoadingDescription = false
         }
     }
     
