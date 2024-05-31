@@ -31,7 +31,7 @@ struct ImageToMusicView: View {
     private var imageDescribtion: some View {
         Group{
             let isImageToTextButtonDisable = image == nil
-            Button(action: {generateImageDescribtion()}) {
+            Button(action: {doImageToText()}) {
                 Text("Describe Image")
             }
             .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isImageToTextButtonDisable))
@@ -80,7 +80,7 @@ struct ImageToMusicView: View {
         }
     }
     
-    private func generateImageDescribtion() {
+    private func doImageToText() {
         isLoadingDescription = true
         
         guard let image = image, let imageData = image.pngData() else {
@@ -93,6 +93,7 @@ struct ImageToMusicView: View {
             case .success(let description):
                 DispatchQueue.main.async {
                     self.description = description
+                    self.errorMessage = nil
                 }
             case .failure(let error):
                 DispatchQueue.main.async {

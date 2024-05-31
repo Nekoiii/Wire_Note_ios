@@ -29,6 +29,8 @@
 		00D32CC22C075AE300EE7EDA /* HistoryAudiosPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */; };
 		00D32CC52C07631800EE7EDA /* FileTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC42C07631800EE7EDA /* FileTypes.swift */; };
 		00D32CC72C07663500EE7EDA /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC62C07663500EE7EDA /* Paths.swift */; };
+		00D32CC92C09F1BE00EE7EDA /* AudioToText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC82C09F1BE00EE7EDA /* AudioToText.swift */; };
+		00D32CCB2C09FB4600EE7EDA /* AudioToTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -70,6 +72,8 @@
 		00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAudiosPage.swift; sourceTree = "<group>"; };
 		00D32CC42C07631800EE7EDA /* FileTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypes.swift; sourceTree = "<group>"; };
 		00D32CC62C07663500EE7EDA /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
+		00D32CC82C09F1BE00EE7EDA /* AudioToText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioToText.swift; sourceTree = "<group>"; };
+		00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioToTextView.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -112,6 +116,7 @@
 		0097DB042C061CE1007D3328 /* GenerateMusic */ = {
 			isa = PBXGroup;
 			children = (
+				00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */,
 				00AC98A02C02F1F000C3F325 /* GenerateMusicView.swift */,
 				00AC98B32C04C0C500C3F325 /* ImageToMusicView.swift */,
 				0097DB092C0622CA007D3328 /* Components */,
@@ -140,11 +145,11 @@
 		00AC98942C02836A00C3F325 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				00D32CBE2C07420D00EE7EDA /* ML */,
+				00D32CC42C07631800EE7EDA /* FileTypes.swift */,
 				00AC98B62C05F3D900C3F325 /* ImagePicker.swift */,
 				00AC98992C028E4000C3F325 /* MusicalNotes.swift */,
-				00D32CC42C07631800EE7EDA /* FileTypes.swift */,
 				00D32CC62C07663500EE7EDA /* Paths.swift */,
+				00D32CBE2C07420D00EE7EDA /* ML */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -301,6 +306,7 @@
 			children = (
 				4B3941752BFA057200A5B694 /* WireDetector.swift */,
 				00AC98B12C04BFAB00C3F325 /* ImageToText.swift */,
+				00D32CC82C09F1BE00EE7EDA /* AudioToText.swift */,
 			);
 			path = ML;
 			sourceTree = "<group>";
@@ -380,6 +386,7 @@
 				00AC98A82C036A8400C3F325 /* Constants.swift in Sources */,
 				0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */,
 				00AC989F2C02F1C200C3F325 /* SunoGenerateAPI.swift in Sources */,
+				00D32CCB2C09FB4600EE7EDA /* AudioToTextView.swift in Sources */,
 				00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */,
 				00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */,
 				00AC98A12C02F1F000C3F325 /* GenerateMusicView.swift in Sources */,
@@ -407,6 +414,7 @@
 				4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */,
 				00D32CC72C07663500EE7EDA /* Paths.swift in Sources */,
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,
+				00D32CC92C09F1BE00EE7EDA /* AudioToText.swift in Sources */,
 				00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */,
 				4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */,
 				4B3941732BFA007D00A5B694 /* CameraControlsView.swift in Sources */,
