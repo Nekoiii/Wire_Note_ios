@@ -31,6 +31,7 @@
 		00D32CC72C07663500EE7EDA /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC62C07663500EE7EDA /* Paths.swift */; };
 		00D32CC92C09F1BE00EE7EDA /* AudioToText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC82C09F1BE00EE7EDA /* AudioToText.swift */; };
 		00D32CCB2C09FB4600EE7EDA /* AudioToTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */; };
+		00E45A942C0A256800F8599A /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A932C0A256800F8599A /* TitleBar.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -74,6 +75,7 @@
 		00D32CC62C07663500EE7EDA /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
 		00D32CC82C09F1BE00EE7EDA /* AudioToText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioToText.swift; sourceTree = "<group>"; };
 		00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioToTextView.swift; sourceTree = "<group>"; };
+		00E45A932C0A256800F8599A /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			children = (
 				00AC98A42C03309100C3F325 /* AudioPlayerView.swift */,
 				0097DB0B2C07267E007D3328 /* ImagePickerView.swift */,
+				00E45A932C0A256800F8599A /* TitleBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */,
 				00AC98AD2C03759400C3F325 /* GenerateMode.swift in Sources */,
 				4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */,
+				00E45A942C0A256800F8599A /* TitleBar.swift in Sources */,
 				00D32CC72C07663500EE7EDA /* Paths.swift in Sources */,
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,
 				00D32CC92C09F1BE00EE7EDA /* AudioToText.swift in Sources */,

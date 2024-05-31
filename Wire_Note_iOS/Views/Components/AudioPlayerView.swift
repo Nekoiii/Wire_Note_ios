@@ -7,18 +7,27 @@ struct AudioPlayerView: View {
     
     var body: some View {
     
-        VStack {
+        HStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                ScrollViewReader { proxy in
+                    Text("\(url)")
+                        .id("URL")
+                        .onAppear {
+                            // Scroll to the far right by default
+                            DispatchQueue.main.async {
+                                proxy.scrollTo("URL", anchor: .trailing)
+                            }
+                        }
+                }
+            }
+            .padding(.leading,5)
             Button(action: {
                 audioPlayerManager.play(url: url)
                 
             }) {
-                Text("url: \(url)")
                 Text(audioPlayerManager.isCurrentPlayingUrl(url) && audioPlayerManager.isPlaying ? "Pause" : "Play")
-                    .padding()
-                    .background(Color("AccentColor"))
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
             }
+            .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
         }
         .onDisappear {
             if audioPlayerManager.isCurrentPlayingUrl(url){

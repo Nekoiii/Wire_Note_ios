@@ -4,6 +4,11 @@ struct SolidButtonStyle: ButtonStyle {
     let buttonColor: Color
     let isDisable: Bool
 
+    init(buttonColor: Color, isDisable: Bool = false) {
+        self.buttonColor = buttonColor
+        self.isDisable = isDisable
+    }
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()

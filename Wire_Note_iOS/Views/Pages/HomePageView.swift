@@ -19,9 +19,6 @@ struct HomePageView: View {
                     NavigationLink(destination: ImageToMusicView()) {
                         Text("Image To Music")
                     }
-                    NavigationLink(destination: AudioToTextView()) {
-                        Text("Tracnscription Song")
-                    }
                     NavigationLink(destination: CameraView()) {
                         Text("Open Camera")
                     }

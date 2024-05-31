@@ -6,21 +6,26 @@ struct GeneratedAudioView: View {
     var body: some View {
         VStack(alignment: .leading){
             if !generatedAudioUrls.isEmpty {
-                Text("Generated Audios: ")
-                    .padding()
+                TitleBar(title: "Generated Audios")
+                
                 ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
-                    AudioPlayerView(url: AudioUrl )
+                    HStack{
+                        AudioPlayerView(url: AudioUrl )
+                        AudioToTextView(audioUrl: AudioUrl)
+                    }
+                    .padding(.horizontal,10)
+                    .padding(.vertical,5)
                 }
             }
         }
     }
 }
 
-
 struct GeneratedAudioView_Previews: PreviewProvider {
     @State static var audioUrls: [URL] = {
         guard let audio1Data = NSDataAsset(name: "audio-1")?.data,
-              let audio2Data = NSDataAsset(name: "audio-2")?.data else {
+              let audio2Data = NSDataAsset(name: "audio-2")?.data
+        else {
             return []
         }
         

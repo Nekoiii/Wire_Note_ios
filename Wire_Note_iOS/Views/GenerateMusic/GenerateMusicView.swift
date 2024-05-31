@@ -51,7 +51,7 @@ struct TextToMusicView: View {
         }) {
             Text("Generate")
         }
-        .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor"), isDisable: false))
+        .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
     }
 
     func generatemMusic() async {
