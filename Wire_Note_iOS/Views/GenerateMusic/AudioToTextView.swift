@@ -11,7 +11,10 @@ struct AudioToTextView: View {
         VStack {
             doAudioToTextButton
             if !transcription.isEmpty {
-                Text(isLoadingTranscription ? "Loading ..." : "Lyrics detected from song: : \(transcription)")
+                ScrollView(.vertical, showsIndicators: true){
+                    Text(isLoadingTranscription ? "Loading ..." : "Lyrics detected from song: : \(transcription)")
+                }
+                .frame(maxHeight: 170)
             }
         }
     }
@@ -20,6 +23,7 @@ struct AudioToTextView: View {
         let isAudioUrlBlank = audioUrl == nil
         return Button(action: {doAudioToText()}) {
             Text("Transcribe Audio")
+                .fixedSize(horizontal: true, vertical: false)
         }
         .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable: isAudioUrlBlank))
         .disabled(isAudioUrlBlank)

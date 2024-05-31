@@ -19,7 +19,6 @@ struct TextToMusicView: View {
             }
             .padding(.horizontal)
         }
-        .padding()
     }
     
     private var generateModePicker: some View {
