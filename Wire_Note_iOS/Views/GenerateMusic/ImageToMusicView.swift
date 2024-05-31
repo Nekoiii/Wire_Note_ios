@@ -30,12 +30,12 @@ struct ImageToMusicView: View {
     
     private var imageDescribtion: some View {
         Group{
-            let isDescribeImageButtonDisable = image == nil
+            let isImageToTextButtonDisable = image == nil
             Button(action: {generateImageDescribtion()}) {
                 Text("Describe Image")
             }
-            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isDescribeImageButtonDisable))
-            .disabled(isDescribeImageButtonDisable)
+            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isImageToTextButtonDisable))
+            .disabled(isImageToTextButtonDisable)
             
             if let errorMessage = errorMessage {
                 Text("Error: \(errorMessage)")
@@ -88,7 +88,7 @@ struct ImageToMusicView: View {
             return
         }
         
-        describeImage(imageData: imageData) { result in
+        imageToText(imageData: imageData) { result in
             switch result {
             case .success(let description):
                 DispatchQueue.main.async {

@@ -20,7 +20,7 @@
 		00AC98AB2C036C4800C3F325 /* SunoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AA2C036C4800C3F325 /* SunoResponse.swift */; };
 		00AC98AD2C03759400C3F325 /* GenerateMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AC2C03759400C3F325 /* GenerateMode.swift */; };
 		00AC98B02C0485D400C3F325 /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */; };
-		00AC98B22C04BFAB00C3F325 /* DescribeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B12C04BFAB00C3F325 /* DescribeImage.swift */; };
+		00AC98B22C04BFAB00C3F325 /* ImageToText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B12C04BFAB00C3F325 /* ImageToText.swift */; };
 		00AC98B42C04C0C500C3F325 /* ImageToMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B32C04C0C500C3F325 /* ImageToMusicView.swift */; };
 		00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B62C05F3D900C3F325 /* ImagePicker.swift */; };
 		00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */; };
@@ -61,7 +61,7 @@
 		00AC98AA2C036C4800C3F325 /* SunoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunoResponse.swift; sourceTree = "<group>"; };
 		00AC98AC2C03759400C3F325 /* GenerateMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateMode.swift; sourceTree = "<group>"; };
 		00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
-		00AC98B12C04BFAB00C3F325 /* DescribeImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescribeImage.swift; sourceTree = "<group>"; };
+		00AC98B12C04BFAB00C3F325 /* ImageToText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageToText.swift; sourceTree = "<group>"; };
 		00AC98B32C04C0C500C3F325 /* ImageToMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageToMusicView.swift; sourceTree = "<group>"; };
 		00AC98B62C05F3D900C3F325 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButtonStyle.swift; sourceTree = "<group>"; };
@@ -300,7 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				4B3941752BFA057200A5B694 /* WireDetector.swift */,
-				00AC98B12C04BFAB00C3F325 /* DescribeImage.swift */,
+				00AC98B12C04BFAB00C3F325 /* ImageToText.swift */,
 			);
 			path = ML;
 			sourceTree = "<group>";
@@ -387,7 +387,7 @@
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
-				00AC98B22C04BFAB00C3F325 /* DescribeImage.swift in Sources */,
+				00AC98B22C04BFAB00C3F325 /* ImageToText.swift in Sources */,
 				00D32CC52C07631800EE7EDA /* FileTypes.swift in Sources */,
 				00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */,
 				00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */,
