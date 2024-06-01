@@ -1,15 +1,20 @@
-//
-//  CameraView.swift
-//  Wire_Note_iOS
-//
-//  Created by John Smith on 2024/05/19.
-//
-
 import SwiftUI
 
 struct CameraView: View {
     @StateObject var videoController = VideoController()
     @State private var img: UIImage?
+    
+    @State private var isDetectWire: Bool
+    
+    init(isDetectWire: Bool = false) {
+        _isDetectWire = State(initialValue: isDetectWire)
+        if isDetectWire {
+            _videoController = StateObject(wrappedValue: VideoWireDetectController())
+        } else {
+            _videoController = StateObject(wrappedValue: VideoController())
+        }
+    }
+    
     var body: some View {
         ZStack {
             if let image = img {
@@ -35,7 +40,6 @@ struct CameraView: View {
             DispatchQueue.main.async {
                 img = image
             }
-//            print("Image loaded")
         }
     }
 }

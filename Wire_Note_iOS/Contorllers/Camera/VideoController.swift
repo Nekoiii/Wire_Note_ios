@@ -1,10 +1,3 @@
-//
-//  VideoController.swift
-//  pmv
-//
-//  Created by John Smith on 2024/02/16.
-//
-
 import Foundation
 import AVFoundation
 import UIKit
@@ -23,7 +16,7 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
     var clothingKey: String?
     private let videoCapture = VideoCapture()
     private var currentFrame: CGImage?
-    private let wireDetector = WireDetector()
+//    private let wireDetector = WireDetector()
     
     var onFrameCaptured: onFrameCaptured?
     
@@ -53,11 +46,10 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
     
     
     func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
-        guard let image = self.wireDetector.detection(pixelBuffer: sampleBuffer, videoSize: videoSize)
-        else {
-            print("Captured image is null")
-            return
-        }
+        guard let image = UIImage(pixelBuffer: sampleBuffer) else {
+                    print("Failed to create image from pixel buffer")
+                    return
+                }
         onFrameCaptured?(image)
     }
     

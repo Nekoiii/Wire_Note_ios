@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct HomePageView: View {
+struct HomePage: View {
     
     var body:some View{
         NavigationView{
@@ -19,12 +19,12 @@ struct HomePageView: View {
                     NavigationLink(destination: ImageToMusicView()) {
                         Text("Image To Music")
                     }
-                    NavigationLink(destination: CameraView()) {
+                    NavigationLink(destination: CameraView(isDetectWire: true)) {
                         Text("Open Camera")
                     }
                     .padding(.top, 50)
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:false))
+                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: false))
                 .padding(.vertical, 10)
                 
                 NavigationLink(destination: HistoryAudiosView(folderPath: Paths.DownloadedFilesFolderPath)) {
@@ -41,5 +41,5 @@ struct HomePageView: View {
     
 }
 #Preview{
-    HomePageView()
+    HomePage()
 }

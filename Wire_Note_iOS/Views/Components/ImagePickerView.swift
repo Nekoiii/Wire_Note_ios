@@ -5,7 +5,6 @@ struct ImagePickerView: View {
     @Binding var isImagePickerPresented: Bool
     
     var body: some View {
-        
         Group{
             if let uiImage = image {
                 Image(uiImage: uiImage)
