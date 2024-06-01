@@ -7,6 +7,8 @@ struct AudioToTextView: View {
     @State private var errorMessage: String?
     @State private var isLoadingTranscription: Bool = false
     
+    @State private var isShowingTip = false
+    
     var body: some View {
         VStack {
             doAudioToTextButton
@@ -19,14 +21,40 @@ struct AudioToTextView: View {
         }
     }
     
+    // This function will eat a lot of memory, so it has been disabled for now. 👻
     private var doAudioToTextButton:some View{
-        let isAudioUrlBlank = audioUrl == nil
-        return Button(action: {doAudioToText()}) {
-            Text("Transcribe Audio")
-                .fixedSize(horizontal: true, vertical: false)
+        //        let isAudioUrlBlank = audioUrl == nil
+        let isAudioUrlBlank = true
+        return VStack{
+            Button(action: {
+                isShowingTip.toggle()
+                //            doAudioToText()
+            }) {
+                HStack{
+                    Text("Transcribe Audio")
+                        .fixedSize(horizontal: true, vertical: false)
+                    Image(systemName: "info.circle")
+                }
+                
+            }
+            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isAudioUrlBlank))
+            //        .disabled(isAudioUrlBlank)
+            .disabled(false)
+            .overlay() {
+                if isShowingTip {
+                    Text("This function will eat a lot of memory, so it has been disabled for now. 👻")
+                        .font(.system(size: 15))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(10)
+                        .background(Color.white)
+                        .border(Color("AccentColor"))
+                        .foregroundColor(Color("AccentColor"))
+                        .frame(maxWidth: 200, alignment: .leading)
+                        .zIndex(1)
+                        .offset(y: -80)
+                }
+            }
         }
-        .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable: isAudioUrlBlank))
-        .disabled(isAudioUrlBlank)
     }
     
     private func doAudioToText(){
