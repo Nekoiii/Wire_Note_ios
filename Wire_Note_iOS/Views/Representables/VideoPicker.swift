@@ -1,48 +1,42 @@
 import SwiftUI
 import AVKit
-import PhotosUI
+import UIKit
 
 struct VideoPicker: UIViewControllerRepresentable {
     @Binding var videoURL: URL?
 
-    func makeUIViewController(context: Context) -> some UIViewController {
-        var configuration = PHPickerConfiguration(photoLibrary: .shared())
-        configuration.filter = .videos
-        configuration.selectionLimit = 1
-
-        let picker = PHPickerViewController(configuration: configuration)
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
         picker.delegate = context.coordinator
-
+        picker.mediaTypes = ["public.movie"]
+        picker.videoQuality = .typeHigh
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, PHPickerViewControllerDelegate {
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let parent: VideoPicker
 
         init(_ parent: VideoPicker) {
             self.parent = parent
         }
 
-        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             picker.dismiss(animated: true)
 
-            guard let provider = results.first?.itemProvider else { return }
-
-            if provider.hasItemConformingToTypeIdentifier(UTType.movie.identifier as String) {
-                provider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier as String) { url, error in
-                    DispatchQueue.main.async {
-                        if let url = url {
-                            self.parent.videoURL = url
-                        }
-                    }
-                }
+            if let mediaURL = info[.mediaURL] as? URL {
+                parent.videoURL = mediaURL
+                print("Video selected: \(mediaURL)")
             }
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            picker.dismiss(animated: true)
         }
     }
 }

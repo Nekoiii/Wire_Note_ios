@@ -114,7 +114,7 @@ class SunoGenerateAPI {
                 print("Failed to extract item_id from URL")
                 continue
             }
-            if let localUrl = await downloadAndSaveFile(from: audioUrl, to: Paths.DownloadedFilesFolderPath,fileName: "\(itemId)", withExtension: "mp3") {
+            if let localUrl = await downloadAndSaveFile(from: audioUrl, to: Paths.downloadedFilesFolderPath,fileName: "\(itemId)", withExtension: "mp3") {
                 localUrls.append(localUrl)
             }
         }

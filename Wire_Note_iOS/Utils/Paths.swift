@@ -9,7 +9,7 @@ struct Paths {
         URL(fileURLWithPath: "/Users/a/code/Wire_Note_ios/Wire_Note_iOS/") //*unfinished
     }()
     
-    static let DownloadedFilesFolderPath: URL = {
+    static let downloadedFilesFolderPath: URL = {
         projectRootPath.appendingPathComponent("DownloadedFiles")
     }()
 }

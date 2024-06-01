@@ -14,14 +14,14 @@
 		00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */; };
 		00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98992C028E4000C3F325 /* MusicalNotes.swift */; };
 		00AC989F2C02F1C200C3F325 /* SunoGenerateAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC989E2C02F1C200C3F325 /* SunoGenerateAPI.swift */; };
-		00AC98A12C02F1F000C3F325 /* TextToMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A02C02F1F000C3F325 /* TextToMusicView.swift */; };
+		00AC98A12C02F1F000C3F325 /* TextToMusicPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A02C02F1F000C3F325 /* TextToMusicPage.swift */; };
 		00AC98A52C03309100C3F325 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A42C03309100C3F325 /* AudioPlayerView.swift */; };
 		00AC98A82C036A8400C3F325 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A72C036A8400C3F325 /* Constants.swift */; };
 		00AC98AB2C036C4800C3F325 /* SunoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AA2C036C4800C3F325 /* SunoResponse.swift */; };
 		00AC98AD2C03759400C3F325 /* GenerateMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AC2C03759400C3F325 /* GenerateMode.swift */; };
 		00AC98B02C0485D400C3F325 /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */; };
 		00AC98B22C04BFAB00C3F325 /* ImageToText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B12C04BFAB00C3F325 /* ImageToText.swift */; };
-		00AC98B42C04C0C500C3F325 /* ImageToMusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B32C04C0C500C3F325 /* ImageToMusicView.swift */; };
+		00AC98B42C04C0C500C3F325 /* ImageToMusicPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B32C04C0C500C3F325 /* ImageToMusicPage.swift */; };
 		00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B62C05F3D900C3F325 /* ImagePicker.swift */; };
 		00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */; };
 		00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */; };
@@ -62,14 +62,14 @@
 		00AC98962C0284C600C3F325 /* DetectResultVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectResultVisualization.swift; sourceTree = "<group>"; };
 		00AC98992C028E4000C3F325 /* MusicalNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicalNotes.swift; sourceTree = "<group>"; };
 		00AC989E2C02F1C200C3F325 /* SunoGenerateAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunoGenerateAPI.swift; sourceTree = "<group>"; };
-		00AC98A02C02F1F000C3F325 /* TextToMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToMusicView.swift; sourceTree = "<group>"; };
+		00AC98A02C02F1F000C3F325 /* TextToMusicPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToMusicPage.swift; sourceTree = "<group>"; };
 		00AC98A42C03309100C3F325 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		00AC98A72C036A8400C3F325 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		00AC98AA2C036C4800C3F325 /* SunoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunoResponse.swift; sourceTree = "<group>"; };
 		00AC98AC2C03759400C3F325 /* GenerateMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateMode.swift; sourceTree = "<group>"; };
 		00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		00AC98B12C04BFAB00C3F325 /* ImageToText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageToText.swift; sourceTree = "<group>"; };
-		00AC98B32C04C0C500C3F325 /* ImageToMusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageToMusicView.swift; sourceTree = "<group>"; };
+		00AC98B32C04C0C500C3F325 /* ImageToMusicPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageToMusicPage.swift; sourceTree = "<group>"; };
 		00AC98B62C05F3D900C3F325 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButtonStyle.swift; sourceTree = "<group>"; };
 		00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidButtonStyle.swift; sourceTree = "<group>"; };
@@ -123,29 +123,21 @@
 			path = Camera;
 			sourceTree = "<group>";
 		};
-		0097DB042C061CE1007D3328 /* GenerateMusic */ = {
+		0097DB092C0622CA007D3328 /* GenerateMusic */ = {
 			isa = PBXGroup;
 			children = (
 				00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */,
-				00AC98A02C02F1F000C3F325 /* TextToMusicView.swift */,
-				00AC98B32C04C0C500C3F325 /* ImageToMusicView.swift */,
-				0097DB092C0622CA007D3328 /* Components */,
-			);
-			path = GenerateMusic;
-			sourceTree = "<group>";
-		};
-		0097DB092C0622CA007D3328 /* Components */ = {
-			isa = PBXGroup;
-			children = (
 				0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */,
 				0097DB0D2C072B64007D3328 /* GeneratedAudioView.swift */,
 			);
-			path = Components;
+			path = GenerateMusic;
 			sourceTree = "<group>";
 		};
 		0097DB0A2C072663007D3328 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0097DB032C061CC7007D3328 /* Camera */,
+				0097DB092C0622CA007D3328 /* GenerateMusic */,
 				00AC98A42C03309100C3F325 /* AudioPlayerView.swift */,
 				0097DB0B2C07267E007D3328 /* ImagePickerView.swift */,
 				00E45A932C0A256800F8599A /* TitleBar.swift */,
@@ -220,6 +212,8 @@
 		00D32CC32C075AF200EE7EDA /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				00AC98B32C04C0C500C3F325 /* ImageToMusicPage.swift */,
+				00AC98A02C02F1F000C3F325 /* TextToMusicPage.swift */,
 				00AC98922C027FA600C3F325 /* HomePage.swift */,
 				00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */,
 				00E45A952C0AF9BA00F8599A /* WireDectionPage.swift */,
@@ -315,8 +309,6 @@
 				00E45A982C0AFE7000F8599A /* Representables */,
 				00D32CC32C075AF200EE7EDA /* Pages */,
 				0097DB0A2C072663007D3328 /* Components */,
-				0097DB032C061CC7007D3328 /* Camera */,
-				0097DB042C061CE1007D3328 /* GenerateMusic */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -420,7 +412,7 @@
 				00D32CCB2C09FB4600EE7EDA /* AudioToTextView.swift in Sources */,
 				00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */,
 				00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */,
-				00AC98A12C02F1F000C3F325 /* TextToMusicView.swift in Sources */,
+				00AC98A12C02F1F000C3F325 /* TextToMusicPage.swift in Sources */,
 				0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */,
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
@@ -454,7 +446,7 @@
 				00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */,
 				4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */,
 				4B3941732BFA007D00A5B694 /* CameraControlsView.swift in Sources */,
-				00AC98B42C04C0C500C3F325 /* ImageToMusicView.swift in Sources */,
+				00AC98B42C04C0C500C3F325 /* ImageToMusicPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

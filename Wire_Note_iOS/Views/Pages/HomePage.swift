@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct HomePage: View {
-    
     var body:some View{
         NavigationView{
             VStack{
@@ -13,23 +12,26 @@ struct HomePage: View {
                     }
                 }.padding(.vertical ,30)
                 Group{
-                    NavigationLink(destination: TextToMusicView()) {
+                    NavigationLink(destination: TextToMusicPage()) {
                         Text("Text To Music")
                     }
-                    NavigationLink(destination: ImageToMusicView()) {
+                    NavigationLink(destination: ImageToMusicPage()) {
                         Text("Image To Music")
                     }
                     NavigationLink(destination: CameraView(isDetectWire: true)) {
                         Text("Open Camera")
+                    }
+                    NavigationLink(destination: WireDectionPage()) {
+                        Text("Wire Dection")
                     }
                     .padding(.top, 50)
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: false))
                 .padding(.vertical, 10)
                 
-                NavigationLink(destination: HistoryAudiosView(folderPath: Paths.DownloadedFilesFolderPath)) {
+                NavigationLink(destination: HistoryAudiosView(folderPath: Paths.downloadedFilesFolderPath)) {
                     Label("History", systemImage: "music.note.list")
-                        .font(.system(size: 22))
+                        .font(.system(size: 20))
                 }
                 .padding(.vertical, 30)
                 .padding(.leading, 40)

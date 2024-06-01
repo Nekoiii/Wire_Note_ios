@@ -38,7 +38,7 @@ struct HistoryAudiosView: View {
 struct HistoryAudiosView_Previews: PreviewProvider {
     static var previews: some View {
         return NavigationView {
-            HistoryAudiosView(folderPath: Paths.DownloadedFilesFolderPath)
+            HistoryAudiosView(folderPath: Paths.downloadedFilesFolderPath)
         }
     }
 }
