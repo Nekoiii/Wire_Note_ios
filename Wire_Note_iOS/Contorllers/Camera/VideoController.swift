@@ -46,9 +46,9 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
     
     func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
         guard let image = UIImage(pixelBuffer: sampleBuffer) else {
-                    print("Failed to create image from pixel buffer")
-                    return
-                }
+            print("Failed to create image from pixel buffer")
+            return
+        }
         onFrameCaptured?(image)
     }
 }

@@ -121,8 +121,7 @@ struct WireDectionPage: View {
         }
     }
     
-    func togglePlayback() {
-        
+    private func togglePlayback() {
         if isVideoPlaying {
             originPlayer?.pause()
             processedPlayer?.pause()
@@ -138,7 +137,7 @@ struct WireDectionPage: View {
         isVideoPlaying.toggle()
     }
     
-    func setupOriginPlayers() {
+    private func setupOriginPlayers() {
         if let url = originVideoURL {
             processedPlayer = nil
             processedVideoURL = nil
@@ -147,7 +146,7 @@ struct WireDectionPage: View {
         }
     }
     
-    func setupProcessedPlayer(){
+    private func setupProcessedPlayer(){
         if let url = processedVideoURL {
             processedPlayer = AVPlayer(url: url)
             processedPlayer?.isMuted = true
