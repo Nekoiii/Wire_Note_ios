@@ -5,83 +5,96 @@ struct WireDectionPage: View {
     @State private var originVideoURL: URL?
     @State private var processedVideoURL: URL?
     
-    @State private var player: AVPlayer?
+    @State private var originPlayer: AVPlayer?
+    @State private var processedPlayer: AVPlayer?
     
     @State private var isPickerPresented = false
-    @State private var isProcessing = false
     @State private var isVideoPlaying = false
+    @State private var isProcessing = false
     @State private var isShowingOriginVideo = true
     
     var body: some View {
         VStack {
+            videoSettingsArea
             videoDisplayArea
             videoControlArea
         }
         .onAppear {
             let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
-            print("Test video url: \(url.path)")
+//            print("Test video url: \(url.path)")
+            
             if FileManager.default.fileExists(atPath: url.path) {
-                print("Video file exists")
+//                print("Video file exists")
                 originVideoURL = url
-                player = AVPlayer(url: url)
+                originPlayer = AVPlayer(url: url)
+                if processedPlayer != nil {
+                    originPlayer?.isMuted = true
+                } else{
+                    originPlayer?.isMuted = false
+                }
+                
             } else {
                 print("Video file does not exist at path: \(url.path)")
             }
-            
-            originVideoURL = url
-            player = AVPlayer(url: url)
         }
-        .sheet(isPresented: $isPickerPresented, onDismiss: setupPlayer) {
+        .sheet(isPresented: $isPickerPresented, onDismiss: setupOriginPlayers) {
             VideoPicker(videoURL: $originVideoURL)
         }
+    }
+    private var videoSettingsArea:some View{
+        HStack{
+            Spacer()
+            if isProcessing {
+                //                if !isProcessing {
+                Text("Processing ...")
+                    .font(.system(size: 20))
+                    .foregroundColor(Color("AccentColor"))
+                    .padding()
+                    .zIndex(1)
+            }
+            if processedVideoURL != nil {
+                //                if processedVideoURL == nil {
+                Button(action: {}) {
+                    Text("Show Origin Video")
+                        .font(.system(size: 15))
+                }
+                .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
+                .onLongPressGesture(minimumDuration: 0.1, pressing: { isPressing in
+                    isShowingOriginVideo = isPressing
+                    print("isPressing \(isPressing)")
+                }, perform: {})
+            }
+        }
+        .padding(.horizontal, 10)
     }
     
     private var videoDisplayArea:some View{
         Group{
             Text("originVideoURL: \(originVideoURL?.absoluteString ?? "")")
             Text("processedVideoURL: \(processedVideoURL?.absoluteString ?? "")")
-            if let originVideoURL = originVideoURL {
-                if isProcessing {
-                    VStack {
-                        Text("Processing ...")
-                            .font(.title)
-                            .foregroundColor(Color("AccentColor"))
-                            .padding()
-                            .zIndex(1)
-                        Spacer()
-                    }
-                    .frame(height: 300)
-                }
-                
-                if processedVideoURL != nil {
-                    Button(action: {}) {
-                        Text("Show Origin Video")
-                    }
-                    .onLongPressGesture(minimumDuration: 0.1, pressing: { isPressing in
-                        isShowingOriginVideo = isPressing
-                    }, perform: {})
-                }
-                
+            if let originPlayer = originPlayer {
                 ZStack {
-                    // Only show origin video when there is no processed video.
-                    VideoPlayer(player: AVPlayer(url: originVideoURL))
+                    // Only show origin video when there is no processed video or pressing the ShowOriginVideo button.
+                    VideoPlayer(player: originPlayer)
                         .frame(height: 300)
                         .opacity(isShowingOriginVideo ? 1 : 0)
                     
                     // Show processed video above the original video.
-                    if let processedVideoURL = processedVideoURL {
-                        VideoPlayer(player: AVPlayer(url: processedVideoURL))
+                    if let processedPlayer = processedPlayer {
+                        VideoPlayer(player: processedPlayer)
                             .frame(height: 300)
                             .opacity(isShowingOriginVideo ? 0 : 1)
                     }
                 }
+            } else {
+                Text("No video available")
             }
         }
     }
     
     private var videoControlArea:some View{
         VStack {
-            if originVideoURL != nil{
+            if originPlayer != nil{
                 Button(action: {
                     togglePlayback()
                 }) {
@@ -90,7 +103,7 @@ struct WireDectionPage: View {
                         .frame(width: 50, height: 50)
                 }
             }
-              
+            
             Button("Upload Video") {
                 isPickerPresented = true
             }
@@ -108,25 +121,52 @@ struct WireDectionPage: View {
     }
     
     func togglePlayback() {
-        guard let player = player else { return }
+        guard let originPlayer = originPlayer, let processedPlayer = processedPlayer else { return }
         
-        isVideoPlaying ? player.pause() : player.play()
+        if isVideoPlaying {
+            originPlayer.pause()
+            processedPlayer.pause()
+        } else {
+            // Synchronize the original video playback time with the processed video
+            let currentTime = originPlayer.currentTime()
+            processedPlayer.seek(to: currentTime)
+            originPlayer.play()
+            processedPlayer.play()
+        }
+        
         isVideoPlaying.toggle()
     }
     
-    func setupPlayer() {
+    func setupOriginPlayers() {
         if let url = originVideoURL {
-            player = AVPlayer(url: url)
+            processedPlayer = nil
+            processedVideoURL = nil
+            originPlayer = AVPlayer(url: url)
+        }
+    }
+    
+    func setupProcessedPlayer(){
+        if let url = processedVideoURL {
+            processedPlayer = AVPlayer(url: url)
+            processedPlayer?.isMuted = true
         }
     }
     
     func processVideo(url: URL) {
-        let videoController = VideoWireDetectController()
+        let videoWireDetectController = VideoWireDetectController()
+
         let outputPath = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
-        videoController.processVideoWithWireDDetection(inputURL: url, outputURL: outputPath) { success in
+        print("outputPath: \(outputPath)")
+        
+        videoWireDetectController.processVideoWithWireDDetection(inputURL: url, outputURL: outputPath) { success in
             if success {
                 DispatchQueue.main.async {
-                    self.processedVideoURL = outputPath
+                    checkFileExist(at: outputPath, onSuccess: { url in
+                        self.processedVideoURL = url
+                        self.setupProcessedPlayer()
+                    }, onFailure: { path in
+                        print("Processed video does not exist at path: \(path)")
+                    })
                 }
             }
         }

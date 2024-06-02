@@ -9,6 +9,7 @@ class VideoWireDetectController: VideoController {
             print("Captured image is null")
             return
         }
+        print("qqq")
         onFrameCaptured?(image)
     }
     
@@ -30,13 +31,14 @@ class VideoWireDetectController: VideoController {
                     return
                 }
                 
+//                reader.add(readerOutput)
                 reader.startReading()
                 writer.startWriting()
                 writer.startSession(atSourceTime: .zero)
                 
                 await processFrameWithWireDetection(readerOutput: readerOutput, writerInput: writerInput, adaptor: adaptor, videoTrack: videoTrack, writer: writer, completion: completion)
             } catch {
-                print("Error: \(error.localizedDescription)")
+                print("Error (processVideoWithWireDDetection): \(error.localizedDescription)")
                 completion(false)
             }
         }
@@ -85,11 +87,10 @@ class VideoWireDetectController: VideoController {
             } else {
                 return (nil, nil, nil)
             }
-            
             return (readerOutput, writerInput, adaptor)
             
         } catch {
-            print("Error: \(error.localizedDescription)")
+            print("Error (configureReaderAndWriter): \(error.localizedDescription)")
             return (nil, nil, nil)
         }
     }
@@ -100,6 +101,12 @@ class VideoWireDetectController: VideoController {
         
         writerInput.requestMediaDataWhenReady(on: processingQueue) {
             while writerInput.isReadyForMoreMediaData {
+                print("aaa")
+//                guard let sampleBuffer = readerOutput.copyNextSampleBuffer() else {
+//                    print("Failed to copy next sample buffer")
+//                    break
+//                }
+                print("xxx")
                 if let sampleBuffer = readerOutput.copyNextSampleBuffer(), let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
                     var newPixelBuffer: CVPixelBuffer?
                     let timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
@@ -114,8 +121,10 @@ class VideoWireDetectController: VideoController {
                         adaptor.append(outputPixelBuffer, withPresentationTime: timestamp)
                     }
                 } else {
+                    print("bbb")
                     writerInput.markAsFinished()
                     writer.finishWriting {
+                        print("ccc")
                         switch writer.status {
                         case .completed:
                             completion(true)

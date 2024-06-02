@@ -18,7 +18,7 @@ struct HomePage: View {
                     NavigationLink(destination: ImageToMusicPage()) {
                         Text("Image To Music")
                     }
-                    NavigationLink(destination: CameraView(isDetectWire: true)) {
+                    NavigationLink(destination: CameraView(isDetectWire: false)) {
                         Text("Open Camera")
                     }
                     NavigationLink(destination: WireDectionPage()) {

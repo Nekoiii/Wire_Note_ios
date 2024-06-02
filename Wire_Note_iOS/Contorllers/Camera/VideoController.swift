@@ -16,7 +16,6 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
     var clothingKey: String?
     private let videoCapture = VideoCapture()
     private var currentFrame: CGImage?
-//    private let wireDetector = WireDetector()
     
     var onFrameCaptured: onFrameCaptured?
     
@@ -27,7 +26,7 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
     private func setupAndBeginCapturingVideoFrames() {
         videoCapture.setUpAVCapture { error in
             if let error = error {
-                print("Failed to setup camera with error \(error)")
+                print("Failed to setup camera with error: \(error)")
                 return
             }
             self.videoCapture.delegate = self
@@ -52,5 +51,4 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
                 }
         onFrameCaptured?(image)
     }
-    
 }
