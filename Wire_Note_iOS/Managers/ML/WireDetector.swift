@@ -31,31 +31,43 @@ class WireDetector {
     }()
     
     
-    
+    private func pixelBufferToUIImage(pixelBuffer: CVPixelBuffer) -> UIImage? {
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        let context = CIContext()
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
+            print("WireDetector - Failed to create CGImage from pixel buffer")
+            return nil
+        }
+        return UIImage(cgImage: cgImage)
+    }
     func detection(pixelBuffer: CVPixelBuffer, videoSize: CGSize) -> UIImage? {
+        let originUIImage = pixelBufferToUIImage(pixelBuffer: pixelBuffer)
         do {
             let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
             try handler.perform([yoloRequest])
             guard let results = yoloRequest.results as? [VNRecognizedObjectObservation] else {
-                return nil
+                print("WireDetector - No results")
+                return originUIImage
             }
             var detections:[Detection] = []
+//            print("WireDetector - detection results: \(results)")
             for result in results {
                 let flippedBox = CGRect(x: result.boundingBox.minX, y: 1 - result.boundingBox.maxY, width: result.boundingBox.width, height: result.boundingBox.height)
                 let box = VNImageRectForNormalizedRect(flippedBox, Int(videoSize.width), Int(videoSize.height))
                 
                 guard let label = result.labels.first?.identifier as? String,
                       let colorIndex = classes.firstIndex(of: label) else {
-                    return nil
+                    print("WireDetector - Missing label or color index")
+                    return originUIImage
                 }
                 let detection = Detection(box: box, confidence: result.confidence, label: label, color: colors[colorIndex])
                 detections.append(detection)
             }
             let drawImage = visualizeDetectResults(ciContext:ciContext,detections:detections, pixelBuffer:pixelBuffer)
-            return drawImage
+            return drawImage ?? originUIImage
         } catch let error {
-            print(error)
-            return nil
+            print("WireDetector - detection error: \(error)")
+            return originUIImage
         }
     }
     

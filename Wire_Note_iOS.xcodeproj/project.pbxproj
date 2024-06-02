@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		005FFE3C2C0C2B1C00D28AD8 /* CheckFileExist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005FFE3B2C0C2B1C00D28AD8 /* CheckFileExist.swift */; };
+		00874DD22C0C6D5C00F10B69 /* RemoveExistingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */; };
 		0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */; };
 		0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB0B2C07267E007D3328 /* ImagePickerView.swift */; };
 		0097DB0E2C072B64007D3328 /* GeneratedAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB0D2C072B64007D3328 /* GeneratedAudioView.swift */; };
@@ -57,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		005FFE3B2C0C2B1C00D28AD8 /* CheckFileExist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckFileExist.swift; sourceTree = "<group>"; };
+		00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveExistingFile.swift; sourceTree = "<group>"; };
 		0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentalToggleView.swift; sourceTree = "<group>"; };
 		0097DB0B2C07267E007D3328 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		0097DB0D2C072B64007D3328 /* GeneratedAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratedAudioView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				005FFE3B2C0C2B1C00D28AD8 /* CheckFileExist.swift */,
+				00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */,
 				00D32CC42C07631800EE7EDA /* FileTypes.swift */,
 				00AC98992C028E4000C3F325 /* MusicalNotes.swift */,
 				00D32CC62C07663500EE7EDA /* Paths.swift */,
@@ -422,6 +425,7 @@
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
 				00AC98B22C04BFAB00C3F325 /* ImageToText.swift in Sources */,
 				00E45A9A2C0AFEA300F8599A /* VideoPicker.swift in Sources */,
+				00874DD22C0C6D5C00F10B69 /* RemoveExistingFile.swift in Sources */,
 				00D32CC52C07631800EE7EDA /* FileTypes.swift in Sources */,
 				00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */,
 				00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */,

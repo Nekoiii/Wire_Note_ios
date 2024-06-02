@@ -20,6 +20,7 @@ struct WireDectionPage: View {
             videoControlArea
         }
         .onAppear {
+//            let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1-mp4.dataset/sky-1-mp4.mp4")
             let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
 //            print("Test video url: \(url.path)")
             
@@ -121,17 +122,17 @@ struct WireDectionPage: View {
     }
     
     func togglePlayback() {
-        guard let originPlayer = originPlayer, let processedPlayer = processedPlayer else { return }
         
         if isVideoPlaying {
-            originPlayer.pause()
-            processedPlayer.pause()
+            originPlayer?.pause()
+            processedPlayer?.pause()
         } else {
             // Synchronize the original video playback time with the processed video
-            let currentTime = originPlayer.currentTime()
-            processedPlayer.seek(to: currentTime)
-            originPlayer.play()
-            processedPlayer.play()
+            if let currentTime = originPlayer?.currentTime() {
+                processedPlayer?.seek(to: currentTime)
+            }
+            originPlayer?.play()
+            processedPlayer?.play()
         }
         
         isVideoPlaying.toggle()
@@ -142,6 +143,7 @@ struct WireDectionPage: View {
             processedPlayer = nil
             processedVideoURL = nil
             originPlayer = AVPlayer(url: url)
+            print("setupOriginPlayers: \(String(describing: originPlayer))")
         }
     }
     
@@ -152,13 +154,15 @@ struct WireDectionPage: View {
         }
     }
     
-    func processVideo(url: URL) {
+    private func processVideo(url: URL) {
         let videoWireDetectController = VideoWireDetectController()
 
         let outputPath = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
         print("outputPath: \(outputPath)")
         
-        videoWireDetectController.processVideoWithWireDDetection(inputURL: url, outputURL: outputPath) { success in
+        removeExistingFile(at: outputPath)
+        
+        videoWireDetectController.processVideoWithWireDetection(inputURL: url, outputURL: outputPath) { success in
             if success {
                 DispatchQueue.main.async {
                     checkFileExist(at: outputPath, onSuccess: { url in
@@ -167,6 +171,11 @@ struct WireDectionPage: View {
                     }, onFailure: { path in
                         print("Processed video does not exist at path: \(path)")
                     })
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print("Processed video failed")
+                    self.isProcessing = false
                 }
             }
         }

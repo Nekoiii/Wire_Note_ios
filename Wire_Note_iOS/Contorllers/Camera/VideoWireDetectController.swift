@@ -9,126 +9,98 @@ class VideoWireDetectController: VideoController {
             print("Captured image is null")
             return
         }
-        print("qqq")
         onFrameCaptured?(image)
     }
     
     
-    func processVideoWithWireDDetection(inputURL: URL, outputURL: URL, completion: @escaping (Bool) -> Void){
-        Task {
-            do{
-                let (reader, writer, videoTrack) = try await setupReaderWriter(inputURL: inputURL, outputURL: outputURL)
-                
-                guard let reader = reader, let writer = writer, let videoTrack = videoTrack else {
-                    completion(false)
-                    return
-                }
-                
-                let (readerOutput, writerInput, adaptor) = await configureReaderAndWriter(reader: reader, writer: writer, videoTrack: videoTrack)
-                
-                guard let readerOutput = readerOutput, let writerInput = writerInput, let adaptor = adaptor else {
-                    completion(false)
-                    return
-                }
-                
-//                reader.add(readerOutput)
-                reader.startReading()
-                writer.startWriting()
-                writer.startSession(atSourceTime: .zero)
-                
-                await processFrameWithWireDetection(readerOutput: readerOutput, writerInput: writerInput, adaptor: adaptor, videoTrack: videoTrack, writer: writer, completion: completion)
-            } catch {
-                print("Error (processVideoWithWireDDetection): \(error.localizedDescription)")
-                completion(false)
-            }
-        }
-    }
-    
-    func setupReaderWriter(inputURL: URL, outputURL: URL) async throws -> (AVAssetReader?, AVAssetWriter?, AVAssetTrack?) {
+    func processVideoWithWireDetection(inputURL: URL, outputURL: URL, completion: @escaping (Bool) -> Void){
+        
         let asset = AVAsset(url: inputURL)
-        
-        // Ensure that there is a video track in the asset.
-        let tracks = try await asset.loadTracks(withMediaType: .video)
-        guard let videoTrack = tracks.first else {
-            return (nil, nil, nil)
+        guard let videoWriter = try? AVAssetWriter(outputURL: outputURL, fileType: .mp4) else {
+            print("Failed to create AVAssetWriter")
+            completion(false)
+            return
         }
         
-        let reader = try AVAssetReader(asset: asset)
-        let writer = try AVAssetWriter(outputURL: outputURL, fileType: .mp4)
-        
-        return (reader, writer, videoTrack)
-    }
-    
-    func configureReaderAndWriter(reader: AVAssetReader, writer: AVAssetWriter, videoTrack: AVAssetTrack) async -> (AVAssetReaderTrackOutput?, AVAssetWriterInput?, AVAssetWriterInputPixelBufferAdaptor?) {
-        do{
-            // Read video frames from video tracks and add them to the AVAssetReader object.
-            let readerOutput = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: [
-                kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
-            ])
-            
-            if reader.canAdd(readerOutput) {
-                reader.add(readerOutput)
-            } else {
-                return (nil, nil, nil)
-            }
-            
-            let naturalSize = try await videoTrack.load(.naturalSize)
-            let writerInput = AVAssetWriterInput(mediaType: .video, outputSettings: [
-                AVVideoCodecKey: AVVideoCodecType.h264,
-                AVVideoWidthKey: naturalSize.width,
-                AVVideoHeightKey: naturalSize.height
-            ])
-            
-            // Add pixel buffer to AVAssetWriterInput.
-            let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: nil)
-            
-            if writer.canAdd(writerInput) {
-                writer.add(writerInput)
-            } else {
-                return (nil, nil, nil)
-            }
-            return (readerOutput, writerInput, adaptor)
-            
-        } catch {
-            print("Error (configureReaderAndWriter): \(error.localizedDescription)")
-            return (nil, nil, nil)
+        guard let videoReader = try? AVAssetReader(asset: asset) else {
+            print("Failed to create AVAssetReader")
+            completion(false)
+            return
         }
-    }
-    
-    func processFrameWithWireDetection(readerOutput: AVAssetReaderTrackOutput, writerInput: AVAssetWriterInput, adaptor: AVAssetWriterInputPixelBufferAdaptor, videoTrack: AVAssetTrack, writer: AVAssetWriter, completion: @escaping (Bool) -> Void) async {
-        let processingQueue = DispatchQueue(label: "frameProcessingQueue")
-        let videoSize = try? await videoTrack.load(.naturalSize)
         
+        guard let videoTrack = asset.tracks(withMediaType: .video).first else {
+            print("No video tracks found")
+            completion(false)
+            return
+        }
+        
+        let outputSettings: [String: Any]  = [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
+        ]
+        let readerOutput = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: outputSettings)
+        videoReader.add(readerOutput)
+        
+        let videoSettings: [String: Any] = [
+            AVVideoCodecKey: AVVideoCodecType.h264,
+            AVVideoWidthKey: videoTrack.naturalSize.width,
+            AVVideoHeightKey: videoTrack.naturalSize.height
+        ]
+        
+        let writerInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
+        
+        let sourcePixelBufferAttributes: [String: Any] = [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,
+            kCVPixelBufferWidthKey as String: videoTrack.naturalSize.width,
+            kCVPixelBufferHeightKey as String: videoTrack.naturalSize.height,
+            kCVPixelBufferIOSurfacePropertiesKey as String: [:]
+        ]
+        let pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: sourcePixelBufferAttributes)
+        videoWriter.add(writerInput)
+        
+        videoReader.startReading()
+        videoWriter.startWriting()
+        videoWriter.startSession(atSourceTime: .zero)
+        
+        let processingQueue = DispatchQueue(label: "videoProcessingQueue")
         writerInput.requestMediaDataWhenReady(on: processingQueue) {
             while writerInput.isReadyForMoreMediaData {
-                print("aaa")
-//                guard let sampleBuffer = readerOutput.copyNextSampleBuffer() else {
-//                    print("Failed to copy next sample buffer")
-//                    break
-//                }
-                print("xxx")
-                if let sampleBuffer = readerOutput.copyNextSampleBuffer(), let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
-                    var newPixelBuffer: CVPixelBuffer?
-                    let timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-                    
-                    if let detectedImage = self.wireDetector.detection(pixelBuffer: pixelBuffer, videoSize: videoSize ?? .zero) {
-                        newPixelBuffer = detectedImage.pixelBuffer()
+                if let sampleBuffer = readerOutput.copyNextSampleBuffer() {
+                    if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+                        let presentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+                        if let detectedImage = self.wireDetector.detection(pixelBuffer: pixelBuffer, videoSize: videoTrack.naturalSize),
+                           let detectedBuffer = detectedImage.pixelBuffer() {
+                            
+                            let pixelFormat = CVPixelBufferGetPixelFormatType(detectedBuffer)
+                            let width = CVPixelBufferGetWidth(detectedBuffer)
+                            let height = CVPixelBufferGetHeight(detectedBuffer)
+//                            print("detectedImage: \(detectedImage)")
+//                            print("detectedBuffer: \(detectedBuffer)")
+//                            print("matched: \(pixelFormat == kCVPixelFormatType_32BGRA && width == Int(videoTrack.naturalSize.width) && height == Int(videoTrack.naturalSize.height) )")
+                            if pixelFormat == kCVPixelFormatType_32BGRA && width == Int(videoTrack.naturalSize.width) && height == Int(videoTrack.naturalSize.height) {
+                                if !pixelBufferAdaptor.append(detectedBuffer, withPresentationTime: presentationTime) {
+                                    print("Failed to append pixel buffer")
+                                    videoReader.cancelReading()
+                                    completion(false)
+                                    return
+                                }
+//                                print("pixelBufferAdaptor: \(pixelBufferAdaptor)")
+                            } else {
+                                print("Detected buffer format mismatch")
+                            }
+                        } else {
+                            print("Detection failed, skipping frame")
+                        }
                     } else {
-                        newPixelBuffer = pixelBuffer
-                    }
-                    
-                    if let outputPixelBuffer = newPixelBuffer {
-                        adaptor.append(outputPixelBuffer, withPresentationTime: timestamp)
+                        print("Failed to get pixel buffer from sample buffer")
                     }
                 } else {
-                    print("bbb")
                     writerInput.markAsFinished()
-                    writer.finishWriting {
-                        print("ccc")
-                        switch writer.status {
-                        case .completed:
+                    videoWriter.finishWriting {
+                        if videoWriter.status == .completed {
+                            print("Video processing completed successfully")
                             completion(true)
-                        default:
+                        } else {
+                            print("Video writer status after reader failed: \(videoWriter.status.rawValue), error: \(String(describing: videoWriter.error))")
                             completion(false)
                         }
                     }
@@ -136,7 +108,7 @@ class VideoWireDetectController: VideoController {
                 }
             }
         }
+        print("a")
     }
-    
     
 }

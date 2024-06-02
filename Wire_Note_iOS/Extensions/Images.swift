@@ -23,7 +23,7 @@ extension CGImage {
         let status = CVPixelBufferCreate(kCFAllocatorDefault,
                                          width,
                                          height,
-                                         kCVPixelFormatType_32ARGB,
+                                         kCVPixelFormatType_32BGRA,
                                          options as CFDictionary,
                                          &pixelBuffer)
         
