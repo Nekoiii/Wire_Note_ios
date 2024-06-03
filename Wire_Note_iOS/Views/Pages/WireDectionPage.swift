@@ -157,7 +157,7 @@ struct WireDectionPage: View {
         let videoWireDetectController = VideoWireDetectController()
 
         let outputPath = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
-        print("outputPath: \(outputPath)")
+//        print("outputPath: \(outputPath)")
         
         removeExistingFile(at: outputPath)
         

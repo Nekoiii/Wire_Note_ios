@@ -1,11 +1,12 @@
 import Foundation
 
 func removeExistingFile(at path: URL) {
-        do {
-            if FileManager.default.fileExists(atPath: path.path) {
-                try FileManager.default.removeItem(at: path)
-            }
-        } catch {
-            print("Failed to remove existing file: \(error.localizedDescription)")
-        }
+            checkFileExist(at: path, onSuccess: { url in
+                do {
+                    try FileManager.default.removeItem(at: url)
+                    print("Removed existing file: \(url)")
+                } catch {
+                    print("Error removing file: \(error.localizedDescription)")
+                }
+            })   
     }
