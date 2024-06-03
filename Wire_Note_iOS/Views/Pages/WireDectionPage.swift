@@ -154,10 +154,17 @@ struct WireDectionPage: View {
     }
     
     private func processVideo(url: URL) {
+        print("a -- processVideo")
+        
         let videoWireDetectController = VideoWireDetectController()
 
         let outputPath = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
 //        print("outputPath: \(outputPath)")
+        
+//        let fileManager = FileManager.default
+//        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+//        let outputPath = documentsDirectory.appendingPathComponent("processed_video").appendingPathExtension("mp4")
+//        print("a -- outputPath: \(outputPath)")
         
         removeExistingFile(at: outputPath)
         
@@ -165,6 +172,7 @@ struct WireDectionPage: View {
             if success {
                 DispatchQueue.main.async {
                     checkFileExist(at: outputPath, onSuccess: { url in
+                        print("processedVideoURL: \(url)")
                         self.processedVideoURL = url
                         self.setupProcessedPlayer()
                     }, onFailure: { path in

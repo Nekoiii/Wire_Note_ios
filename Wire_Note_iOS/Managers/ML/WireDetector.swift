@@ -5,6 +5,8 @@ import UIKit
 
 
 class WireDetector {
+    private var mlModel: MLModel?
+    
     let ciContext = CIContext()
     let colors:[UIColor] = {
         var colorSet:[UIColor] = []
@@ -15,9 +17,11 @@ class WireDetector {
         return colorSet
     }()
     var classes: [String] = []
+    
     lazy var yoloRequest:VNCoreMLRequest! = {
         do {
             let model = try wire_model().model
+            self.mlModel = model
             guard let classes = model.modelDescription.classLabels as? [String] else {
                 fatalError()
             }
@@ -26,7 +30,7 @@ class WireDetector {
             let request = VNCoreMLRequest(model: vnModel)
             return request
         } catch let error {
-            fatalError("mlmodel error.")
+            fatalError("mlmodel error: \(error)")
         }
     }()
     

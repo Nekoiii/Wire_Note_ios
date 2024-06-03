@@ -1,7 +1,6 @@
 import Foundation
 import AVFoundation
 import UIKit
-import CoreML
 import Vision
 import SwiftUI
 
