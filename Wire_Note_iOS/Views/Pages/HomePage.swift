@@ -18,6 +18,9 @@ struct HomePage: View {
                     NavigationLink(destination: ImageToMusicPage()) {
                         Text("Image To Music")
                     }
+                    NavigationLink(destination: VideoToMusicPage()) {
+                        Text("Video To Music")
+                    }
                     NavigationLink(destination: CameraView(isDetectWire: true)) {
                         Text("Open Camera")
                     }
