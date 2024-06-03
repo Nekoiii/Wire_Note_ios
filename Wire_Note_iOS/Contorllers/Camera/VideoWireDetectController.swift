@@ -10,14 +10,14 @@ class VideoWireDetectController: VideoController {
     private var videoWriter: AVAssetWriter?
     private var asset: AVAsset?
     
-//    override func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
-//        print("a -- VideoWireDetectController - videoCapture")
-//        guard let image = self.wireDetector.detection(pixelBuffer: sampleBuffer, videoSize: videoSize) else {
-//            print("Captured image is null")
-//            return
-//        }
-//        onFrameCaptured?(image)
-//    }
+    override func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
+//        print("VideoWireDetectController - videoCapture")
+        guard let image = self.wireDetector.detection(pixelBuffer: sampleBuffer, videoSize: videoSize) else {
+            print("Captured image is null")
+            return
+        }
+        onFrameCaptured?(image)
+    }
     
     
     func processVideoWithWireDetection(inputURL: URL, outputURL: URL, completion: @escaping (Bool) -> Void){
@@ -80,20 +80,23 @@ class VideoWireDetectController: VideoController {
                 }
                 
                 
-//                let sourcePixelBufferAttributes: [String: Any] = [
-//                    kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,
-//                    kCVPixelBufferWidthKey as String: videoTrackNaturalSize.width,
-//                    kCVPixelBufferHeightKey as String: videoTrackNaturalSize.height,
-//                    kCVPixelBufferIOSurfacePropertiesKey as String: [:]
-//                ]
-//                let pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: sourcePixelBufferAttributes)
-//                
+                let sourcePixelBufferAttributes: [String: Any] = [
+                    kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,
+                    kCVPixelBufferWidthKey as String: videoTrackNaturalSize.width,
+                    kCVPixelBufferHeightKey as String: videoTrackNaturalSize.height,
+                    kCVPixelBufferIOSurfacePropertiesKey as String: [:]
+                ]
+                let pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: sourcePixelBufferAttributes)
 
+                
+                
+                // start
                 self.videoReader!.startReading()
                 self.videoWriter!.startWriting()
                 self.videoWriter!.startSession(atSourceTime: .zero)
                 
 
+                //*for test
                 let processingQueue = DispatchQueue(label: "processingQueue")
                 writerInput.requestMediaDataWhenReady(on: processingQueue) {
                     while writerInput.isReadyForMoreMediaData {
@@ -109,6 +112,8 @@ class VideoWireDetectController: VideoController {
                         }
                     }
                 }
+                
+                
 //                let processingQueue = DispatchQueue(label: "videoProcessingQueue")
 //                writerInput.requestMediaDataWhenReady(on: processingQueue) {
 //                    while writerInput.isReadyForMoreMediaData {

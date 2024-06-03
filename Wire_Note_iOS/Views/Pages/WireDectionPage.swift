@@ -158,13 +158,23 @@ struct WireDectionPage: View {
         
         let videoWireDetectController = VideoWireDetectController()
 
-        let outputPath = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
+        
+//        let testMode = "SIMULATOR"
+        let testMode = "REAL"
+        
+        //* test path for simulator
+//        let outputPath = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
 //        print("outputPath: \(outputPath)")
         
-//        let fileManager = FileManager.default
-//        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        //* test path for real iphone
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
 //        let outputPath = documentsDirectory.appendingPathComponent("processed_video").appendingPathExtension("mp4")
 //        print("a -- outputPath: \(outputPath)")
+        let outputPath = testMode == "SIMULATOR" ? Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4") : documentsDirectory.appendingPathComponent("processed_video").appendingPathExtension("mp4")
+        
+        
+        
         
         removeExistingFile(at: outputPath)
         
