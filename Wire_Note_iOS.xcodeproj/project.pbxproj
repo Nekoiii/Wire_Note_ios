@@ -11,6 +11,7 @@
 		006FCE5C2C0CB1370081546E /* VideoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5B2C0CB1370081546E /* VideoUtils.swift */; };
 		006FCE5E2C0CB1560081546E /* ImageViewer.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */; };
 		006FCE602C0CB1650081546E /* VideoToMusicPage.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5F2C0CB1650081546E /* VideoToMusicPage.swift .swift */; };
+		006FCE622C0F34ED0081546E /* CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE612C0F34ED0081546E /* CVPixelBuffer.swift */; };
 		00874DD22C0C6D5C00F10B69 /* RemoveExistingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */; };
 		0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */; };
 		0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB0B2C07267E007D3328 /* ImagePickerView.swift */; };
@@ -64,6 +65,7 @@
 		006FCE5B2C0CB1370081546E /* VideoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUtils.swift; sourceTree = "<group>"; };
 		006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageViewer.swift .swift"; sourceTree = "<group>"; };
 		006FCE5F2C0CB1650081546E /* VideoToMusicPage.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoToMusicPage.swift .swift"; sourceTree = "<group>"; };
+		006FCE612C0F34ED0081546E /* CVPixelBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPixelBuffer.swift; sourceTree = "<group>"; };
 		00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveExistingFile.swift; sourceTree = "<group>"; };
 		0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentalToggleView.swift; sourceTree = "<group>"; };
 		0097DB0B2C07267E007D3328 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				4B39416E2BF9FFFF00A5B694 /* Views.swift */,
 				4B3941782BFA100F00A5B694 /* Images.swift */,
 				00E45A9B2C0B1DF300F8599A /* UIImages.swift */,
+				006FCE612C0F34ED0081546E /* CVPixelBuffer.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				4B39416C2BF9FF9E00A5B694 /* CameraView.swift in Sources */,
 				0097DB0E2C072B64007D3328 /* GeneratedAudioView.swift in Sources */,
 				4B3941652BF9FEF200A5B694 /* VideoController.swift in Sources */,
+				006FCE622C0F34ED0081546E /* CVPixelBuffer.swift in Sources */,
 				4B3941762BFA057200A5B694 /* WireDetector.swift in Sources */,
 				4B3941792BFA100F00A5B694 /* Images.swift in Sources */,
 				00AC98B02C0485D400C3F325 /* AudioPlayerManager.swift in Sources */,

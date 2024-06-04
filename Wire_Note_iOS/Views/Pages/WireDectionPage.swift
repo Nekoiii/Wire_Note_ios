@@ -20,12 +20,12 @@ struct WireDectionPage: View {
             videoControlArea
         }
         .onAppear {
-//            let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1-mp4.dataset/sky-1-mp4.mp4")
+            //            let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1-mp4.dataset/sky-1-mp4.mp4")
             let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
-//            print("Test video url: \(url.path)")
+            //            print("Test video url: \(url.path)")
             
             if FileManager.default.fileExists(atPath: url.path) {
-//                print("Video file exists")
+                //                print("Video file exists")
                 originVideoURL = url
                 originPlayer = AVPlayer(url: url)
                 if processedPlayer != nil {
@@ -157,24 +157,23 @@ struct WireDectionPage: View {
         print("a -- processVideo")
         
         let videoWireDetectController = VideoWireDetectController()
-
         
+        //* for test
 //        let testMode = "SIMULATOR"
         let testMode = "REAL"
         
         //* test path for simulator
-//        let outputPath = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
-//        print("outputPath: \(outputPath)")
+        let outputPath_simulator = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
         
         //* test path for real iphone
         let fileManager = FileManager.default
         let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-//        let outputPath = documentsDirectory.appendingPathComponent("processed_video").appendingPathExtension("mp4")
-//        print("a -- outputPath: \(outputPath)")
-        let outputPath = testMode == "SIMULATOR" ? Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4") : documentsDirectory.appendingPathComponent("processed_video").appendingPathExtension("mp4")
+        let outputPath_real = documentsDirectory.appendingPathComponent("processed_video").appendingPathExtension("mp4")
+        
+        let outputPath = testMode == "SIMULATOR" ? outputPath_simulator : outputPath_real
         
         
-        
+        print("a -- outputPath: \(outputPath)")
         
         removeExistingFile(at: outputPath)
         
@@ -184,6 +183,7 @@ struct WireDectionPage: View {
                     checkFileExist(at: outputPath, onSuccess: { url in
                         print("processedVideoURL: \(url)")
                         self.processedVideoURL = url
+                        self.isShowingOriginVideo = false
                         self.setupProcessedPlayer()
                     }, onFailure: { path in
                         print("Processed video does not exist at path: \(path)")
@@ -191,7 +191,7 @@ struct WireDectionPage: View {
                 }
             } else {
                 DispatchQueue.main.async {
-                    print("Processed video failed")
+                    //                    print("Processed video failed")
                     self.isProcessing = false
                 }
             }

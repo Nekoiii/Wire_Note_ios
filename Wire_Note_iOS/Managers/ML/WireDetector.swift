@@ -50,7 +50,7 @@ class WireDetector {
             let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
             try handler.perform([yoloRequest])
             guard let results = yoloRequest.results as? [VNRecognizedObjectObservation] else {
-                print("WireDetector - No results")
+//                print("WireDetector - No results")
                 return originUIImage
             }
             var detections:[Detection] = []
