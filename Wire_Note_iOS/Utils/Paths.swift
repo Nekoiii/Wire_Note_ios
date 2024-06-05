@@ -6,7 +6,7 @@ struct Paths {
     }()
     
     static let projectRootPath: URL = {
-        URL(fileURLWithPath: "/Users/a/code/Wire_Note_ios/Wire_Note_iOS/") //*unfinished
+        URL(fileURLWithPath: "/Users/js/temp") //*unfinished
     }()
     
     static let downloadedFilesFolderPath: URL = {

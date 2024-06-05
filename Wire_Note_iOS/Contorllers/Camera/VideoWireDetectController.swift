@@ -82,13 +82,12 @@ class VideoWireDetectController: VideoController {
                 
                 
                 let sourcePixelBufferAttributes: [String: Any] = [
-                    kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA),
+                    kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32ARGB),
                     kCVPixelBufferWidthKey as String: videoTrackNaturalSize.width,
                     kCVPixelBufferHeightKey as String: videoTrackNaturalSize.height,
                     kCVPixelBufferIOSurfacePropertiesKey as String: [:]
                 ]
                 let pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: sourcePixelBufferAttributes)
-                
                 
                 // start
                 self.videoReader!.startReading()
@@ -110,17 +109,20 @@ class VideoWireDetectController: VideoController {
                                 print("Detect image is null")
                                 return
                             }
-                            guard let detectedPixelBuffer = detectedImage.pixelBuffer() else {
-                                print("Can't create detectedPixelBuffer")
-                                return
-                            }
-                            //                            guard let detectedSampleBuffer = detectedPixelBuffer.toCMSampleBuffer() else {
-                            //                                print("Can't create detectedSampleBuffer")
-                            //                                return
-                            //                            }
-                            let pixelFormat = CVPixelBufferGetPixelFormatType(detectedPixelBuffer)
+//                            guard let detectedPixelBuffer = detectedImage.pixelBuffer() else {
+//                                print("Can't create detectedPixelBuffer")
+//                                return
+//                            }
+//                            //                            guard let detectedSampleBuffer = detectedPixelBuffer.toCMSampleBuffer() else {
+//                            //                                print("Can't create detectedSampleBuffer")
+//                            //                                return
+//                            //                            }
+//                            let pixelFormat = CVPixelBufferGetPixelFormatType(detectedPixelBuffer)
                             let frameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-                            pixelBufferAdaptor.append(detectedPixelBuffer, withPresentationTime: frameTime)
+//                            pixelBufferAdaptor.append(detectedPixelBuffer, withPresentationTime: frameTime)
+                           let success = pixelBufferAdaptor.appendPixelBufferForImage(detectedImage, presentationTime: frameTime)
+                            print("Append success: \(success)")
+                            
                             //                            writerInput.append(detectedSampleBuffer)
                         } else {
                             writerInput.markAsFinished()

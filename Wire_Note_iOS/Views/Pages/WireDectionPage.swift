@@ -160,8 +160,8 @@ struct WireDectionPage: View {
         let videoWireDetectController = VideoWireDetectController()
         
         //* for test
-//        let testMode = "SIMULATOR"
-        let testMode = "REAL"
+        let testMode = "SIMULATOR"
+//        let testMode = "REAL"
         
         //* test path for simulator
         let outputPath_simulator = Paths.downloadedFilesFolderPath.appendingPathComponent("processed_video.mp4")
