@@ -45,6 +45,8 @@ class VideoWireDetectController: VideoController {
                     completion(false)
                     return
                 }
+                let orientation = videoTrack.preferredTransform.videoOrientation()
+                print("Video orientation: \(orientation)")
                 print("videoTracks: \(videoTracks)")
                 
                 // Settings for read and output
@@ -99,13 +101,16 @@ class VideoWireDetectController: VideoController {
                 writerInput.requestMediaDataWhenReady(on: processingQueue) {
                     while writerInput.isReadyForMoreMediaData {
                         if let sampleBuffer = readerOutput.copyNextSampleBuffer() {
-                            
+                           
                             // Conversion between UIImage to CVPixelBuffer CVPixelBuffer to UIImage, CMSampleBuffer to UIImage: https://blog.csdn.net/watson2017/article/details/133786776
                             guard let  imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else{
                                 print("Can't create imageBuffer")
                                 return
                             }
-                            guard let detectedImage = self.wireDetector.detection(pixelBuffer: imageBuffer , videoSize: videoTrackNaturalSize) else {
+                            
+                            guard let srcImage = self.wireDetector.detection(pixelBuffer: imageBuffer , videoSize: videoTrackNaturalSize),
+                                  let detectedImage = srcImage.rotated(by: orientation)
+                            else {
                                 print("Detect image is null")
                                 return
                             }

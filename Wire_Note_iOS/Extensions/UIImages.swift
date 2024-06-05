@@ -38,6 +38,32 @@ extension UIImage {
     }
 }
 
+extension CVPixelBuffer {
+    func fillPixelBufferFromImage(_ image: UIImage) {
+        CVPixelBufferLockBaseAddress(self, [])
+        if let cgImage = image.cgImage {
+            let pixelData = CVPixelBufferGetBaseAddress(self)
+            let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+            guard
+                let context = CGContext.init(
+                    data: pixelData,
+                    width: Int(image.size.width),
+                    height: Int(image.size.height),
+                    bitsPerComponent: 8,
+                    bytesPerRow: CVPixelBufferGetBytesPerRow(self),
+                    space: rgbColorSpace,
+                    bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue
+                )
+            else {
+                assert(false)
+                return
+            }
+            context.draw(cgImage, in: CGRect.init(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        }
+        CVPixelBufferUnlockBaseAddress(self, [])
+    }
+}
+
 
 
 extension AVAssetWriterInputPixelBufferAdaptor {
@@ -71,28 +97,80 @@ extension AVAssetWriterInputPixelBufferAdaptor {
     }
 }
 
-extension CVPixelBuffer {
-    func fillPixelBufferFromImage(_ image: UIImage) {
-        CVPixelBufferLockBaseAddress(self, [])
-        if let cgImage = image.cgImage {
-            let pixelData = CVPixelBufferGetBaseAddress(self)
-            let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-            guard
-                let context = CGContext.init(
-                    data: pixelData,
-                    width: Int(image.size.width),
-                    height: Int(image.size.height),
-                    bitsPerComponent: 8,
-                    bytesPerRow: CVPixelBufferGetBytesPerRow(self),
-                    space: rgbColorSpace,
-                    bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue
-                )
-            else {
-                assert(false)
-                return
-            }
-            context.draw(cgImage, in: CGRect.init(x: 0, y: 0, width: image.size.width, height: image.size.height))
+extension CGAffineTransform {
+    func videoOrientation() -> UIImage.Orientation {
+        if self.a == 0 && self.b == 1.0 && self.c == -1.0 && self.d == 0 {
+            return .right
+        } else if self.a == 0 && self.b == -1.0 && self.c == 1.0 && self.d == 0 {
+            return .left
+        } else if self.a == 1.0 && self.b == 0 && self.c == 0 && self.d == 1.0 {
+            return .up
+        } else if self.a == -1.0 && self.b == 0 && self.c == 0 && self.d == -1.0 {
+            return .down
+        } else {
+            return .up // Default orientation
         }
-        CVPixelBufferUnlockBaseAddress(self, [])
+    }
+}
+
+extension UIImage {
+    func rotated(by orientation: UIImage.Orientation) -> UIImage? {
+        guard let cgImage = self.cgImage else { return nil }
+
+        var transform: CGAffineTransform = .identity
+
+        switch orientation {
+        case .up:
+            // No rotation needed
+            transform = .identity
+        case .down:
+            // 180 degrees rotation
+            transform = CGAffineTransform(translationX: size.width, y: size.height).rotated(by: .pi)
+        case .left:
+            // 90 degrees counterclockwise
+            transform = CGAffineTransform(translationX: 0, y: size.height).rotated(by: -.pi / 2)
+        case .right:
+            // 90 degrees clockwise
+            transform = CGAffineTransform(translationX: size.width, y: 0).rotated(by: .pi / 2)
+        case .upMirrored:
+            // Horizontal flip
+            transform = CGAffineTransform(translationX: size.width, y: 0).scaledBy(x: -1, y: 1)
+        case .downMirrored:
+            // Vertical flip
+            transform = CGAffineTransform(translationX: 0, y: size.height).scaledBy(x: 1, y: -1)
+        case .leftMirrored:
+            // Vertical flip then 90 degrees counterclockwise
+            transform = CGAffineTransform(translationX: size.width, y: size.height).scaledBy(x: -1, y: 1).rotated(by: -.pi / 2)
+        case .rightMirrored:
+            // Horizontal flip then 90 degrees clockwise
+            transform = CGAffineTransform(translationX: size.width, y: size.height).scaledBy(x: 1, y: -1).rotated(by: .pi / 2)
+        @unknown default:
+            // Default case, no rotation
+            transform = .identity
+        }
+
+        guard let colorSpace = cgImage.colorSpace,
+              let context = CGContext(data: nil,
+                                      width: Int(size.width),
+                                      height: Int(size.height),
+                                      bitsPerComponent: cgImage.bitsPerComponent,
+                                      bytesPerRow: 0,
+                                      space: colorSpace,
+                                      bitmapInfo: cgImage.bitmapInfo.rawValue) else {
+            return nil
+        }
+
+        context.concatenate(transform)
+
+        switch orientation {
+        case .left, .leftMirrored, .right, .rightMirrored:
+            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.height, height: size.width))
+        default:
+            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        }
+
+        guard let newCgImage = context.makeImage() else { return nil }
+
+        return UIImage(cgImage: newCgImage)
     }
 }
