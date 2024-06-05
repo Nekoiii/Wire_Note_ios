@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0024D7752C10795E002D8402 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7742C10795E002D8402 /* LoadingState.swift */; };
 		005FFE3C2C0C2B1C00D28AD8 /* CheckFileExist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005FFE3B2C0C2B1C00D28AD8 /* CheckFileExist.swift */; };
 		006FCE5C2C0CB1370081546E /* VideoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5B2C0CB1370081546E /* VideoUtils.swift */; };
 		006FCE5E2C0CB1560081546E /* ImageViewer.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */; };
@@ -61,6 +62,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0024D7742C10795E002D8402 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		005FFE3B2C0C2B1C00D28AD8 /* CheckFileExist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckFileExist.swift; sourceTree = "<group>"; };
 		006FCE5B2C0CB1370081546E /* VideoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUtils.swift; sourceTree = "<group>"; };
 		006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageViewer.swift .swift"; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				00D32CC62C07663500EE7EDA /* Paths.swift */,
 				00D32CBE2C07420D00EE7EDA /* ML */,
 				006FCE5B2C0CB1370081546E /* VideoUtils.swift */,
+				0024D7742C10795E002D8402 /* LoadingState.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */,
 				00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */,
 				00AC98932C027FA600C3F325 /* HomePage.swift in Sources */,
+				0024D7752C10795E002D8402 /* LoadingState.swift in Sources */,
 				4B39416C2BF9FF9E00A5B694 /* CameraView.swift in Sources */,
 				0097DB0E2C072B64007D3328 /* GeneratedAudioView.swift in Sources */,
 				4B3941652BF9FEF200A5B694 /* VideoController.swift in Sources */,

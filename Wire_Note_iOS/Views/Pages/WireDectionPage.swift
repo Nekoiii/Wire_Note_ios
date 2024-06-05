@@ -20,6 +20,7 @@ struct WireDectionPage: View {
             videoControlArea
         }
         .onAppear {
+            //* for test
             //            let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1-mp4.dataset/sky-1-mp4.mp4")
             let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
             //            print("Test video url: \(url.path)")

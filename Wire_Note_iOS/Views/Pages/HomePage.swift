@@ -11,7 +11,7 @@ struct HomePage: View {
                         
                     }
                 }.padding(.vertical ,30)
-                Group{
+                VStack{
                     NavigationLink(destination: TextToMusicPage()) {
                         Text("Text To Music")
                     }
@@ -21,13 +21,13 @@ struct HomePage: View {
                     NavigationLink(destination: VideoToMusicPage()) {
                         Text("Video To Music")
                     }
+                    Spacer().frame(height: 50)
                     NavigationLink(destination: CameraView(isDetectWire: true)) {
                         Text("Open Camera")
                     }
                     NavigationLink(destination: WireDectionPage()) {
                         Text("Wire Dection")
                     }
-                    .padding(.top, 50)
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: false))
                 .padding(.vertical, 10)
