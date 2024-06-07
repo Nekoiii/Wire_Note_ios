@@ -1,7 +1,7 @@
+import UIKit
 import AVFoundation
 
 extension CVPixelBuffer {
-    
     // Convert CVPixelBuffer to CMSampleBuffer
     func toCMSampleBuffer() -> CMSampleBuffer? {
         var sampleBuffer: CMSampleBuffer?
@@ -39,5 +39,29 @@ extension CVPixelBuffer {
         }
         
         return sampleBuffer
+    }
+    
+    func fillPixelBufferFromImage(_ image: UIImage) {
+        CVPixelBufferLockBaseAddress(self, [])
+        if let cgImage = image.cgImage {
+            let pixelData = CVPixelBufferGetBaseAddress(self)
+            let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+            guard
+                let context = CGContext.init(
+                    data: pixelData,
+                    width: Int(image.size.width),
+                    height: Int(image.size.height),
+                    bitsPerComponent: 8,
+                    bytesPerRow: CVPixelBufferGetBytesPerRow(self),
+                    space: rgbColorSpace,
+                    bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue
+                )
+            else {
+                assert(false)
+                return
+            }
+            context.draw(cgImage, in: CGRect.init(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        }
+        CVPixelBufferUnlockBaseAddress(self, [])
     }
 }

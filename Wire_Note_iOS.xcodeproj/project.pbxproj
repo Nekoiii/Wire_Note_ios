@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0024D7752C10795E002D8402 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7742C10795E002D8402 /* LoadingState.swift */; };
+		0024D7772C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */; };
+		0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7782C134420002D8402 /* CGAffineTransform.swift */; };
 		005FFE3C2C0C2B1C00D28AD8 /* CheckFileExist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005FFE3B2C0C2B1C00D28AD8 /* CheckFileExist.swift */; };
 		006FCE5C2C0CB1370081546E /* VideoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5B2C0CB1370081546E /* VideoUtils.swift */; };
 		006FCE5E2C0CB1560081546E /* ImageViewer.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */; };
@@ -63,6 +65,8 @@
 
 /* Begin PBXFileReference section */
 		0024D7742C10795E002D8402 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
+		0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetWriterInputPixelBufferAdaptor.swift; sourceTree = "<group>"; };
+		0024D7782C134420002D8402 /* CGAffineTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransform.swift; sourceTree = "<group>"; };
 		005FFE3B2C0C2B1C00D28AD8 /* CheckFileExist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckFileExist.swift; sourceTree = "<group>"; };
 		006FCE5B2C0CB1370081546E /* VideoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUtils.swift; sourceTree = "<group>"; };
 		006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageViewer.swift .swift"; sourceTree = "<group>"; };
@@ -337,8 +341,10 @@
 			isa = PBXGroup;
 			children = (
 				4B39416F2BF9FFFF00A5B694 /* Buttons.swift */,
+				0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */,
 				4B39416E2BF9FFFF00A5B694 /* Views.swift */,
 				4B3941782BFA100F00A5B694 /* Images.swift */,
+				0024D7782C134420002D8402 /* CGAffineTransform.swift */,
 				00E45A9B2C0B1DF300F8599A /* UIImages.swift */,
 				006FCE612C0F34ED0081546E /* CVPixelBuffer.swift */,
 			);
@@ -432,7 +438,9 @@
 				00AC989F2C02F1C200C3F325 /* SunoGenerateAPI.swift in Sources */,
 				00D32CCB2C09FB4600EE7EDA /* AudioToTextView.swift in Sources */,
 				00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */,
+				0024D7772C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift in Sources */,
 				00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */,
+				0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */,
 				00AC98A12C02F1F000C3F325 /* TextToMusicPage.swift in Sources */,
 				0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */,
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,

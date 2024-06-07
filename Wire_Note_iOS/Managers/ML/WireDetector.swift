@@ -50,11 +50,9 @@ class WireDetector {
             let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
             try handler.perform([yoloRequest])
             guard let results = yoloRequest.results as? [VNRecognizedObjectObservation] else {
-//                print("WireDetector - No results")
                 return originUIImage
             }
             var detections:[Detection] = []
-//            print("WireDetector - detection results: \(results)")
             for result in results {
                 let flippedBox = CGRect(x: result.boundingBox.minX, y: 1 - result.boundingBox.maxY, width: result.boundingBox.width, height: result.boundingBox.height)
                 let box = VNImageRectForNormalizedRect(flippedBox, Int(videoSize.width), Int(videoSize.height))

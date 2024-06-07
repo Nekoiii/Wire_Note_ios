@@ -1,10 +1,3 @@
-//
-//  Buttons.swift
-//  CountDown
-//
-//  Created by John Smith on 2024/04/21.
-//
-
 import SwiftUI
 
 struct PrimaryButton: ViewModifier {
