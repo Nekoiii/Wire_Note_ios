@@ -1,17 +1,16 @@
 import SwiftUI
 
 struct HomePage: View {
-    var body:some View{
-        NavigationView{
-            VStack{
-                HStack{
+    var body: some View {
+        NavigationView {
+            VStack {
+                HStack {
                     ForEach(musicalNotes, id: \.symbol) { note in
                         Text(note.symbol)
                             .font(.largeTitle)
-                        
                     }
-                }.padding(.vertical ,30)
-                VStack{
+                }.padding(.vertical, 30)
+                VStack {
                     NavigationLink(destination: TextToMusicPage()) {
                         Text("Text To Music")
                     }
@@ -31,7 +30,7 @@ struct HomePage: View {
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: false))
                 .padding(.vertical, 10)
-                
+
                 NavigationLink(destination: HistoryAudiosView(folderPath: Paths.downloadedFilesFolderPath)) {
                     Label("History", systemImage: "music.note.list")
                         .font(.system(size: 20))
@@ -42,9 +41,8 @@ struct HomePage: View {
             }
         }
     }
-    
-    
 }
-#Preview{
+
+#Preview {
     HomePage()
 }

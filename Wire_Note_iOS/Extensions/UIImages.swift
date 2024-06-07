@@ -1,7 +1,7 @@
-import UIKit
-import CoreVideo
-import CoreImage
 import AVFoundation
+import CoreImage
+import CoreVideo
+import UIKit
 
 extension UIImage {
     convenience init?(pixelBuffer: CVPixelBuffer) {
@@ -12,22 +12,22 @@ extension UIImage {
         }
         self.init(cgImage: cgImage)
     }
-    
+
     func pixelBuffer() -> CVPixelBuffer? {
-        let width = Int(self.size.width)
-        let height = Int(self.size.height)
+        let width = Int(size.width)
+        let height = Int(size.height)
         let attrs = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue, kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue] as CFDictionary
         var pixelBuffer: CVPixelBuffer?
-        
+
         let status = CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_32BGRA, attrs, &pixelBuffer)
-        
+
         guard status == kCVReturnSuccess, let buffer = pixelBuffer else {
             return nil
         }
-        
+
         CVPixelBufferLockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: 0))
         let pixelData = CVPixelBufferGetBaseAddress(buffer)
-        
+
         let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
         let context = CGContext(data: pixelData,
                                 width: width, height: height,
@@ -35,14 +35,14 @@ extension UIImage {
                                 bytesPerRow: CVPixelBufferGetBytesPerRow(buffer),
                                 space: rgbColorSpace,
                                 bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
-        
-        guard let cgImage = self.cgImage else {
+
+        guard let cgImage = cgImage else {
             print("Invalid cgImage")
             return nil
         }
         context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: CGFloat(width), height: CGFloat(height)))
         CVPixelBufferUnlockBaseAddress(buffer, CVPixelBufferLockFlags(rawValue: 0))
-        
+
         return buffer
     }
 
@@ -105,19 +105,19 @@ extension UIImage {
 //
 //        return UIImage(cgImage: newCgImage)
 //    }
-//    
+//
     func transformed(by transform: CGAffineTransform) -> UIImage? {
-        guard let cgImage = self.cgImage else {
+        guard let cgImage = cgImage else {
             print("Invalid cgImage")
             return nil
         }
-        
+
         let radians = atan2(transform.b, transform.a)
         let degrees = radians * 180 / .pi
-        
+
         var newTransform = CGAffineTransform.identity
 
-        switch degrees {
+        switch degrees { // *unfinished : maybe need to deel with mirror situations here
         case 90:
             newTransform = CGAffineTransform(rotationAngle: -.pi / 2)
         case -90:
@@ -129,13 +129,13 @@ extension UIImage {
         default:
             newTransform = CGAffineTransform.identity
         }
-        
+
         let ciImage = CIImage(cgImage: cgImage).transformed(by: newTransform)
         let context = CIContext()
         guard let outputCGImage = context.createCGImage(ciImage, from: ciImage.extent) else {
             return nil
         }
-        
+
         return UIImage(cgImage: outputCGImage)
     }
 }

@@ -8,11 +8,11 @@ struct TitleBar: View {
             Rectangle()
                 .frame(height: 1)
                 .foregroundColor(.black)
-            
+
             Text(title)
                 .fixedSize(horizontal: true, vertical: false)
                 .padding(.horizontal, 5)
-            
+
             Rectangle()
                 .frame(height: 1)
                 .foregroundColor(.black)

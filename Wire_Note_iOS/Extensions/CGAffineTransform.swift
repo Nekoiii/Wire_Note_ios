@@ -1,18 +1,18 @@
-import UIKit
 import AVFoundation
+import UIKit
 
 extension CGAffineTransform {
     func videoOrientation() -> UIImage.Orientation {
-        if self.a == 0 && self.b == 1.0 && self.c == -1.0 && self.d == 0 {
+        if a == 0 && b == 1.0 && c == -1.0 && d == 0 {
             return .right
-        } else if self.a == 0 && self.b == -1.0 && self.c == 1.0 && self.d == 0 {
+        } else if a == 0 && b == -1.0 && c == 1.0 && d == 0 {
             return .left
-        } else if self.a == 1.0 && self.b == 0 && self.c == 0 && self.d == 1.0 {
+        } else if a == 1.0 && b == 0 && c == 0 && d == 1.0 {
             return .up
-        } else if self.a == -1.0 && self.b == 0 && self.c == 0 && self.d == -1.0 {
+        } else if a == -1.0 && b == 0 && c == 0 && d == -1.0 {
             return .down
         } else {
-            return .up 
+            return .up
         }
     }
 }

@@ -3,9 +3,9 @@ import SwiftUI
 struct ImagePickerView: View {
     @Binding var image: UIImage?
     @Binding var isImagePickerPresented: Bool
-    
+
     var body: some View {
-        Group{
+        Group {
             if let uiImage = image {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -17,7 +17,7 @@ struct ImagePickerView: View {
                     .frame(width: 150, height: 150)
                     .background(Color(UIColor.systemFill))
             }
-            
+
             Button(action: {
                 isImagePickerPresented = true
             }) {
@@ -27,8 +27,7 @@ struct ImagePickerView: View {
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
-            .padding(.vertical,10)
+            .padding(.vertical, 10)
         }
-        
     }
 }

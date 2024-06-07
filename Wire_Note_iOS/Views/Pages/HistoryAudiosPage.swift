@@ -3,7 +3,7 @@ import SwiftUI
 struct HistoryAudiosView: View {
     @State private var audioUrls: [URL] = []
     var folderPath: URL
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             if audioUrls.isEmpty {
@@ -20,13 +20,13 @@ struct HistoryAudiosView: View {
         .navigationTitle("Music Generation History")
         .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     private func loadDownloadedAudioUrls() {
         let fileManager = FileManager.default
-        
+
         do {
             let fileUrls = try fileManager.contentsOfDirectory(at: folderPath, includingPropertiesForKeys: nil)
-            self.audioUrls = fileUrls.filter {
+            audioUrls = fileUrls.filter {
                 FileTypes.isAudioFile(url: $0)
             }
         } catch {

@@ -3,7 +3,7 @@ import SwiftUI
 struct CameraControlsView: View {
     @EnvironmentObject var videoController: VideoController
     var body: some View {
-        HStack (spacing: 20) {
+        HStack(spacing: 20) {
             Spacer()
             Button {
                 videoController.flipCamera()

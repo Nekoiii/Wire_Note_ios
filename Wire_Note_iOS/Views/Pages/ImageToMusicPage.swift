@@ -3,14 +3,14 @@ import SwiftUI
 struct ImageToMusicPage: View {
     @State private var image: UIImage?
     @State private var isImagePickerPresented = false
-    
+
     @State private var description: String = ""
     @State private var errorMessage: String?
     @State private var isLoadingDescription: Bool = false
-    
+
     @State private var isMakeInstrumental: Bool = false
     @State private var generatedAudioUrls: [URL] = []
-    
+
     var body: some View {
         VStack {
             ImagePickerView(image: $image, isImagePickerPresented: $isImagePickerPresented)
@@ -27,49 +27,49 @@ struct ImageToMusicPage: View {
             }
         }
     }
-    
+
     private var imageDescribtion: some View {
-        Group{
+        Group {
             let isImageToTextButtonDisable = image == nil
-            Button(action: {doImageToText()}) {
+            Button(action: { doImageToText() }) {
                 Text("Describe Image")
             }
-            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isImageToTextButtonDisable))
+            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isImageToTextButtonDisable))
             .disabled(isImageToTextButtonDisable)
-            
+
             if let errorMessage = errorMessage {
                 Text("Error: \(errorMessage)")
                     .foregroundColor(.red)
             } else {
-                Text(isLoadingDescription ? "Loading ..." :description)
+                Text(isLoadingDescription ? "Loading ..." : description)
                     .padding()
             }
         }
     }
-    
+
     private var musicGeneration: some View {
-        Group{
+        Group {
             let isGenerateMusicButtonDisable = description.isEmpty
-            Button(action:{
-                Task{
+            Button(action: {
+                Task {
                     await generateMusicWithDescription()
                 }
-            }){
+            }) {
                 Text("Generate music with image description")
             }
-            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"),isDisable:isGenerateMusicButtonDisable))
+            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isGenerateMusicButtonDisable))
             .disabled(isGenerateMusicButtonDisable)
-            
-            InstrumentalToggleView(isMakeInstrumental:$isMakeInstrumental)
-            .padding()
+
+            InstrumentalToggleView(isMakeInstrumental: $isMakeInstrumental)
+                .padding()
         }
     }
-    
+
     func saveImageToDefaultPath(image: UIImage) {
         let fileManager = FileManager.default
         let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         let fileURL = documentsURL.appendingPathComponent("uploaded_image.png")
-        
+
         if let imageData = image.pngData() {
             do {
                 try imageData.write(to: fileURL)
@@ -79,23 +79,23 @@ struct ImageToMusicPage: View {
             }
         }
     }
-    
+
     private func doImageToText() {
         isLoadingDescription = true
-        
+
         guard let image = image, let imageData = image.pngData() else {
             errorMessage = "No image selected."
             return
         }
-        
+
         imageToText(imageData: imageData) { result in
             switch result {
-            case .success(let description):
+            case let .success(description):
                 DispatchQueue.main.async {
                     self.description = description
                     self.errorMessage = nil
                 }
-            case .failure(let error):
+            case let .failure(error):
                 DispatchQueue.main.async {
                     self.errorMessage = error.localizedDescription
                 }
@@ -103,7 +103,6 @@ struct ImageToMusicPage: View {
             isLoadingDescription = false
         }
     }
-    
 
     private func generateMusicWithDescription() async {
         let generatePrompt = description
@@ -112,9 +111,8 @@ struct ImageToMusicPage: View {
 
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
 
-        let audioUrls = await   sunoGenerateAPI.generatemMusic(generateMode:generateMode, prompt: generatePrompt,  makeInstrumental: generateIsMakeInstrumental)
-        self.generatedAudioUrls = audioUrls
-        
+        let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
+        generatedAudioUrls = audioUrls
     }
 }
 

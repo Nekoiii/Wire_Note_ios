@@ -7,10 +7,10 @@ struct TextToMusicPage: View {
     @State private var title: String = ""
     @State private var isMakeInstrumental: Bool = false
     @State private var generatedAudioUrls: [URL] = []
-    
+
     var body: some View {
         VStack(spacing: 20) {
-            Group{
+            Group {
                 generateModePicker
                 generateFields
                 generatemMusicButton
@@ -20,7 +20,7 @@ struct TextToMusicPage: View {
             .padding(.horizontal)
         }
     }
-    
+
     private var generateModePicker: some View {
         Picker("Generate Mode", selection: $generateMode) {
             Text("Generate").tag(GenerateMode.generate)
@@ -29,10 +29,10 @@ struct TextToMusicPage: View {
         .pickerStyle(SegmentedPickerStyle())
         .padding(.vertical, 10)
     }
-    
+
     private var generateFields: some View {
         Group {
-            TextField("Enter \(generateMode == .customGenerate ? "lyrics":"prompt")", text: $prompt)
+            TextField("Enter \(generateMode == .customGenerate ? "lyrics" : "prompt")", text: $prompt)
             if generateMode == .customGenerate {
                 TextField("Enter style", text: $style)
                 TextField("Enter title", text: $title)
@@ -41,7 +41,7 @@ struct TextToMusicPage: View {
         .textFieldStyle(RoundedBorderTextFieldStyle())
         .padding(.vertical, 5)
     }
-    
+
     private var generatemMusicButton: some View {
         Button(action: {
             Task {
@@ -58,14 +58,12 @@ struct TextToMusicPage: View {
         let generateTags = style.isEmpty ? "kpop, Chinese" : style
         let generateTitle = title.isEmpty ? "My Song" : title
         let generateIsMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : isMakeInstrumental
-        
+
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-        
+
         let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental)
-        self.generatedAudioUrls = audioUrls
+        generatedAudioUrls = audioUrls
     }
-    
-    
 }
 
 struct TextToMusicPage_Previews: PreviewProvider {

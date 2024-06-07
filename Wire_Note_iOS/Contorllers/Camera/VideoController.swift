@@ -1,8 +1,8 @@
-import Foundation
 import AVFoundation
+import Foundation
+import SwiftUI
 import UIKit
 import Vision
-import SwiftUI
 
 private let FREQUENCY_OF_PREDICTION = 10
 
@@ -15,13 +15,13 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
     var clothingKey: String?
     private let videoCapture = VideoCapture()
     private var currentFrame: CGImage?
-    
+
     var onFrameCaptured: onFrameCaptured?
-    
+
     init() {
         setupAndBeginCapturingVideoFrames()
     }
-    
+
     private func setupAndBeginCapturingVideoFrames() {
         videoCapture.setUpAVCapture { error in
             if let error = error {
@@ -32,8 +32,7 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
             self.videoCapture.startCapturing()
         }
     }
-    
-    
+
     func flipCamera() {
         videoCapture.flipCamera { error in
             if let error = error {
@@ -41,9 +40,8 @@ class VideoController: ObservableObject, VideoCaptureDelegate {
             }
         }
     }
-    
-    
-    func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
+
+    func videoCapture(sampleBuffer: CVPixelBuffer, videoSize _: CGSize) {
         guard let image = UIImage(pixelBuffer: sampleBuffer) else {
             print("Failed to create image from pixel buffer")
             return

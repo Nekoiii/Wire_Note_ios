@@ -12,7 +12,7 @@ struct SunoResponse: Codable {
     let prompt: String?
     let type: String?
     let tags: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case title

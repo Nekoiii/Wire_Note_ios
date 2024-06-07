@@ -4,7 +4,7 @@ enum LoadingState {
     case generate_music
     case extract_frames
     case image_to_text
-    
+
     var description: String {
         switch self {
         case .load:

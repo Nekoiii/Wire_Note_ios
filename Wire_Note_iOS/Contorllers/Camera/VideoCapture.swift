@@ -1,10 +1,10 @@
 /*
-See LICENSE folder for this sample’s licensing information.
+ See LICENSE folder for this sample’s licensing information.
 
-Abstract:
-The implementation of a utility class that facilitates frame captures from the device
- camera.
-*/
+ Abstract:
+ The implementation of a utility class that facilitates frame captures from the device
+  camera.
+ */
 
 import AVFoundation
 import CoreVideo
@@ -30,7 +30,7 @@ class VideoCapture: NSObject {
 
     /// The delegate to receive the captured frames.
     weak var delegate: VideoCaptureDelegate?
-    
+
     weak var sampleBufferDelegate: VideoCaptureSampleBufferDelegate?
 
     /// A capture session used to coordinate the flow of data from input devices to capture outputs.
@@ -42,14 +42,14 @@ class VideoCapture: NSObject {
 
     /// The current camera's position.
     var cameraPostion = AVCaptureDevice.Position.back
-    
+
     var curDevice: AVCaptureDevice?
-    
-    var curWidth:Int32 = 0
-    var curHeight:Int32 = 0
-    
-    var isSupportWildAngel = false;
-    var isNeedWildAngel = false;
+
+    var curWidth: Int32 = 0
+    var curHeight: Int32 = 0
+
+    var isSupportWildAngel = false
+    var isNeedWildAngel = false
 
     /// The dispatch queue responsible for processing camera set up and frame capture.
     private let sessionQueue = DispatchQueue(
@@ -80,10 +80,10 @@ class VideoCapture: NSObject {
             }
         }
     }
-    
-    func checkCameraPermission()->Bool {
+
+    func checkCameraPermission() -> Bool {
         let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        
+
         switch authStatus {
         case .authorized:
             // 用户已经授权摄像头权限
@@ -98,15 +98,15 @@ class VideoCapture: NSObject {
         case .notDetermined:
             // 摄像头权限尚未确定，系统会在第一次使用时触发权限询问框
             print("Camera access not determined yet")
-            // 不需要执行额外操作，等待用户的响应即可
+        // 不需要执行额外操作，等待用户的响应即可
         @unknown default:
             // 处理未知的授权状态
             break
         }
         return true
     }
-    
-    public func isMirrored()->Bool{
+
+    public func isMirrored() -> Bool {
         return cameraPostion == .front
     }
 
@@ -144,7 +144,7 @@ class VideoCapture: NSObject {
 
         captureSession.commitConfiguration()
     }
-    
+
     public func refreshInput() throws {
         if captureSession.isRunning {
             captureSession.stopRunning()
@@ -153,28 +153,26 @@ class VideoCapture: NSObject {
         try setCaptureSessionInput()
         try setCaptureSessionOutput()
         captureSession.commitConfiguration()
-        
     }
-    
-    public func enableWildAngle(enable:Bool) {
-        self.isNeedWildAngel = enable
+
+    public func enableWildAngle(enable: Bool) {
+        isNeedWildAngel = enable
         sessionQueue.async {
             do {
                 try self.refreshInput()
             } catch {
                 print("enableWildAngle:\(error)")
             }
-            
         }
-       
     }
-    
-    func checkSupportWideLens()->Bool {
+
+    func checkSupportWideLens() -> Bool {
         let captureDevice = AVCaptureDevice.default(
             .builtInUltraWideCamera,
             for: AVMediaType.video,
-            position: .back)
-        if (captureDevice == nil) {
+            position: .back
+        )
+        if captureDevice == nil {
             return false
         }
         return true
@@ -183,50 +181,47 @@ class VideoCapture: NSObject {
     private func setCaptureSessionInput() throws {
         // Use the default capture device to obtain access to the physical device
         // and associated properties.
-        var captureDevice:AVCaptureDevice? = nil;
-        
-        if (isNeedWildAngel) {
+        var captureDevice: AVCaptureDevice? = nil
+
+        if isNeedWildAngel {
             captureDevice = AVCaptureDevice.default(
                 .builtInUltraWideCamera,
                 for: AVMediaType.video,
-                position: cameraPostion)
-            
+                position: cameraPostion
+            )
         }
-        
-        
-        if (captureDevice == nil) {
-            
+
+        if captureDevice == nil {
             captureDevice = AVCaptureDevice.default(
                 .builtInWideAngleCamera,
                 for: AVMediaType.video,
-                position: cameraPostion)
+                position: cameraPostion
+            )
         }
-        
-     
 
         // Remove any existing inputs.
-        captureSession.inputs.forEach { input in
+        for input in captureSession.inputs {
             captureSession.removeInput(input)
         }
-        
+
         guard let captureDevice = captureDevice else {
             throw VideoCaptureError.invalidInput
         }
-        
+
         curDevice = captureDevice
-        
+
         // 检查是否支持调整焦距
-        guard  let curDevice = self.curDevice else {
-       //     print("不支持调整焦距")
+        guard let curDevice = curDevice else {
+            //     print("不支持调整焦距")
             return
         }
-     //   if curDevice.isFocusModeSupported(.autoFocus) {
-            // 获取当前焦距
-            let currentZoomFactor = curDevice.videoZoomFactor
-            print("当前焦距：\(currentZoomFactor)")
-       // } else {
+        //   if curDevice.isFocusModeSupported(.autoFocus) {
+        // 获取当前焦距
+        let currentZoomFactor = curDevice.videoZoomFactor
+        print("当前焦距：\(currentZoomFactor)")
+        // } else {
         //    print("不支持调整焦距")
-       // }
+        // }
 
         // Create an instance of AVCaptureDeviceInput to capture the data from
         // the capture device.
@@ -243,13 +238,13 @@ class VideoCapture: NSObject {
 
     private func setCaptureSessionOutput() throws {
         // Remove any previous outputs.
-        captureSession.outputs.forEach { output in
+        for output in captureSession.outputs {
             captureSession.removeOutput(output)
         }
 
         // Set the pixel type.
         let settings: [String: Any] = [
-            String(kCVPixelBufferPixelFormatTypeKey): kCVPixelFormatType_32BGRA
+            String(kCVPixelBufferPixelFormatTypeKey): kCVPixelFormatType_32BGRA,
         ]
 
         videoOutput.videoSettings = settings
@@ -268,7 +263,8 @@ class VideoCapture: NSObject {
 
         // Update the video orientation
         if let connection = videoOutput.connection(with: .video),
-            connection.isVideoOrientationSupported {
+           connection.isVideoOrientationSupported
+        {
             connection.videoOrientation =
                 AVCaptureVideoOrientation(deviceOrientation: UIDevice.current.orientation)
             connection.isVideoMirrored = cameraPostion == .front
@@ -283,17 +279,15 @@ class VideoCapture: NSObject {
 //            let dimensions = connection.videoDimensions
 //                  curWidth = dimensions.width
 //                  curHeight = dimensions.height
-
         }
-        //connection?.videoPreviewLayer?.frame.width
-    
-        
+        // connection?.videoPreviewLayer?.frame.width
     }
-    
+
     public func updateOrientation() {
         // Update the video orientation
         if let connection = videoOutput.connection(with: .video),
-            connection.isVideoOrientationSupported {
+           connection.isVideoOrientationSupported
+        {
             connection.videoOrientation =
                 AVCaptureVideoOrientation(deviceOrientation: UIDevice.current.orientation)
             connection.isVideoMirrored = cameraPostion == .front
@@ -321,15 +315,13 @@ class VideoCapture: NSObject {
     ///
     /// - parameters:
     ///     - completionHandler: Handler called once the session has started running.
-    public func startCapturing(completion completionHandler: (() -> Void)? = nil) {
+    public func startCapturing(completion _: (() -> Void)? = nil) {
         sessionQueue.async {
             if !self.captureSession.isRunning {
                 // Invoke the startRunning method of the captureSession to start the
                 // flow of data from the inputs to the outputs.
                 self.captureSession.startRunning()
             }
-          
-
         }
     }
 
@@ -357,13 +349,14 @@ class VideoCapture: NSObject {
 // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
 
 extension VideoCapture: AVCaptureVideoDataOutputSampleBufferDelegate {
-
-    public func captureOutput(_ output: AVCaptureOutput,
+    public func captureOutput(_: AVCaptureOutput,
                               didOutput sampleBuffer: CMSampleBuffer,
-                              from connection: AVCaptureConnection) {
+                              from _: AVCaptureConnection)
+    {
         guard let delegate = delegate else { return }
         guard let width = sampleBuffer.formatDescription?.dimensions.width,
-              let height = sampleBuffer.formatDescription?.dimensions.height else {
+              let height = sampleBuffer.formatDescription?.dimensions.height
+        else {
             fatalError()
         }
         let videoSize = CGSize(width: CGFloat(width), height: CGFloat(height))

@@ -2,19 +2,19 @@ import SwiftUI
 
 struct GeneratedAudioView: View {
     @Binding var generatedAudioUrls: [URL]
-    
+
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading) {
             if !generatedAudioUrls.isEmpty {
                 TitleBar(title: "Generated Audios")
-                
+
                 ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
-                    HStack{
-                        AudioPlayerView(url: AudioUrl )
+                    HStack {
+                        AudioPlayerView(url: AudioUrl)
                         AudioToTextView(audioUrl: AudioUrl)
                     }
-                    .padding(.horizontal,10)
-                    .padding(.vertical,5)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
                 }
             }
         }
@@ -28,11 +28,11 @@ struct GeneratedAudioView_Previews: PreviewProvider {
         else {
             return []
         }
-        
+
         let tempDir = FileManager.default.temporaryDirectory
         let audio1URL = tempDir.appendingPathComponent("audio-1.mp3")
         let audio2URL = tempDir.appendingPathComponent("audio-2.mp3")
-        
+
         do {
             try audio1Data.write(to: audio1URL)
             try audio2Data.write(to: audio2URL)
@@ -40,12 +40,11 @@ struct GeneratedAudioView_Previews: PreviewProvider {
             print("Error writing audio files: \(error)")
             return []
         }
-        
+
         return [audio1URL, audio2URL]
     }()
-    
+
     static var previews: some View {
         GeneratedAudioView(generatedAudioUrls: $audioUrls)
     }
 }
-

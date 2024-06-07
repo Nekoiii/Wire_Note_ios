@@ -20,7 +20,7 @@ func audioToText(audioData: Data, completion: @escaping (Result<String, Error>) 
 
     request.httpBody = body
 
-    URLSession.shared.dataTask(with: request) { data, response, error in
+    URLSession.shared.dataTask(with: request) { data, _, error in
         if let error = error {
             completion(.failure(error))
             return
@@ -33,7 +33,8 @@ func audioToText(audioData: Data, completion: @escaping (Result<String, Error>) 
 
         do {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-               let transcription = json["transcription"] as? String {
+               let transcription = json["transcription"] as? String
+            {
                 completion(.success(transcription))
             } else {
                 completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No transcription found"])))

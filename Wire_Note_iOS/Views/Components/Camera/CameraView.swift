@@ -3,9 +3,9 @@ import SwiftUI
 struct CameraView: View {
     @StateObject var videoController = VideoController()
     @State private var img: UIImage?
-    
+
     @State private var isDetectWire: Bool
-    
+
     init(isDetectWire: Bool = false) {
         _isDetectWire = State(initialValue: isDetectWire)
         if isDetectWire {
@@ -14,7 +14,7 @@ struct CameraView: View {
             _videoController = StateObject(wrappedValue: VideoController())
         }
     }
-    
+
     var body: some View {
         ZStack {
             if let image = img {
@@ -34,7 +34,7 @@ struct CameraView: View {
             loadImage()
         }
     }
-    
+
     func loadImage() {
         videoController.onFrameCaptured = { image in
             DispatchQueue.main.async {

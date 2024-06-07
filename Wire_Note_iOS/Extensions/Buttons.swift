@@ -20,7 +20,6 @@ struct PrimaryButton: ViewModifier {
                 .background(.blue)
                 .cornerRadius(10)
         }
-        
     }
 }
 
@@ -55,30 +54,24 @@ struct SecondaryButton: ViewModifier {
     }
 }
 
-
-
 extension View {
     func primaryButton(maxWidth: Bool = false) -> some View {
-        self.modifier(PrimaryButton(maxWidth: maxWidth))
+        modifier(PrimaryButton(maxWidth: maxWidth))
     }
-    
+
     func secondaryButton(maxWidth: Bool = false) -> some View {
-        self.modifier(SecondaryButton(maxWidth: maxWidth))
+        modifier(SecondaryButton(maxWidth: maxWidth))
     }
 }
 
 #Preview {
     VStack {
-        Button {
-            
-        } label: {
+        Button {} label: {
             Text("Primary button")
         }
         .primaryButton()
-        
-        Button {
-            
-        } label: {
+
+        Button {} label: {
             Text("Secondary button")
         }
         .secondaryButton()

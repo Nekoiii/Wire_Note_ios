@@ -8,7 +8,7 @@ struct SolidButtonStyle: ButtonStyle {
         self.buttonColor = buttonColor
         self.isDisable = isDisable
     }
-    
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()

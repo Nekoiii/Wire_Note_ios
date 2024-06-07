@@ -1,5 +1,5 @@
-import SwiftUI
 import AVKit
+import SwiftUI
 import UIKit
 
 struct VideoPicker: UIViewControllerRepresentable {
@@ -13,7 +13,7 @@ struct VideoPicker: UIViewControllerRepresentable {
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    func updateUIViewController(_: UIImagePickerController, context _: Context) {}
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
