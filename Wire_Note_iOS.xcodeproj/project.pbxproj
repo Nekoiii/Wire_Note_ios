@@ -41,7 +41,7 @@
 		00D32CC92C09F1BE00EE7EDA /* AudioToText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC82C09F1BE00EE7EDA /* AudioToText.swift */; };
 		00D32CCB2C09FB4600EE7EDA /* AudioToTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */; };
 		00E45A942C0A256800F8599A /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A932C0A256800F8599A /* TitleBar.swift */; };
-		00E45A962C0AF9BA00F8599A /* WireDectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A952C0AF9BA00F8599A /* WireDectionPage.swift */; };
+		00E45A962C0AF9BA00F8599A /* WireDetectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A952C0AF9BA00F8599A /* WireDetectionPage.swift */; };
 		00E45A9A2C0AFEA300F8599A /* VideoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A992C0AFEA300F8599A /* VideoPicker.swift */; };
 		00E45A9C2C0B1DF300F8599A /* UIImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A9B2C0B1DF300F8599A /* UIImages.swift */; };
 		00E45AA02C0B21B700F8599A /* VideoWireDetectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A9F2C0B21B700F8599A /* VideoWireDetectController.swift */; };
@@ -98,7 +98,7 @@
 		00D32CC82C09F1BE00EE7EDA /* AudioToText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioToText.swift; sourceTree = "<group>"; };
 		00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioToTextView.swift; sourceTree = "<group>"; };
 		00E45A932C0A256800F8599A /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; };
-		00E45A952C0AF9BA00F8599A /* WireDectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDectionPage.swift; sourceTree = "<group>"; };
+		00E45A952C0AF9BA00F8599A /* WireDetectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionPage.swift; sourceTree = "<group>"; };
 		00E45A992C0AFEA300F8599A /* VideoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPicker.swift; sourceTree = "<group>"; };
 		00E45A9B2C0B1DF300F8599A /* UIImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImages.swift; sourceTree = "<group>"; };
 		00E45A9F2C0B21B700F8599A /* VideoWireDetectController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWireDetectController.swift; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 				00AC98A02C02F1F000C3F325 /* TextToMusicPage.swift */,
 				00AC98922C027FA600C3F325 /* HomePage.swift */,
 				00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */,
-				00E45A952C0AF9BA00F8599A /* WireDectionPage.swift */,
+				00E45A952C0AF9BA00F8599A /* WireDetectionPage.swift */,
 				006FCE5F2C0CB1650081546E /* VideoToMusicPage.swift .swift */,
 			);
 			path = Pages;
@@ -477,7 +477,7 @@
 				00D32CC72C07663500EE7EDA /* Paths.swift in Sources */,
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,
 				00E45AA02C0B21B700F8599A /* VideoWireDetectController.swift in Sources */,
-				00E45A962C0AF9BA00F8599A /* WireDectionPage.swift in Sources */,
+				00E45A962C0AF9BA00F8599A /* WireDetectionPage.swift in Sources */,
 				00D32CC92C09F1BE00EE7EDA /* AudioToText.swift in Sources */,
 				00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */,
 				4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */,

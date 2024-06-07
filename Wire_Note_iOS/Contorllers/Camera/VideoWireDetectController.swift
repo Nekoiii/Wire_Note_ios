@@ -10,7 +10,6 @@ class VideoWireDetectController: VideoController {
     private var videoWriter: AVAssetWriter?
     
     override func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
-        //        print("VideoWireDetectController - videoCapture")
         guard let image = self.wireDetector.detection(pixelBuffer: sampleBuffer, videoSize: videoSize) else {
             print("Captured image is null")
             return
@@ -45,9 +44,10 @@ class VideoWireDetectController: VideoController {
                     completion(false)
                     return
                 }
-                let orientation = videoTrack.preferredTransform.videoOrientation()
+                let orientation = videoTrack.load(.preferredTransform)
+//                let orientation = videoTrack.preferredTransform.videoOrientation()
                 print("Video orientation: \(orientation)")
-                print("videoTracks: \(videoTracks)")
+//                print("videoTracks: \(videoTracks)")
                 
                 // Settings for read and output
                 let outputSettings: [String: Any]  = [
@@ -101,34 +101,23 @@ class VideoWireDetectController: VideoController {
                 writerInput.requestMediaDataWhenReady(on: processingQueue) {
                     while writerInput.isReadyForMoreMediaData {
                         if let sampleBuffer = readerOutput.copyNextSampleBuffer() {
-                           
+                            
                             // Conversion between UIImage to CVPixelBuffer CVPixelBuffer to UIImage, CMSampleBuffer to UIImage: https://blog.csdn.net/watson2017/article/details/133786776
                             guard let  imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else{
                                 print("Can't create imageBuffer")
                                 return
                             }
                             
-                            guard let srcImage = self.wireDetector.detection(pixelBuffer: imageBuffer , videoSize: videoTrackNaturalSize),
-                                  let detectedImage = srcImage.rotated(by: orientation)
+                            
+                            
+                            guard let detectedImage = self.wireDetector.detection(pixelBuffer: imageBuffer , videoSize: videoTrackNaturalSize)
                             else {
                                 print("Detect image is null")
                                 return
                             }
-//                            guard let detectedPixelBuffer = detectedImage.pixelBuffer() else {
-//                                print("Can't create detectedPixelBuffer")
-//                                return
-//                            }
-//                            //                            guard let detectedSampleBuffer = detectedPixelBuffer.toCMSampleBuffer() else {
-//                            //                                print("Can't create detectedSampleBuffer")
-//                            //                                return
-//                            //                            }
-//                            let pixelFormat = CVPixelBufferGetPixelFormatType(detectedPixelBuffer)
                             let frameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-//                            pixelBufferAdaptor.append(detectedPixelBuffer, withPresentationTime: frameTime)
-                           let success = pixelBufferAdaptor.appendPixelBufferForImage(detectedImage, presentationTime: frameTime)
-                            print("Append success: \(success)")
-                            
-                            //                            writerInput.append(detectedSampleBuffer)
+                            let success = pixelBufferAdaptor.appendPixelBufferForImage(detectedImage, presentationTime: frameTime)
+//                            print("Append success: \(success)")
                         } else {
                             writerInput.markAsFinished()
                             self.videoWriter!.finishWriting {

@@ -12,7 +12,7 @@ extension CGAffineTransform {
         } else if self.a == -1.0 && self.b == 0 && self.c == 0 && self.d == -1.0 {
             return .down
         } else {
-            return .up // Default orientation
+            return .up 
         }
     }
 }

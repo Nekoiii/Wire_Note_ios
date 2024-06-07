@@ -25,8 +25,8 @@ struct HomePage: View {
                     NavigationLink(destination: CameraView(isDetectWire: true)) {
                         Text("Open Camera")
                     }
-                    NavigationLink(destination: WireDectionPage()) {
-                        Text("Wire Dection")
+                    NavigationLink(destination: WireDetectionPage()) {
+                        Text("Wire Detection")
                     }
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: false))

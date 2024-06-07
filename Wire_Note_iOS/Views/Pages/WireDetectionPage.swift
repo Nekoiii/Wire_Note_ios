@@ -1,7 +1,8 @@
 import SwiftUI
 import AVKit
 
-struct WireDectionPage: View {
+struct WireDetectionPage: View {
+//    @State private var originVideoURL: URL? = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
     @State private var originVideoURL: URL?
     @State private var processedVideoURL: URL?
     
@@ -200,8 +201,8 @@ struct WireDectionPage: View {
     }
 }
 
-struct WireDectionPage_Previews: PreviewProvider {
+struct WireDetectionPage_Previews: PreviewProvider {
     static var previews: some View {
-        WireDectionPage()
+        WireDetectionPage()
     }
 }
