@@ -1,3 +1,4 @@
+import UIKit
 import CoreVideo
 import AVFoundation
 import CoreML
@@ -44,10 +45,6 @@ class VideoWireDetectController: VideoController {
                     completion(false)
                     return
                 }
-                let orientation = videoTrack.load(.preferredTransform)
-//                let orientation = videoTrack.preferredTransform.videoOrientation()
-                print("Video orientation: \(orientation)")
-//                print("videoTracks: \(videoTracks)")
                 
                 // Settings for read and output
                 let outputSettings: [String: Any]  = [
@@ -70,9 +67,12 @@ class VideoWireDetectController: VideoController {
                     AVVideoWidthKey: videoTrackNaturalSize.width,
                     AVVideoHeightKey: videoTrackNaturalSize.height
                 ]
-                
                 let writerInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
                 
+                // Get orientation
+//                let orientation = videoTrack.preferredTransform.videoOrientation()
+                let orientation = try await videoTrack.load(.preferredTransform)
+                writerInput.transform = orientation
                 
                 if self.videoWriter!.canAdd(writerInput) {
                     self.videoWriter!.add(writerInput)
@@ -103,21 +103,31 @@ class VideoWireDetectController: VideoController {
                         if let sampleBuffer = readerOutput.copyNextSampleBuffer() {
                             
                             // Conversion between UIImage to CVPixelBuffer CVPixelBuffer to UIImage, CMSampleBuffer to UIImage: https://blog.csdn.net/watson2017/article/details/133786776
-                            guard let  imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else{
+                            guard let imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else{
                                 print("Can't create imageBuffer")
                                 return
                             }
                             
+                            let image = UIImage(pixelBuffer: imageBuffer)
+                            let rotatedImage = image?.transformed(by: orientation)
+                            guard let rotatedPixelBuffer = rotatedImage?.pixelBuffer() else {
+                                return
+                            }
                             
-                            
-                            guard let detectedImage = self.wireDetector.detection(pixelBuffer: imageBuffer , videoSize: videoTrackNaturalSize)
+                            guard let detectedImage = self.wireDetector.detection(pixelBuffer: rotatedPixelBuffer , videoSize: videoTrackNaturalSize)
                             else {
                                 print("Detect image is null")
                                 return
                             }
+                            
+                            let inverseTransform = orientation.inverted()
+                            guard let finalImage = detectedImage.transformed(by: inverseTransform) else {
+                                print("finalImage is null")
+                                return
+                            }
+                            
                             let frameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-                            let success = pixelBufferAdaptor.appendPixelBufferForImage(detectedImage, presentationTime: frameTime)
-//                            print("Append success: \(success)")
+                            let _ = pixelBufferAdaptor.appendPixelBufferForImage(finalImage, presentationTime: frameTime)
                         } else {
                             writerInput.markAsFinished()
                             self.videoWriter!.finishWriting {

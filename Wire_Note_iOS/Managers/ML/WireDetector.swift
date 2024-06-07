@@ -44,6 +44,7 @@ class WireDetector {
         }
         return UIImage(cgImage: cgImage)
     }
+    
     func detection(pixelBuffer: CVPixelBuffer, videoSize: CGSize) -> UIImage? {
         let originUIImage = pixelBufferToUIImage(pixelBuffer: pixelBuffer)
         do {
