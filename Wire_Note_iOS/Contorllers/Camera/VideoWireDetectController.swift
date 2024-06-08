@@ -9,6 +9,8 @@ class VideoWireDetectController: VideoController {
     // https://stackoverflow.com/questions/27608510/avfoundation-add-first-frame-to-video
     private var videoReader: AVAssetReader?
     private var videoWriter: AVAssetWriter?
+    
+    private let batchSize = 100
 
     override func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
         guard let image = wireDetector.detection(pixelBuffer: sampleBuffer, videoSize: videoSize) else {
@@ -92,12 +94,44 @@ class VideoWireDetectController: VideoController {
                 self.videoReader!.startReading()
                 self.videoWriter!.startWriting()
                 self.videoWriter!.startSession(atSourceTime: .zero)
+                
+//                var sampleBuffers: [CMSampleBuffer] = []
+//                while let sampleBuffer = readerOutput.copyNextSampleBuffer() {
+//                    sampleBuffers.append(sampleBuffer)
+//                    if sampleBuffers.count == batchSize {
+//                        processBatch(sampleBuffers, pixelBufferAdaptor: pixelBufferAdaptor, orientation: orientation, videoTrackNaturalSize: videoTrackNaturalSize)
+//                        sampleBuffers.removeAll()
+//                    }
+//                }
+                
+                // Process any remaining buffers
+//                if !sampleBuffers.isEmpty {
+//                    processBatch(sampleBuffers, pixelBufferAdaptor: pixelBufferAdaptor, orientation: orientation, videoTrackNaturalSize: videoTrackNaturalSize)
+//                }
+//                
+//                writerInput.markAsFinished()
+//                self.videoWriter!.finishWriting {
+//                    if self.videoWriter!.status == .completed {
+//                        print("Finished writing video.")
+//                        let fileManager = FileManager.default
+//                        
+//                        do {
+//                            checkFileExist(at: outputURL, onFailure: { path in
+//                                print("Processed video does not exist at path: \(path)")
+//                            })
+//                        } catch {
+//                            print("Error checking processed video file: \(error.localizedDescription)")
+//                        }
+//                        completion(true)
+//                    } else {
+//                        completion(false)
+//                    }
+//                }
 
                 let processingQueue = DispatchQueue(label: "processingQueue")
                 writerInput.requestMediaDataWhenReady(on: processingQueue) {
                     while writerInput.isReadyForMoreMediaData {
                         if let sampleBuffer = readerOutput.copyNextSampleBuffer() {
-                            // Conversion between UIImage to CVPixelBuffer CVPixelBuffer to UIImage, CMSampleBuffer to UIImage: https://blog.csdn.net/watson2017/article/details/133786776
                             guard let imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
                                 print("Can't create imageBuffer")
                                 return
@@ -155,5 +189,10 @@ class VideoWireDetectController: VideoController {
                 completion(false)
             }
         }
+    }
+    
+    private func processBatch(){
+        
+        
     }
 }

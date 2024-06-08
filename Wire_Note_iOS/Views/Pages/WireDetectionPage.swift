@@ -157,8 +157,6 @@ struct WireDetectionPage: View {
     }
 
     private func processVideo(url: URL) {
-        print("a -- processVideo")
-
         let videoWireDetectController = VideoWireDetectController()
 
         // * for test
@@ -176,7 +174,6 @@ struct WireDetectionPage: View {
         let outputPath = testMode == "SIMULATOR" ? outputPath_simulator : outputPath_real
 
         print("a -- outputPath: \(outputPath)")
-
         removeExistingFile(at: outputPath)
 
         videoWireDetectController.processVideoWithWireDetection(inputURL: url, outputURL: outputPath) { success in
