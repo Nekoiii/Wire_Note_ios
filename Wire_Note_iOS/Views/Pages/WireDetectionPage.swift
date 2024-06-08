@@ -37,7 +37,7 @@ struct WireDetectionPage: View {
                 }
 
             } else {
-                print("Video file does not exist at path: \(url.path)")
+                print("originVideoURL -- Video file does not exist at path: \(url.path)")
             }
         }
         .sheet(isPresented: $isPickerPresented, onDismiss: setupOriginPlayers) {
@@ -179,13 +179,13 @@ struct WireDetectionPage: View {
         videoWireDetectController.processVideoWithWireDetection(inputURL: url, outputURL: outputPath) { success in
             if success {
                 DispatchQueue.main.async {
-                    checkFileExist(at: outputPath, onSuccess: { url in
+                    checkFileExistAndNonEmpty(at: outputPath, onSuccess: { url in
                         print("processedVideoURL: \(url)")
                         self.processedVideoURL = url
                         self.isShowingOriginVideo = false
                         self.setupProcessedPlayer()
                     }, onFailure: { path in
-                        print("Processed video does not exist at path: \(path)")
+                        print("WireDetectionPage - after processVideoWithWireDetection - Processed video does not exist or is empty at path: \(path)")
                     })
                 }
             } else {
