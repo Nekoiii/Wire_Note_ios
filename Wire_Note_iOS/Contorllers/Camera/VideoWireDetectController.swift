@@ -9,8 +9,12 @@ class VideoWireDetectController: VideoController {
     // https://stackoverflow.com/questions/27608510/avfoundation-add-first-frame-to-video
     private var videoReader: AVAssetReader?
     private var videoWriter: AVAssetWriter?
-    
-    private let batchSize = 100
+    private var pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor?
+
+    private let batchSize = 5
+    private var sampleBufferBatch: [CMSampleBuffer] = []
+    private let processingQueue = DispatchQueue(label: "processingQueue")
+    private let group = DispatchGroup()
 
     override func videoCapture(sampleBuffer: CVPixelBuffer, videoSize: CGSize) {
         guard let image = wireDetector.detection(pixelBuffer: sampleBuffer, videoSize: videoSize) else {
@@ -47,6 +51,12 @@ class VideoWireDetectController: VideoController {
                     return
                 }
 
+                // Just want to see how many frames in total
+                let durationInSeconds = try await CMTimeGetSeconds(asset.load(.duration))
+                let frameRate = try await videoTrack.load(.nominalFrameRate)
+                let totalFrames = Int(durationInSeconds * Float64(frameRate))
+                print("totalFrames: \(totalFrames)")
+
                 // Settings for read and output
                 let outputSettings: [String: Any] = [
                     kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA),
@@ -70,7 +80,6 @@ class VideoWireDetectController: VideoController {
                 let writerInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
 
                 // Get orientation
-//                let orientation = videoTrack.preferredTransform.videoOrientation()
                 let orientation = try await videoTrack.load(.preferredTransform)
                 writerInput.transform = orientation
 
@@ -88,50 +97,17 @@ class VideoWireDetectController: VideoController {
                     kCVPixelBufferHeightKey as String: videoTrackNaturalSize.height,
                     kCVPixelBufferIOSurfacePropertiesKey as String: [:],
                 ]
-                let pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: sourcePixelBufferAttributes)
+                pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: sourcePixelBufferAttributes)
 
                 // start
                 self.videoReader!.startReading()
                 self.videoWriter!.startWriting()
                 self.videoWriter!.startSession(atSourceTime: .zero)
-                
-//                var sampleBuffers: [CMSampleBuffer] = []
-//                while let sampleBuffer = readerOutput.copyNextSampleBuffer() {
-//                    sampleBuffers.append(sampleBuffer)
-//                    if sampleBuffers.count == batchSize {
-//                        processBatch(sampleBuffers, pixelBufferAdaptor: pixelBufferAdaptor, orientation: orientation, videoTrackNaturalSize: videoTrackNaturalSize)
-//                        sampleBuffers.removeAll()
-//                    }
-//                }
-                
-                // Process any remaining buffers
-//                if !sampleBuffers.isEmpty {
-//                    processBatch(sampleBuffers, pixelBufferAdaptor: pixelBufferAdaptor, orientation: orientation, videoTrackNaturalSize: videoTrackNaturalSize)
-//                }
-//                
-//                writerInput.markAsFinished()
-//                self.videoWriter!.finishWriting {
-//                    if self.videoWriter!.status == .completed {
-//                        print("Finished writing video.")
-//                        let fileManager = FileManager.default
-//                        
-//                        do {
-//                            checkFileExist(at: outputURL, onFailure: { path in
-//                                print("Processed video does not exist at path: \(path)")
-//                            })
-//                        } catch {
-//                            print("Error checking processed video file: \(error.localizedDescription)")
-//                        }
-//                        completion(true)
-//                    } else {
-//                        completion(false)
-//                    }
-//                }
 
-                let processingQueue = DispatchQueue(label: "processingQueue")
                 writerInput.requestMediaDataWhenReady(on: processingQueue) {
                     while writerInput.isReadyForMoreMediaData {
                         if let sampleBuffer = readerOutput.copyNextSampleBuffer() {
+                            // Conversion between UIImage to CVPixelBuffer CVPixelBuffer to UIImage, CMSampleBuffer to UIImage: https://blog.csdn.net/watson2017/article/details/133786776
                             guard let imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
                                 print("Can't create imageBuffer")
                                 return
@@ -156,7 +132,7 @@ class VideoWireDetectController: VideoController {
                             }
 
                             let frameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-                            let _ = pixelBufferAdaptor.appendPixelBufferForImage(finalImage, presentationTime: frameTime)
+                            let _ = self.pixelBufferAdaptor?.appendPixelBufferForImage(finalImage, presentationTime: frameTime)
                         } else {
                             writerInput.markAsFinished()
                             self.videoWriter!.finishWriting {
@@ -184,15 +160,120 @@ class VideoWireDetectController: VideoController {
                         }
                     }
                 }
+                
+//                writerInput.requestMediaDataWhenReady(on: self.processingQueue) {
+//                    while writerInput.isReadyForMoreMediaData {
+//                        if let sampleBuffer = readerOutput.copyNextSampleBuffer() {
+//                            self.sampleBufferBatch.append(sampleBuffer)
+//
+//                            let count = self.sampleBufferBatch.count
+//                            if count == self.batchSize {
+//                                print("group.enter()")
+//                                self.group.enter()
+//                                let sampleBufferBatch = self.sampleBufferBatch
+//                                self.sampleBufferBatch.removeAll()
+//                                self.processBatch(with: sampleBufferBatch, videoSize: videoTrackNaturalSize, orientation: orientation) { finalImages in
+//                                    let frameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+//                                    for f in finalImages {
+//                                        let _ = self.pixelBufferAdaptor!.appendPixelBufferForImage(f, presentationTime: frameTime)
+//                                    }
+//                                    print("group.leave()")
+//                                    self.group.leave()
+//                                }
+//                            }
+//                        } else {
+//                            if !self.sampleBufferBatch.isEmpty {
+//                                print("Processing remaining frames")
+//                                self.group.enter()
+//                                let sampleBufferBatch = self.sampleBufferBatch
+//                                self.sampleBufferBatch.removeAll()
+//                                self.processBatch(with: sampleBufferBatch, videoSize: videoTrackNaturalSize, orientation: orientation) { finalImages in
+//                                    if let sampleBuffer = sampleBufferBatch.last {
+//                                        let frameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+//                                        for f in finalImages {
+//                                            let _ = self.pixelBufferAdaptor?.appendPixelBufferForImage(f, presentationTime: frameTime)
+//                                        }
+//                                    }
+//                                    self.group.leave()
+//                                }
+//                            }
+//
+//                            writerInput.markAsFinished()
+//                            print("writerInput.markAsFinished")
+//                            
+//                            
+//                            //                            group.notify(queue: self.processingQueue) {
+//                            self.group.notify(queue: .main) {
+//                                let currentStatus = self.videoWriter?.status
+//
+//                                if currentStatus == .failed {
+//                                    if let error = self.videoWriter?.error {
+//                                        print("Final video writer error: \(error.localizedDescription)")
+//                                    }
+//                                    completion(false)
+//                                } else if currentStatus == .writing {
+////                                    writerInput.markAsFinished()
+////                                    print("writerInput.markAsFinished")
+//                                    self.videoWriter?.finishWriting {
+//                                        let updatedStatus = self.videoWriter?.status
+//                                        if updatedStatus == .completed {
+//                                            print("videoWriter -- finishWriting")
+//                                            checkFileExist(at: outputURL)
+//                                            completion(true)
+//                                        } else {
+////                                            print("Video writer failed: \(String(describing: self.videoWriter?.error))")
+//                                            print("Video writer failed: \(self.videoWriter?.error?.localizedDescription ?? "Unknown error")")
+//                                            completion(false)
+//                                        }
+//                                    }
+//                                } else {
+//                                    print("Video writer is not in writing state: \(String(describing: self.videoWriter?.status.rawValue))")
+//                                    completion(false)
+//                                }
+//                            }
+//                            break
+//                        }
+//                    }
+//                }
             } catch {
                 print("Error processing video: \(error.localizedDescription)")
                 completion(false)
             }
         }
     }
-    
-    private func processBatch(){
-        
-        
+
+    private func processBatch(with sampleBuffers: [CMSampleBuffer], videoSize: CGSize, orientation: CGAffineTransform, completion: @escaping ([UIImage]) -> Void) {
+        DispatchQueue.global().async {
+            var finalImages: [UIImage] = []
+            
+            var rotatedPixelBuffers: [CVPixelBuffer] = []
+            for s in sampleBuffers {
+                guard let imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(s) else {
+                    print("Can't create imageBuffer")
+                    continue
+                }
+
+                let image = UIImage(pixelBuffer: imageBuffer)
+                let rotatedImage = image?.transformed(by: orientation)
+                guard let rotatedPixelBuffer = rotatedImage?.pixelBuffer() else {
+                    print("Can't create rotatedPixelBuffer")
+                    continue
+                }
+                rotatedPixelBuffers.append(rotatedPixelBuffer)
+            }
+
+            let detectedImages = self.wireDetector.batchDetection(pixelBuffers: rotatedPixelBuffers, videoSize: videoSize)
+
+            let inverseTransform = orientation.inverted()
+            for i in detectedImages {
+                guard let finalImage = i?.transformed(by: inverseTransform) else {
+                    print("Can't create finalImage")
+                    continue
+                }
+                finalImages.append(finalImage)
+            }
+            
+            completion(finalImages)
+        }
     }
 }

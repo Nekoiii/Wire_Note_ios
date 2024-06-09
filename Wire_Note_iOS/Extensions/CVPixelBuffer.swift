@@ -46,8 +46,7 @@ extension CVPixelBuffer {
         if let cgImage = image.cgImage {
             let pixelData = CVPixelBufferGetBaseAddress(self)
             let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-            guard
-                let context = CGContext(
+            guard let context = CGContext(
                     data: pixelData,
                     width: Int(image.size.width),
                     height: Int(image.size.height),

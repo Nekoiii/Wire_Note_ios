@@ -44,6 +44,43 @@ class WireDetector {
         return UIImage(cgImage: cgImage)
     }
 
+    func batchDetection(pixelBuffers: [CVPixelBuffer], videoSize: CGSize) -> [UIImage?] {
+        var results: [UIImage?] = []
+
+        do {
+            for pixelBuffer in pixelBuffers {
+                let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
+                try handler.perform([yoloRequest])
+                guard let observations = yoloRequest.results as? [VNRecognizedObjectObservation] else {
+                    results.append(pixelBufferToUIImage(pixelBuffer: pixelBuffer))
+                    continue
+                }
+
+                var detections: [Detection] = []
+                for result in observations {
+                    let flippedBox = CGRect(x: result.boundingBox.minX, y: 1 - result.boundingBox.maxY, width: result.boundingBox.width, height: result.boundingBox.height)
+                    let box = VNImageRectForNormalizedRect(flippedBox, Int(videoSize.width), Int(videoSize.height))
+
+                    guard let label = result.labels.first?.identifier as? String,
+                          let colorIndex = classes.firstIndex(of: label)
+                    else {
+                        print("WireDetector - Missing label or color index")
+                        results.append(pixelBufferToUIImage(pixelBuffer: pixelBuffer))
+                        continue
+                    }
+                    let detection = Detection(box: box, confidence: result.confidence, label: label, color: colors[colorIndex])
+                    detections.append(detection)
+                }
+                let drawImage = visualizeDetectResults(ciContext: ciContext, detections: detections, pixelBuffer: pixelBuffer)
+                results.append(drawImage ?? pixelBufferToUIImage(pixelBuffer: pixelBuffer))
+            }
+        } catch {
+            print("WireDetector - batch detection error: \(error)")
+        }
+
+        return results
+    }
+
     func detection(pixelBuffer: CVPixelBuffer, videoSize: CGSize) -> UIImage? {
         let originUIImage = pixelBufferToUIImage(pixelBuffer: pixelBuffer)
         do {
