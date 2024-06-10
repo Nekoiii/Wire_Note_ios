@@ -47,7 +47,6 @@
 		00E45AA02C0B21B700F8599A /* VideoWireDetectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A9F2C0B21B700F8599A /* VideoWireDetectController.swift */; };
 		4B26530E2C15D76500BDE950 /* NewWireDetectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26530D2C15D76500BDE950 /* NewWireDetectionPage.swift */; };
 		4B2653112C15E02000BDE950 /* WireDetectionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */; };
-		4B2653142C160D3D00BDE950 /* ImgArray2Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653132C160D3D00BDE950 /* ImgArray2Video.swift */; };
 		4B2653162C169B7B00BDE950 /* VideoBufferReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653152C169B7B00BDE950 /* VideoBufferReader.swift */; };
 		4B26531A2C16B58D00BDE950 /* VideoRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653192C16B58D00BDE950 /* VideoRenderer.swift */; };
 		4B26531C2C16D29E00BDE950 /* VideoWritter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26531B2C16D29E00BDE950 /* VideoWritter.swift */; };
@@ -111,7 +110,6 @@
 		4B26530D2C15D76500BDE950 /* NewWireDetectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWireDetectionPage.swift; sourceTree = "<group>"; };
 		4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionWorker.swift; sourceTree = "<group>"; };
 		4B2653122C1606F200BDE950 /* Wire-Note-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Wire-Note-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
-		4B2653132C160D3D00BDE950 /* ImgArray2Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgArray2Video.swift; sourceTree = "<group>"; };
 		4B2653152C169B7B00BDE950 /* VideoBufferReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoBufferReader.swift; sourceTree = "<group>"; };
 		4B2653192C16B58D00BDE950 /* VideoRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRenderer.swift; sourceTree = "<group>"; };
 		4B26531B2C16D29E00BDE950 /* VideoWritter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWritter.swift; sourceTree = "<group>"; };
@@ -281,7 +279,6 @@
 			children = (
 				4B26530F2C15DFE500BDE950 /* Worker */,
 				4B26530D2C15D76500BDE950 /* NewWireDetectionPage.swift */,
-				4B2653132C160D3D00BDE950 /* ImgArray2Video.swift */,
 			);
 			path = WireDetection;
 			sourceTree = "<group>";
@@ -469,7 +466,6 @@
 			files = (
 				00D32CC22C075AE300EE7EDA /* HistoryAudiosPage.swift in Sources */,
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
-				4B2653142C160D3D00BDE950 /* ImgArray2Video.swift in Sources */,
 				00AC98A82C036A8400C3F325 /* Constants.swift in Sources */,
 				0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */,
 				00AC989F2C02F1C200C3F325 /* SunoGenerateAPI.swift in Sources */,
