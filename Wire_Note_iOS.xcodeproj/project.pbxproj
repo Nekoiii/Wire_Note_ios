@@ -48,6 +48,7 @@
 		4B26530E2C15D76500BDE950 /* NewWireDetectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26530D2C15D76500BDE950 /* NewWireDetectionPage.swift */; };
 		4B2653112C15E02000BDE950 /* WireDetectionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */; };
 		4B2653142C160D3D00BDE950 /* ImgArray2Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653132C160D3D00BDE950 /* ImgArray2Video.swift */; };
+		4B2653162C169B7B00BDE950 /* VideoBufferReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653152C169B7B00BDE950 /* VideoBufferReader.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -109,6 +110,7 @@
 		4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionWorker.swift; sourceTree = "<group>"; };
 		4B2653122C1606F200BDE950 /* Wire-Note-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Wire-Note-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
 		4B2653132C160D3D00BDE950 /* ImgArray2Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgArray2Video.swift; sourceTree = "<group>"; };
+		4B2653152C169B7B00BDE950 /* VideoBufferReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoBufferReader.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */,
+				4B2653152C169B7B00BDE950 /* VideoBufferReader.swift */,
 			);
 			path = Worker;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				4B39415A2BF9FC4100A5B694 /* Wire_Note_iOS.xcdatamodeld in Sources */,
 				00AC98A52C03309100C3F325 /* AudioPlayerView.swift in Sources */,
 				00E45A9C2C0B1DF300F8599A /* UIImages.swift in Sources */,
+				4B2653162C169B7B00BDE950 /* VideoBufferReader.swift in Sources */,
 				00AC98AB2C036C4800C3F325 /* SunoResponse.swift in Sources */,
 				4B3941572BF9FC4100A5B694 /* Persistence.swift in Sources */,
 				00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */,

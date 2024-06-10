@@ -18,6 +18,7 @@ enum WireDetectionError: Error {
     case cancelled
     case noVideoTrack
     case cannotAddReaderOutput
+    case detectionFailed
 }
 
 extension WireDetectionError: LocalizedError {
@@ -33,62 +34,49 @@ extension WireDetectionError: LocalizedError {
             return "No video track found"
         case .cannotAddReaderOutput:
             return "Cannot add reader output"
+        case .detectionFailed:
+            return "Yolo detection failed"
         }
     }
 }
 
 class WireDetectionWorker {
     
-    struct VideoMetadata {
-        let frameRate: Double
-        let duration: CMTime
-        let videoTrackNaturalSize: CGSize
-        let totalFrames: Int
-    }
     
+    private let videoBufferReader: VideoBufferReader
     private let wireDetector = WireDetector()
     var handler: progressHandler?   // handler to report progress
-    private var videoMetadata: VideoMetadata?
+    
     private var unhandleFrames: [CVImageBuffer] = []  // unhandled frames
-    private var detectingFrames: [CVImageBuffer] = []  // frames in detecting
-    private var handledFrames: [UIImage] = []   // handled frames
+    private var handledFrames: [CVImageBuffer] = []   // handled frames
     private var isJobCancelled = false
-    private var isAllFramesQueued = false
-    
-    // thread for getting frames from video
-    let bufferReadingQueue = DispatchQueue(label: "bufferReadingQueue")
-    var lastReadFrameTime = CMTime.zero
-    let MAX_BUFFER_FRAMES = 50
+   
     // thread for processing frames
-    let bufferProcessingQueue = DispatchQueue(label: "bufferProcessingQueue")
+    var isProcessingFrames = false
+    private let bufferProcessingQueue = DispatchQueue(label: "bufferProcessingQueue")
+    private let PRELOAD_FRAMES = 10
     
-    var videoSize: CGSize {
-        return videoMetadata?.videoTrackNaturalSize ?? .zero
-    }
-    var totalFrames: Int {
-        return videoMetadata?.totalFrames ?? 0
+    
+    // video properties
+    private var videoSize: CGSize {
+        return videoBufferReader.videoSize
     }
     
+    private var totalFrames: Int {
+        return videoBufferReader.totalFrames
+    }
+    
+    init (url: URL) async throws {
+        self.videoBufferReader = try await VideoBufferReader(url: url)
+        videoBufferReader.delegate = self
+    }
     
     func processVideo(url: URL, handler: @escaping progressHandler) async throws {
         unhandleFrames.removeAll()
         handledFrames.removeAll()
-        detectingFrames.removeAll()
         self.handler = handler
         isJobCancelled = false
-        guard FileManager.default.fileExists(atPath: url.path)
-        else {
-            throw WireDetectionError.invalidURL
-        }
-        let asset = AVAsset(url: url)
-        let videoTrack = try await loadVideoMetadataAndTrack(asset: asset)
-        bufferReadingQueue.async {
-            do {
-                try self.getFramesFromVideo(asset: asset, videoTrack: videoTrack, startTime: .zero)
-            } catch {
-                handler(0, error)
-            }
-        }
+        videoBufferReader.readBuffer()
     }
     
     func cancelProcessing() {
@@ -96,96 +84,49 @@ class WireDetectionWorker {
         isJobCancelled = true
         unhandleFrames.removeAll()
         handledFrames.removeAll()
-        detectingFrames.removeAll()
+        videoBufferReader.cancelReading()
     }
     
-    // private methods
-    // thread for getting frames from video
-    
-    private func loadVideoMetadataAndTrack(asset: AVAsset) async throws -> AVAssetTrack {
-        guard let videoTrack = try await asset.loadTracks(withMediaType: .video).first else {
-            throw WireDetectionError.noVideoTrack
+    private func processUnhandledFrames() {
+        if isProcessingFrames {
+            return
         }
-        let framerate = try await videoTrack.load(.nominalFrameRate)
-        let duration = try await asset.load(.duration)
-        let videoTrackNaturalSize = try await videoTrack.load(.naturalSize)
-        let metadata = VideoMetadata(frameRate: Double(framerate), duration: duration, videoTrackNaturalSize: videoTrackNaturalSize, totalFrames: Int(duration.seconds * Double(framerate)))
-        self.videoMetadata = metadata
-        return videoTrack
-    }
-    
-    private func getFramesFromVideo(asset: AVAsset, videoTrack: AVAssetTrack, startTime: CMTime) throws {
-        let videoReader = try AVAssetReader(asset: asset)
-        let outputSettings: [String: Any]  = [
-            kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)
-        ]
-        let readerOutput = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: outputSettings)
-        if videoReader.canAdd(readerOutput) {
-            videoReader.add(readerOutput)
-        } else {
-            throw WireDetectionError.cannotAddReaderOutput
-        }
-        guard let duration = videoMetadata?.duration else {
-            throw WireDetectionError.processingFailed
-        }
-        videoReader.timeRange = CMTimeRange(start: startTime, duration: duration)
-        videoReader.timeRange.duration = duration
-        videoReader.startReading()
-        var isAllFramesRead = true
-        while let sampleBuffer = readerOutput.copyNextSampleBuffer() {
-            if isJobCancelled {
-                return
-            }
-            guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-                continue
-            }
-            unhandleFrames.append(imageBuffer)
-            if unhandleFrames.count >= MAX_BUFFER_FRAMES {
-                isAllFramesRead = false
-                lastReadFrameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-                if detectingFrames.isEmpty {
-                    detectingFrames.append(contentsOf: unhandleFrames)
-                    queueFramesForDetection()
-                } else {
-                    detectingFrames.append(contentsOf: unhandleFrames)
-                }
-            }
-        }
-        if isAllFramesRead {
-            isAllFramesQueued = true
-            if unhandleFrames.count < MAX_BUFFER_FRAMES {
-                detectingFrames.append(contentsOf: unhandleFrames)
-                queueFramesForDetection()
-            }
-        }
-    }
-    
-    private func queueFramesForDetection() {
+        isProcessingFrames = true
         bufferProcessingQueue.async {
             print("queueFramesForDetection")
-            while !self.detectingFrames.isEmpty {
-                if self.isJobCancelled {
-                    return
+            do {
+                while !self.unhandleFrames.isEmpty {
+                    if self.isJobCancelled {
+                        return
+                    }
+                    let imageBuffer = self.unhandleFrames.removeFirst()
+                    let startTs = Date().timeIntervalSince1970
+                    let results = try self.wireDetector.detect(pixelBuffer: imageBuffer, videoSize: self.videoSize)
+                    self.handledFrames.append(imageBuffer)
+                    let progress = min(Float(self.handledFrames.count) / Float(self.totalFrames), 0.99)
+                    print("Handled frames: \(self.handledFrames.count) / \(self.totalFrames)")
+                    self.handler?(progress, nil)
+                    print("Detection time: \(Date().timeIntervalSince1970 - startTs)")
+                    if self.unhandleFrames.count < self.PRELOAD_FRAMES {
+                        self.videoBufferReader.readBuffer()
+                    }
                 }
-                let imageBuffer = self.detectingFrames.removeFirst()
-                guard let image = self.wireDetector.detection(pixelBuffer: imageBuffer, videoSize: self.videoSize) else {
-                    continue
-                }
-                self.handledFrames.append(image)
-                let progress = min(Float(self.handledFrames.count) / Float(self.totalFrames), 0.99)
-                self.handler?(progress, nil)
+            } catch {
+                self.handler?(0, error)
             }
-            if self.isAllFramesQueued {
-                
-            }
+            self.isProcessingFrames = false
         }
     }
     
     var outputURL: URL {
         return URL(fileURLWithPath: "/Users/js/temp/output.mp4")
     }
-    
-    
-    
-    
+}
+
+// MARK: - VideoBufferReaderDelegate
+extension WireDetectionWorker: VideoBufferReaderDelegate {
+    func videoBufferReaderDidFinishReading(buffers: [CVImageBuffer]) {
+        unhandleFrames.append(contentsOf: buffers)
+        processUnhandledFrames()
+    }
 }

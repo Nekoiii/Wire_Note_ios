@@ -80,12 +80,23 @@ class WireDetector {
 
         return results
     }
+    
+    func detect(pixelBuffer: CVPixelBuffer, videoSize: CGSize) throws -> [VNRecognizedObjectObservation] {
+        let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
+        try handler.perform([yoloRequest])
+        guard let results = yoloRequest.results as? [VNRecognizedObjectObservation] else {
+            throw WireDetectionError.detectionFailed
+        }
+        return results
+    }
 
     func detection(pixelBuffer: CVPixelBuffer, videoSize: CGSize) -> UIImage? {
         let originUIImage = pixelBufferToUIImage(pixelBuffer: pixelBuffer)
         do {
             let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
+            let start = Date().timeIntervalSince1970
             try handler.perform([yoloRequest])
+            print("Yolo handler time: \(Date().timeIntervalSince1970 - start)")
             guard let results = yoloRequest.results as? [VNRecognizedObjectObservation] else {
                 return originUIImage
             }
@@ -104,7 +115,7 @@ class WireDetector {
                 detections.append(detection)
             }
             let drawImage = visualizeDetectResults(ciContext: ciContext, detections: detections, pixelBuffer: pixelBuffer)
-            return drawImage ?? originUIImage
+            return originUIImage
         } catch {
             print("WireDetector - detection error: \(error)")
             return originUIImage

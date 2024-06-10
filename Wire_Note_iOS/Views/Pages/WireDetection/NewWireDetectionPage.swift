@@ -18,7 +18,7 @@ struct NewWireDetectionPage: View {
     @State private var isShowingAlert = false
     @State private var errorMsg = ""
     @State private var alertTitle = "Error"
-    @State private var worker = WireDetectionWorker()
+    @State private var worker: WireDetectionWorker?
     var percentage: String {
         return String(format: "%.0f%%", progress * 100)
     }
@@ -67,7 +67,8 @@ struct NewWireDetectionPage: View {
                             Text("Video is processing...(\(percentage))")
                             Spacer()
                             Button {
-                                worker.cancelProcessing()
+                                worker?.cancelProcessing()
+                                isProcessing = false
                             } label: {
                                 Text("Cancel")
                                     .foregroundColor(.red)
@@ -105,10 +106,12 @@ struct NewWireDetectionPage: View {
         isProcessing = true
         Task {
             do {
-                guard let url = videoUrl else {
+                guard let url = videoUrl
+                else {
                     throw WireDetectionError.invalidURL
                 }
-                try await worker.processVideo(url: url) { progress, error  in
+                self.worker = try await WireDetectionWorker(url: url)
+                try await worker?.processVideo(url: url) { progress, error  in
                     DispatchQueue.main.async {
                         self.progress = progress
                         if let error = error {
