@@ -9,7 +9,7 @@ import SwiftUI
 import AVKit
 
 
-struct WireDetectionPage: View {
+struct NewWireDetectionPage: View {
     @State private var videoUrl: URL?
     @State private var isPickerPresented = false
     @State private var player = AVPlayer()

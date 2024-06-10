@@ -28,7 +28,7 @@ struct HomePage: View {
                         Text("Wire Detection")
                     }
                     NavigationLink {
-                        WireDetectionPage()
+                        NewWireDetectionPage()
                     } label: {
                         Text("Wire Detection")
                     }
