@@ -43,6 +43,9 @@
 		00E45A9A2C0AFEA300F8599A /* VideoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A992C0AFEA300F8599A /* VideoPicker.swift */; };
 		00E45A9C2C0B1DF300F8599A /* UIImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A9B2C0B1DF300F8599A /* UIImages.swift */; };
 		00E45AA02C0B21B700F8599A /* VideoWireDetectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E45A9F2C0B21B700F8599A /* VideoWireDetectController.swift */; };
+		4B26530E2C15D76500BDE950 /* WireDetectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26530D2C15D76500BDE950 /* WireDetectionPage.swift */; };
+		4B2653112C15E02000BDE950 /* WireDetectionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */; };
+		4B2653142C160D3D00BDE950 /* ImgArray2Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653132C160D3D00BDE950 /* ImgArray2Video.swift */; };
 		4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */; };
 		4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39414F2BF9FC4000A5B694 /* ContentView.swift */; };
 		4B3941522BF9FC4100A5B694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B3941512BF9FC4100A5B694 /* Assets.xcassets */; };
@@ -98,6 +101,10 @@
 		00E45A992C0AFEA300F8599A /* VideoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPicker.swift; sourceTree = "<group>"; };
 		00E45A9B2C0B1DF300F8599A /* UIImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImages.swift; sourceTree = "<group>"; };
 		00E45A9F2C0B21B700F8599A /* VideoWireDetectController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWireDetectController.swift; sourceTree = "<group>"; };
+		4B26530D2C15D76500BDE950 /* WireDetectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionPage.swift; sourceTree = "<group>"; };
+		4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionWorker.swift; sourceTree = "<group>"; };
+		4B2653122C1606F200BDE950 /* Wire-Note-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Wire-Note-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
+		4B2653132C160D3D00BDE950 /* ImgArray2Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgArray2Video.swift; sourceTree = "<group>"; };
 		4B39414A2BF9FC4000A5B694 /* Wire_Note_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wire_Note_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wire_Note_iOSApp.swift; sourceTree = "<group>"; };
 		4B39414F2BF9FC4000A5B694 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -231,6 +238,7 @@
 		00D32CC32C075AF200EE7EDA /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				4B26530C2C15D75300BDE950 /* WireDetection */,
 				00AC98B32C04C0C500C3F325 /* ImageToMusicPage.swift */,
 				00AC98A02C02F1F000C3F325 /* TextToMusicPage.swift */,
 				00AC98922C027FA600C3F325 /* HomePage.swift */,
@@ -258,6 +266,24 @@
 			path = Representables;
 			sourceTree = "<group>";
 		};
+		4B26530C2C15D75300BDE950 /* WireDetection */ = {
+			isa = PBXGroup;
+			children = (
+				4B26530F2C15DFE500BDE950 /* Worker */,
+				4B26530D2C15D76500BDE950 /* WireDetectionPage.swift */,
+				4B2653132C160D3D00BDE950 /* ImgArray2Video.swift */,
+			);
+			path = WireDetection;
+			sourceTree = "<group>";
+		};
+		4B26530F2C15DFE500BDE950 /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */,
+			);
+			path = Worker;
+			sourceTree = "<group>";
+		};
 		4B3941412BF9FC4000A5B694 = {
 			isa = PBXGroup;
 			children = (
@@ -278,6 +304,7 @@
 		4B39414C2BF9FC4000A5B694 /* Wire_Note_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4B2653122C1606F200BDE950 /* Wire-Note-iOS-Info.plist */,
 				00E45A972C0AFAB600F8599A /* Contorllers */,
 				4B3941602BF9FE9A00A5B694 /* Models */,
 				00AC98B82C060D4C00C3F325 /* Styles */,
@@ -427,6 +454,7 @@
 			files = (
 				00D32CC22C075AE300EE7EDA /* HistoryAudiosPage.swift in Sources */,
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
+				4B2653142C160D3D00BDE950 /* ImgArray2Video.swift in Sources */,
 				00AC98A82C036A8400C3F325 /* Constants.swift in Sources */,
 				0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */,
 				00AC989F2C02F1C200C3F325 /* SunoGenerateAPI.swift in Sources */,
@@ -445,6 +473,7 @@
 				00D32CC52C07631800EE7EDA /* FileTypes.swift in Sources */,
 				006FCE5C2C0CB1370081546E /* VideoUtils.swift in Sources */,
 				00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */,
+				4B2653112C15E02000BDE950 /* WireDetectionWorker.swift in Sources */,
 				00AC98972C0284C600C3F325 /* DetectResultVisualization.swift in Sources */,
 				00AC98932C027FA600C3F325 /* HomePage.swift in Sources */,
 				0024D7752C10795E002D8402 /* LoadingState.swift in Sources */,
@@ -452,6 +481,7 @@
 				0097DB0E2C072B64007D3328 /* GeneratedAudioView.swift in Sources */,
 				4B3941652BF9FEF200A5B694 /* VideoController.swift in Sources */,
 				006FCE622C0F34ED0081546E /* CVPixelBuffer.swift in Sources */,
+				4B26530E2C15D76500BDE950 /* WireDetectionPage.swift in Sources */,
 				4B3941762BFA057200A5B694 /* WireDetector.swift in Sources */,
 				4B3941792BFA100F00A5B694 /* Images.swift in Sources */,
 				00AC98B02C0485D400C3F325 /* AudioPlayerManager.swift in Sources */,
@@ -611,6 +641,7 @@
 				DEVELOPMENT_TEAM = WZ2328U4W4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Wire-Note-iOS-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera to recognize wire.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -641,6 +672,7 @@
 				DEVELOPMENT_TEAM = WZ2328U4W4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Wire-Note-iOS-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera to recognize wire.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
