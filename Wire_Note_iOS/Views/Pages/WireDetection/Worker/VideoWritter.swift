@@ -100,7 +100,7 @@ class VideoWritter {
                     print("[Writter] pixel buffer adaptor not initialized")
                     continue
                 }
-                let presentationTime = CMTime(value: CMTimeValue(self.frameCount), timescale: 30)
+                let presentationTime = CMTime(value: CMTimeValue(self.frameCount), timescale: self.fps)
                 let success = adapter.append(frame, withPresentationTime: presentationTime)
                 if !success {
                     print("[Writter] failed to append frame")
