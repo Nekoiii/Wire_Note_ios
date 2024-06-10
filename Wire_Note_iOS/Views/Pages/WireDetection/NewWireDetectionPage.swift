@@ -110,7 +110,7 @@ struct NewWireDetectionPage: View {
                 else {
                     throw WireDetectionError.invalidURL
                 }
-                self.worker = try await WireDetectionWorker(url: url)
+                self.worker = try await WireDetectionWorker(inputURL: url, outputURL: outputURL)
                 try await worker?.processVideo(url: url) { progress, error  in
                     DispatchQueue.main.async {
                         self.progress = progress

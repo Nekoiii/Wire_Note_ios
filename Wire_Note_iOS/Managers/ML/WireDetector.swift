@@ -115,7 +115,7 @@ class WireDetector {
                 detections.append(detection)
             }
             let drawImage = visualizeDetectResults(ciContext: ciContext, detections: detections, pixelBuffer: pixelBuffer)
-            return originUIImage
+            return drawImage ?? originUIImage
         } catch {
             print("WireDetector - detection error: \(error)")
             return originUIImage

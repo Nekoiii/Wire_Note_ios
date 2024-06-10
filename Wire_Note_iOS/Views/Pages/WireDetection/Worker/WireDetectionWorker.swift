@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import AVFoundation
+import Vision
 
 typealias progressHandler = (Float, Error?) -> Void
 
@@ -41,21 +42,24 @@ extension WireDetectionError: LocalizedError {
 }
 
 class WireDetectionWorker {
-    
-    
     private let videoBufferReader: VideoBufferReader
     private let wireDetector = WireDetector()
-    var handler: progressHandler?   // handler to report progress
+    private let renderer = VideoRenderer()
+    private let writter = VideoWritter()
+    
+    var progressHandler: progressHandler?   // handler to report progress
     
     private var unhandleFrames: [CVImageBuffer] = []  // unhandled frames
-    private var handledFrames: [CVImageBuffer] = []   // handled frames
+
     private var isJobCancelled = false
+    
+    private var handledFramesCount = 0
    
     // thread for processing frames
     var isProcessingFrames = false
     private let bufferProcessingQueue = DispatchQueue(label: "bufferProcessingQueue")
     private let PRELOAD_FRAMES = 10
-    
+    private let outputURL: URL
     
     // video properties
     private var videoSize: CGSize {
@@ -66,24 +70,31 @@ class WireDetectionWorker {
         return videoBufferReader.totalFrames
     }
     
-    init (url: URL) async throws {
-        self.videoBufferReader = try await VideoBufferReader(url: url)
+    private var fps: CMTimeScale {
+        return Int32(videoBufferReader.framerate)
+    }
+    
+    init (inputURL: URL, outputURL: URL) async throws {
+        self.outputURL = outputURL
+        self.videoBufferReader = try await VideoBufferReader(url: inputURL)
         videoBufferReader.delegate = self
+        self.renderer.updateVideoMetadata(videoSize: self.videoSize, detector: self.wireDetector)
+        self.renderer.delegate = self
+        try self.writter.updateVideoSettings(outputURL: outputURL, videoSize: self.videoSize, fps: self.fps)
+        self.writter.delegate = self
     }
     
     func processVideo(url: URL, handler: @escaping progressHandler) async throws {
         unhandleFrames.removeAll()
-        handledFrames.removeAll()
-        self.handler = handler
+        self.progressHandler = handler
         isJobCancelled = false
         videoBufferReader.readBuffer()
     }
     
     func cancelProcessing() {
-        handler?(0, WireDetectionError.cancelled)
+        progressHandler?(0, WireDetectionError.cancelled)
         isJobCancelled = true
         unhandleFrames.removeAll()
-        handledFrames.removeAll()
         videoBufferReader.cancelReading()
     }
     
@@ -101,32 +112,68 @@ class WireDetectionWorker {
                     }
                     let imageBuffer = self.unhandleFrames.removeFirst()
                     let startTs = Date().timeIntervalSince1970
-                    let results = try self.wireDetector.detect(pixelBuffer: imageBuffer, videoSize: self.videoSize)
-                    self.handledFrames.append(imageBuffer)
-                    let progress = min(Float(self.handledFrames.count) / Float(self.totalFrames), 0.99)
-                    print("Handled frames: \(self.handledFrames.count) / \(self.totalFrames)")
-                    self.handler?(progress, nil)
+                    let result = try self.wireDetector.detect(pixelBuffer: imageBuffer, videoSize: self.videoSize)
+                    self.handledFramesCount += 1
+                    let progress = min(Float(self.handledFramesCount) / Float(self.totalFrames), 0.99)
+                    print("Handled frames: \(self.handledFramesCount) / \(self.totalFrames)")
+                    self.progressHandler?(progress, nil)
                     print("Detection time: \(Date().timeIntervalSince1970 - startTs)")
                     if self.unhandleFrames.count < self.PRELOAD_FRAMES {
                         self.videoBufferReader.readBuffer()
                     }
+                    self.renderer.appendFrames(frame: imageBuffer, result: result)
                 }
             } catch {
-                self.handler?(0, error)
+                self.progressHandler?(0, error)
             }
             self.isProcessingFrames = false
         }
-    }
-    
-    var outputURL: URL {
-        return URL(fileURLWithPath: "/Users/js/temp/output.mp4")
     }
 }
 
 // MARK: - VideoBufferReaderDelegate
 extension WireDetectionWorker: VideoBufferReaderDelegate {
     func videoBufferReaderDidFinishReading(buffers: [CVImageBuffer]) {
+        print("videoBufferReaderDidFinishReading")
         unhandleFrames.append(contentsOf: buffers)
         processUnhandledFrames()
     }
+}
+
+extension WireDetectionWorker: VideoRendererDelegate {
+    func videoRendererDidFinishRendering(buffer: CVPixelBuffer) {
+        print("videoRendererDidFinishRendering")
+        do {
+            try writter.writeFrame(buffer: buffer)
+        } catch {
+           print("Failed to write frame: \(error)")
+        }
+    }
+}
+
+extension WireDetectionWorker: VideoWritterDelegate {
+    
+    var isAllProcessFinished: Bool {
+        return videoBufferReader.isAllFramesRead && !isProcessingFrames && !renderer.isRendering
+    }
+    
+    func videoWritterDidFinishWritingFrames() {
+        print("videoWritterDidFinishWritingFrames")
+        if isAllProcessFinished {
+            do {
+                try writter.finish()
+            } catch {
+                print("Failed to finish writter: \(error)")
+            }
+        } else {
+            print("isAllFramesRead: \(videoBufferReader.isAllFramesRead), isProcessingFrames: \(isProcessingFrames), isRendering: \(renderer.isRendering)")
+        }
+    }
+    
+    func videoWritterDidFinishWritingFile() {
+        print("videoWritterDidFinishWritingFile")
+        progressHandler?(1, nil)
+    }
+    
+    
 }

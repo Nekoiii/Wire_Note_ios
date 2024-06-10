@@ -26,6 +26,7 @@ class VideoBufferReader {
     var videoSize: CGSize
     var totalFrames: Int
     var isAllFramesRead = false
+    var isReadingBuffer = false
     
     // delegate
     weak var delegate: VideoBufferReaderDelegate?
@@ -44,10 +45,8 @@ class VideoBufferReader {
     
     // thread
     private var isJobCancelled = false
-    private var isReadingBuffer = false
+    private var isReaderStarted = false
     private let bufferReadingQueue = DispatchQueue(label: "com.wirenote.bufferReadingQueue")
-    
-    private var buffers: [CVImageBuffer] = []
     
     init (url: URL) async throws {
         guard FileManager.default.fileExists(atPath: url.path)
@@ -86,8 +85,9 @@ class VideoBufferReader {
         bufferReadingQueue.async {
             let MAX_BUFFER_FRAMES = 50
             var buffers: [CVImageBuffer] = []
-            if self.reader.status != .reading {
+            if !self.isReaderStarted {
                 self.reader.startReading()
+                self.isReaderStarted = true
             }
             while let sampleBuffer = self.readerOutput.copyNextSampleBuffer() {
                 if self.isJobCancelled {
@@ -109,17 +109,13 @@ class VideoBufferReader {
     }
     
     private func readComplete(buffers: [CVImageBuffer]) {
-        self.buffers = buffers
         self.isReadingBuffer = false
         self.delegate?.videoBufferReaderDidFinishReading(buffers: buffers)
-        self.buffers.removeAll()
-        
     }
     
     func cancelReading() {
         isJobCancelled = true
         reader.cancelReading()
-        self.buffers.removeAll()
     }
     
     
