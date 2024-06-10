@@ -53,13 +53,25 @@ struct NewWireDetectionPage: View {
                 }
                 .padding(.vertical, 10)
                 if progress == 1 {
-                    Button {
-                        player = AVPlayer(url: outputURL)
-                        player.play()
-                    } label: {
-                        Label("Play Video", systemImage: "play.fill")
+                    Divider()
+                    VStack {
+                        Text("🎉 Video processed successfully 🎉")
+                            .font(.title3)
+                        HStack {
+                            Button {
+                                player = AVPlayer(url: outputURL)
+                                player.play()
+                            } label: {
+                                Label("Play Video", systemImage: "play.fill")
+                            }
+                            .buttonStyle(BorderedButtonStyle(borderColor: .green, isDisable: isProcessButtonDisabled))
+                            ShareLink(item: outputURL)
+                            .buttonStyle(BorderedButtonStyle(borderColor: .blue, isDisable: isProcessButtonDisabled))
+                        }
                     }
-                    .buttonStyle(BorderedButtonStyle(borderColor: .green, isDisable: isProcessButtonDisabled))
+                    .padding(.top, 10)
+                    // add scale animation
+                    .transition(.scale)
                 }
                 if isProcessing {
                     VStack {
@@ -113,19 +125,19 @@ struct NewWireDetectionPage: View {
                 self.worker = try await WireDetectionWorker(inputURL: url, outputURL: outputURL)
                 try await worker?.processVideo(url: url) { progress, error  in
                     DispatchQueue.main.async {
-                        self.progress = progress
+                        if progress == 1 {
+                            withAnimation {
+                                self.progress = progress
+                                self.isProcessing = false
+                            }
+                        } else {
+                            self.progress = progress
+                        }
                         if let error = error {
                             alertTitle = "Error"
                             isShowingAlert = true
                             errorMsg = error.localizedDescription
                             isProcessing = false
-                        } else {
-                            if progress == 1 {
-                                alertTitle = "Success"
-                                isShowingAlert = true
-                                errorMsg = "Video processing completed successfully"
-                                isProcessing = false
-                            }
                         }
                     }
                 }
@@ -144,6 +156,6 @@ struct NewWireDetectionPage: View {
 
 #Preview {
     NavigationStack {
-        WireDetectionPage()
+        NewWireDetectionPage()
     }
 }
