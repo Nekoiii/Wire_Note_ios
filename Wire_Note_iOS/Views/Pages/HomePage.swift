@@ -27,6 +27,11 @@ struct HomePage: View {
                     NavigationLink(destination: WireDetectionPage()) {
                         Text("Wire Detection")
                     }
+                    NavigationLink {
+                        WireDetectionPage()
+                    } label: {
+                        Text("Wire Detection")
+                    }
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: false))
                 .padding(.vertical, 10)
