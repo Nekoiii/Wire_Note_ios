@@ -17,7 +17,7 @@ struct HomePage: View {
                     NavigationLink(destination: ImageToMusicPage()) {
                         Text("Image To Music")
                     }
-                    NavigationLink(destination: VideoToMusicPage()) {
+                    NavigationLink(destination: VideoToMusicPages.UploadVideoPage()) {
                         Text("Video To Music")
                     }
                     Spacer().frame(height: 50)

@@ -13,7 +13,7 @@
 		005FFE3C2C0C2B1C00D28AD8 /* CheckFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005FFE3B2C0C2B1C00D28AD8 /* CheckFile.swift */; };
 		006FCE5C2C0CB1370081546E /* VideoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5B2C0CB1370081546E /* VideoUtils.swift */; };
 		006FCE5E2C0CB1560081546E /* ImageViewer.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */; };
-		006FCE602C0CB1650081546E /* VideoToMusicPage.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5F2C0CB1650081546E /* VideoToMusicPage.swift .swift */; };
+		006FCE602C0CB1650081546E /* UploadVideoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5F2C0CB1650081546E /* UploadVideoPage.swift */; };
 		006FCE622C0F34ED0081546E /* CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE612C0F34ED0081546E /* CVPixelBuffer.swift */; };
 		00874DD22C0C6D5C00F10B69 /* RemoveExistingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */; };
 		0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */; };
@@ -34,6 +34,8 @@
 		00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B62C05F3D900C3F325 /* ImagePicker.swift */; };
 		00AC98BA2C060D5900C3F325 /* BorderedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */; };
 		00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */; };
+		00C21E092C1C871100F3FA67 /* ExtractAndDescribeFramesPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C21E082C1C871100F3FA67 /* ExtractAndDescribeFramesPage.swift */; };
+		00C21E0B2C1C8AC900F3FA67 /* VideoToMusicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C21E0A2C1C8AC900F3FA67 /* VideoToMusicData.swift */; };
 		00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CBF2C0744D900EE7EDA /* DownloadAndSaveFile.swift */; };
 		00D32CC22C075AE300EE7EDA /* HistoryAudiosPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */; };
 		00D32CC52C07631800EE7EDA /* FileTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D32CC42C07631800EE7EDA /* FileTypes.swift */; };
@@ -75,7 +77,7 @@
 		005FFE3B2C0C2B1C00D28AD8 /* CheckFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckFile.swift; sourceTree = "<group>"; };
 		006FCE5B2C0CB1370081546E /* VideoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUtils.swift; sourceTree = "<group>"; };
 		006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageViewer.swift .swift"; sourceTree = "<group>"; };
-		006FCE5F2C0CB1650081546E /* VideoToMusicPage.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoToMusicPage.swift .swift"; sourceTree = "<group>"; };
+		006FCE5F2C0CB1650081546E /* UploadVideoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadVideoPage.swift; sourceTree = "<group>"; };
 		006FCE612C0F34ED0081546E /* CVPixelBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPixelBuffer.swift; sourceTree = "<group>"; };
 		00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveExistingFile.swift; sourceTree = "<group>"; };
 		0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentalToggleView.swift; sourceTree = "<group>"; };
@@ -96,6 +98,8 @@
 		00AC98B62C05F3D900C3F325 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		00AC98B92C060D5900C3F325 /* BorderedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButtonStyle.swift; sourceTree = "<group>"; };
 		00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidButtonStyle.swift; sourceTree = "<group>"; };
+		00C21E082C1C871100F3FA67 /* ExtractAndDescribeFramesPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractAndDescribeFramesPage.swift; sourceTree = "<group>"; };
+		00C21E0A2C1C8AC900F3FA67 /* VideoToMusicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoToMusicData.swift; sourceTree = "<group>"; };
 		00D32CBF2C0744D900EE7EDA /* DownloadAndSaveFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAndSaveFile.swift; sourceTree = "<group>"; };
 		00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryAudiosPage.swift; sourceTree = "<group>"; };
 		00D32CC42C07631800EE7EDA /* FileTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypes.swift; sourceTree = "<group>"; };
@@ -235,6 +239,16 @@
 			path = Styles;
 			sourceTree = "<group>";
 		};
+		00C21E052C1C824800F3FA67 /* VideoToMusic */ = {
+			isa = PBXGroup;
+			children = (
+				006FCE5F2C0CB1650081546E /* UploadVideoPage.swift */,
+				00C21E082C1C871100F3FA67 /* ExtractAndDescribeFramesPage.swift */,
+				00C21E0A2C1C8AC900F3FA67 /* VideoToMusicData.swift */,
+			);
+			path = VideoToMusic;
+			sourceTree = "<group>";
+		};
 		00D32CBE2C07420D00EE7EDA /* ML */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,7 +266,7 @@
 				00AC98922C027FA600C3F325 /* HomePage.swift */,
 				00D32CC12C075AE300EE7EDA /* HistoryAudiosPage.swift */,
 				00E45A952C0AF9BA00F8599A /* OldWireDetectionPage.swift */,
-				006FCE5F2C0CB1650081546E /* VideoToMusicPage.swift .swift */,
+				00C21E052C1C824800F3FA67 /* VideoToMusic */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -467,6 +481,7 @@
 				00D32CC22C075AE300EE7EDA /* HistoryAudiosPage.swift in Sources */,
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
 				00AC98A82C036A8400C3F325 /* Constants.swift in Sources */,
+				00C21E0B2C1C8AC900F3FA67 /* VideoToMusicData.swift in Sources */,
 				0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */,
 				00AC989F2C02F1C200C3F325 /* SunoGenerateAPI.swift in Sources */,
 				00D32CCB2C09FB4600EE7EDA /* AudioToTextView.swift in Sources */,
@@ -477,7 +492,7 @@
 				00AC98A12C02F1F000C3F325 /* TextToMusicPage.swift in Sources */,
 				0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */,
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
-				006FCE602C0CB1650081546E /* VideoToMusicPage.swift .swift in Sources */,
+				006FCE602C0CB1650081546E /* UploadVideoPage.swift in Sources */,
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
 				00AC98B22C04BFAB00C3F325 /* ImageToText.swift in Sources */,
@@ -516,6 +531,7 @@
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,
 				00E45AA02C0B21B700F8599A /* VideoWireDetectController.swift in Sources */,
 				00E45A962C0AF9BA00F8599A /* OldWireDetectionPage.swift in Sources */,
+				00C21E092C1C871100F3FA67 /* ExtractAndDescribeFramesPage.swift in Sources */,
 				00D32CC92C09F1BE00EE7EDA /* AudioToText.swift in Sources */,
 				00AC989A2C028E4000C3F325 /* MusicalNotes.swift in Sources */,
 				4B39414E2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift in Sources */,
