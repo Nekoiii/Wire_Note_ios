@@ -4,12 +4,15 @@ import SwiftUI
 extension VideoToMusicPages {
     struct GenerateMusicPage: View {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
-        
+
         
         @State private var loadingState: LoadingState?
         
-        @State private var isMakeInstrumental: Bool = false
-        @State private var generatedAudioUrls: [URL] = []
+        @State private var isMakeInstrumental: Bool
+        
+        init(isMakeInstrumental: Bool = false) {
+            self._isMakeInstrumental = State(initialValue: isMakeInstrumental)
+        }
         
         var body: some View {
             VStack{
@@ -21,9 +24,14 @@ extension VideoToMusicPages {
                 
                 generateMusicArea
                 
-                GeneratedAudioView(generatedAudioUrls: $generatedAudioUrls)
+                GeneratedAudioView(generatedAudioUrls: $videoToMusicData.generatedAudioUrls)
                 
-                
+                let isDGeneratedAudiosNil = videoToMusicData.description.isEmpty
+                NavigationLink(destination: VideoToMusicPages.CompositeVideoPage().environmentObject(videoToMusicData)){
+                    Text("-> Composite Video")
+                }
+                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isDGeneratedAudiosNil))
+                .disabled(isDGeneratedAudiosNil)
             }
             .onAppear {
                 Task {
@@ -68,7 +76,7 @@ extension VideoToMusicPages {
             let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
             
             let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
-            generatedAudioUrls = audioUrls
+            videoToMusicData.generatedAudioUrls = audioUrls
         }
         
         

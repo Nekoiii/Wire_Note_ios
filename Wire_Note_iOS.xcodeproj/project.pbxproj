@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0021DF812C1C99BD009EDAF5 /* GenerateMusicPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021DF802C1C99BD009EDAF5 /* GenerateMusicPage.swift */; };
+		0021DF832C1CA7D2009EDAF5 /* CompositeVideoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021DF822C1CA7D2009EDAF5 /* CompositeVideoPage.swift */; };
 		0024D7752C10795E002D8402 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7742C10795E002D8402 /* LoadingState.swift */; };
 		0024D7772C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */; };
 		0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7782C134420002D8402 /* CGAffineTransform.swift */; };
@@ -73,6 +74,7 @@
 
 /* Begin PBXFileReference section */
 		0021DF802C1C99BD009EDAF5 /* GenerateMusicPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateMusicPage.swift; sourceTree = "<group>"; };
+		0021DF822C1CA7D2009EDAF5 /* CompositeVideoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeVideoPage.swift; sourceTree = "<group>"; };
 		0024D7742C10795E002D8402 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetWriterInputPixelBufferAdaptor.swift; sourceTree = "<group>"; };
 		0024D7782C134420002D8402 /* CGAffineTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransform.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				00C21E082C1C871100F3FA67 /* ExtractAndDescribeFramesPage.swift */,
 				00C21E0A2C1C8AC900F3FA67 /* VideoToMusicData.swift */,
 				0021DF802C1C99BD009EDAF5 /* GenerateMusicPage.swift */,
+				0021DF822C1CA7D2009EDAF5 /* CompositeVideoPage.swift */,
 			);
 			path = VideoToMusic;
 			sourceTree = "<group>";
@@ -512,6 +515,7 @@
 				0097DB0E2C072B64007D3328 /* GeneratedAudioView.swift in Sources */,
 				4B3941652BF9FEF200A5B694 /* VideoController.swift in Sources */,
 				006FCE622C0F34ED0081546E /* CVPixelBuffer.swift in Sources */,
+				0021DF832C1CA7D2009EDAF5 /* CompositeVideoPage.swift in Sources */,
 				4B26530E2C15D76500BDE950 /* WireDetectionPage.swift in Sources */,
 				4B3941762BFA057200A5B694 /* WireDetector.swift in Sources */,
 				4B3941792BFA100F00A5B694 /* Images.swift in Sources */,

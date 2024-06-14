@@ -9,6 +9,8 @@ extension VideoToMusicPages {
         @State private var selectedImage: UIImage? = nil
         @State private var isImageViewerPresented = false
         
+        @State private var isMakeInstrumental: Bool = false
+        
         @State private var loadingState: LoadingState?
         
         var body: some View {
@@ -17,11 +19,17 @@ extension VideoToMusicPages {
                 describeFramesArea
                 
                 let isDescrptionNil = videoToMusicData.description.isEmpty
-                NavigationLink(destination: VideoToMusicPages.GenerateMusicPage().environmentObject(videoToMusicData)){
-                    Text("-> Generate Music")
+                VStack{
+                    NavigationLink(destination: VideoToMusicPages.GenerateMusicPage(isMakeInstrumental: isMakeInstrumental).environmentObject(videoToMusicData)){
+                        Text("-> Generate Music")
+                    }
+                    InstrumentalToggleView(isMakeInstrumental: $isMakeInstrumental)
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isDescrptionNil))
                 .disabled(isDescrptionNil)
+                
+                
+                
             }
             .sheet(isPresented: $isImageViewerPresented) { // *problem
                 if let selectedImage = selectedImage {
