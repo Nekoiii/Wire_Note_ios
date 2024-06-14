@@ -7,6 +7,7 @@
 
 import AVFoundation
 import Foundation
+import UIKit
 
 protocol VideoBufferReaderDelegate: AnyObject {
     func videoBufferReaderDidFinishReading(buffers: [CVImageBuffer])
@@ -24,6 +25,7 @@ class VideoBufferReader {
     var duration: CMTime
     var videoSize: CGSize
     var totalFrames: Int
+    var orientation: CGAffineTransform
     var isAllFramesRead = false
     var isReadingBuffer = false
 
@@ -56,13 +58,16 @@ class VideoBufferReader {
         guard let videoTrack = try await asset.loadTracks(withMediaType: .video).first else {
             throw VideoBufferReaderError.noVideoTrack
         }
+        
         let framerate = try await videoTrack.load(.nominalFrameRate)
         self.framerate = framerate
         duration = try await asset.load(.duration)
         videoSize = try await videoTrack.load(.naturalSize)
         totalFrames = Int(duration.seconds * Double(framerate))
+        orientation = try await videoTrack.load(.preferredTransform)
         self.videoTrack = videoTrack
         self.asset = asset
+        
         let reader = try AVAssetReader(asset: asset)
         let readerOutput = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: outputSettings)
         if reader.canAdd(readerOutput) {
@@ -96,7 +101,13 @@ class VideoBufferReader {
                 guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
                     continue
                 }
-                buffers.append(imageBuffer)
+                let image = UIImage(pixelBuffer: imageBuffer)
+                let rotatedImage = image?.transformed(by: self.orientation)
+                guard let rotatedPixelBuffer = rotatedImage?.pixelBuffer() else {
+                    print("Can't create rotatedPixelBuffer")
+                    continue
+                }
+                buffers.append(rotatedPixelBuffer)
                 if buffers.count >= MAX_BUFFER_FRAMES {
                     self.readComplete(buffers: buffers)
                     return

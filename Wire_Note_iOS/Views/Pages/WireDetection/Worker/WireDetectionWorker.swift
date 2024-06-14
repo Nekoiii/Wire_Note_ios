@@ -73,6 +73,10 @@ class WireDetectionWorker {
     private var fps: CMTimeScale {
         return Int32(videoBufferReader.framerate)
     }
+    
+    private var orientation: CGAffineTransform {
+        return videoBufferReader.orientation
+    }
 
     init(inputURL: URL, outputURL: URL) async throws {
         self.outputURL = outputURL
@@ -80,7 +84,7 @@ class WireDetectionWorker {
         videoBufferReader.delegate = self
         renderer.updateVideoMetadata(videoSize: videoSize, detector: wireDetector)
         renderer.delegate = self
-        try writter.updateVideoSettings(outputURL: outputURL, videoSize: videoSize, fps: fps)
+        try writter.updateVideoSettings(outputURL: outputURL, videoSize: videoSize, fps: fps, orientation: orientation)
         writter.delegate = self
     }
 
@@ -145,7 +149,8 @@ extension WireDetectionWorker: VideoRendererDelegate {
     func videoRendererDidFinishRendering(buffer: CVPixelBuffer) {
         print("videoRendererDidFinishRendering")
         do {
-            try writter.writeFrame(buffer: buffer)
+            let inverseOrientation = self.orientation.inverted()
+            try writter.writeFrame(buffer: buffer, orientation: inverseOrientation)
         } catch {
             print("Failed to write frame: \(error)")
         }

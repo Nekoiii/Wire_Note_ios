@@ -1,10 +1,3 @@
-//
-//  WireDetectionPage.swift
-//  Wire_Note_iOS
-//
-//  Created by John Smith on 2024/06/09.
-//
-
 import AVKit
 import SwiftUI
 
