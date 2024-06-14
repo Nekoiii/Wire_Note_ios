@@ -58,7 +58,7 @@ class VideoBufferReader {
         guard let videoTrack = try await asset.loadTracks(withMediaType: .video).first else {
             throw VideoBufferReaderError.noVideoTrack
         }
-        
+
         let framerate = try await videoTrack.load(.nominalFrameRate)
         self.framerate = framerate
         duration = try await asset.load(.duration)
@@ -67,7 +67,7 @@ class VideoBufferReader {
         orientation = try await videoTrack.load(.preferredTransform)
         self.videoTrack = videoTrack
         self.asset = asset
-        
+
         let reader = try AVAssetReader(asset: asset)
         let readerOutput = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: outputSettings)
         if reader.canAdd(readerOutput) {

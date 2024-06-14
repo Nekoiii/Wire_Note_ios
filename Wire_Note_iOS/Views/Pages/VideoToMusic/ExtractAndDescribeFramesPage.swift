@@ -1,35 +1,31 @@
 import SwiftUI
 
-
 extension VideoToMusicPages {
     struct ExtractAndDescribeFramesPage: View {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
-        
+
         @State private var extractedFrames: [UIImage] = []
         @State private var selectedImage: UIImage? = nil
         @State private var isImageViewerPresented = false
-        
+
         @State private var isMakeInstrumental: Bool = false
-        
+
         @State private var loadingState: LoadingState?
-        
+
         var body: some View {
-            VStack{
+            VStack {
                 extractFramesArea
                 describeFramesArea
-                
+
                 let isDescrptionNil = videoToMusicData.description.isEmpty
-                VStack{
-                    NavigationLink(destination: VideoToMusicPages.GenerateMusicPage(isMakeInstrumental: isMakeInstrumental).environmentObject(videoToMusicData)){
+                VStack {
+                    NavigationLink(destination: VideoToMusicPages.GenerateMusicPage(isMakeInstrumental: isMakeInstrumental).environmentObject(videoToMusicData)) {
                         Text("-> Generate Music")
                     }
                     InstrumentalToggleView(isMakeInstrumental: $isMakeInstrumental)
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isDescrptionNil))
                 .disabled(isDescrptionNil)
-                
-                
-                
             }
             .sheet(isPresented: $isImageViewerPresented) { // *problem
                 if let selectedImage = selectedImage {
@@ -42,8 +38,8 @@ extension VideoToMusicPages {
                 doExtractRandomFrames()
             }
         }
-        
-        private func doExtractRandomFrames(){
+
+        private func doExtractRandomFrames() {
             guard let videoUrl = videoToMusicData.videoUrl else {
                 print("Video URL is nil")
                 return
@@ -55,16 +51,16 @@ extension VideoToMusicPages {
                 loadingState = nil
             }
         }
-        
+
         private func describeFrames() {
             loadingState = .image_to_text
-            
+
             for image in extractedFrames {
                 guard let imageData = image.pngData() else {
                     print("describeFrames - no imageData")
                     return
                 }
-                
+
                 imageToText(imageData: imageData) { result in
                     switch result {
                     case let .success(desc):
@@ -81,20 +77,20 @@ extension VideoToMusicPages {
                         }
                     }
                     loadingState = nil
-                    
-                    if videoToMusicData.description.count > 150 { //*unfinished
+
+                    if videoToMusicData.description.count > 150 { // *unfinished
                         videoToMusicData.description = String(videoToMusicData.description.prefix(150))
                     }
                 }
             }
         }
-        
+
         private var extractFramesArea: some View {
             Group {
                 if let state = loadingState, state == .extract_frames {
                     Text(state.description)
                 }
-                
+
                 if !extractedFrames.isEmpty {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
@@ -114,15 +110,14 @@ extension VideoToMusicPages {
                 } else {
                     Text("No frames extracted")
                 }
-                
-                
+
                 Button(action: { doExtractRandomFrames() }) {
                     Text("Extract Frames Again")
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor")))
             }
         }
-        
+
         private var describeFramesArea: some View {
             Group {
                 if let state = loadingState, state == .image_to_text {
@@ -134,7 +129,7 @@ extension VideoToMusicPages {
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isExtractedFramesEmpty))
                 .disabled(isExtractedFramesEmpty)
-                
+
                 if !videoToMusicData.description.isEmpty {
                     Text("Description: \(videoToMusicData.description)")
                 }
@@ -142,10 +137,3 @@ extension VideoToMusicPages {
         }
     }
 }
-
-
-
-
-
-
-

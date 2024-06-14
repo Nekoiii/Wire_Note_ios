@@ -1,13 +1,13 @@
 import AVFoundation
-import UIKit
 import Foundation
+import UIKit
 
 enum VideoWritterError: Error {
     case writterNotInitialized
     case processingFailed
 }
 
-protocol 
+protocol
 VideoWritterDelegate: AnyObject {
     func videoWritterDidFinishWritingFrames()
     func videoWritterDidFinishWritingFile()
@@ -18,7 +18,7 @@ class VideoWritter {
     private var writerInput: AVAssetWriterInput?
     private var pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor?
     private var isWritterStarted = false
-    
+
     // delegate
     weak var delegate: VideoWritterDelegate?
 
@@ -94,14 +94,14 @@ class VideoWritter {
         bufferWritingQueue.async {
             while !self.frames.isEmpty {
                 let frame = self.frames.removeFirst()
-                
+
                 let image = UIImage(pixelBuffer: frame)
                 let rotatedImage = image?.transformed(by: orientation)
                 guard let rotatedFrame = rotatedImage?.pixelBuffer() else {
                     print("Can't create rotatedPixelBuffer")
                     continue
                 }
-                
+
                 guard let adapter = self.pixelBufferAdaptor else {
                     print("[writer] pixel buffer adaptor not initialized")
                     continue

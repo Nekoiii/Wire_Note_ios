@@ -73,7 +73,7 @@ class WireDetectionWorker {
     private var fps: CMTimeScale {
         return Int32(videoBufferReader.framerate)
     }
-    
+
     private var orientation: CGAffineTransform {
         return videoBufferReader.orientation
     }
@@ -149,7 +149,7 @@ extension WireDetectionWorker: VideoRendererDelegate {
     func videoRendererDidFinishRendering(buffer: CVPixelBuffer) {
         print("videoRendererDidFinishRendering")
         do {
-            let inverseOrientation = self.orientation.inverted()
+            let inverseOrientation = orientation.inverted()
             try writter.writeFrame(buffer: buffer, orientation: inverseOrientation)
         } catch {
             print("Failed to write frame: \(error)")
