@@ -5,9 +5,9 @@
 //  Created by John Smith on 2024/06/09.
 //
 
+import AVFoundation
 import Foundation
 import UIKit
-import AVFoundation
 import Vision
 
 typealias progressHandler = (Float, Error?) -> Void
@@ -46,58 +46,58 @@ class WireDetectionWorker {
     private let wireDetector = WireDetector()
     private let renderer = VideoRenderer()
     private let writter = VideoWritter()
-    
-    var progressHandler: progressHandler?   // handler to report progress
-    
-    private var unhandleFrames: [CVImageBuffer] = []  // unhandled frames
+
+    var progressHandler: progressHandler? // handler to report progress
+
+    private var unhandleFrames: [CVImageBuffer] = [] // unhandled frames
 
     private var isJobCancelled = false
-    
+
     private var handledFramesCount = 0
-   
+
     // thread for processing frames
     var isProcessingFrames = false
     private let bufferProcessingQueue = DispatchQueue(label: "bufferProcessingQueue")
     private let PRELOAD_FRAMES = 10
     private let outputURL: URL
-    
+
     // video properties
     private var videoSize: CGSize {
         return videoBufferReader.videoSize
     }
-    
+
     private var totalFrames: Int {
         return videoBufferReader.totalFrames
     }
-    
+
     private var fps: CMTimeScale {
         return Int32(videoBufferReader.framerate)
     }
-    
-    init (inputURL: URL, outputURL: URL) async throws {
+
+    init(inputURL: URL, outputURL: URL) async throws {
         self.outputURL = outputURL
-        self.videoBufferReader = try await VideoBufferReader(url: inputURL)
+        videoBufferReader = try await VideoBufferReader(url: inputURL)
         videoBufferReader.delegate = self
-        self.renderer.updateVideoMetadata(videoSize: self.videoSize, detector: self.wireDetector)
-        self.renderer.delegate = self
-        try self.writter.updateVideoSettings(outputURL: outputURL, videoSize: self.videoSize, fps: self.fps)
-        self.writter.delegate = self
+        renderer.updateVideoMetadata(videoSize: videoSize, detector: wireDetector)
+        renderer.delegate = self
+        try writter.updateVideoSettings(outputURL: outputURL, videoSize: videoSize, fps: fps)
+        writter.delegate = self
     }
-    
-    func processVideo(url: URL, handler: @escaping progressHandler) async throws {
+
+    func processVideo(url _: URL, handler: @escaping progressHandler) async throws {
         unhandleFrames.removeAll()
-        self.progressHandler = handler
+        progressHandler = handler
         isJobCancelled = false
         videoBufferReader.readBuffer()
     }
-    
+
     func cancelProcessing() {
         progressHandler?(0, WireDetectionError.cancelled)
         isJobCancelled = true
         unhandleFrames.removeAll()
         videoBufferReader.cancelReading()
     }
-    
+
     private func processUnhandledFrames() {
         if isProcessingFrames {
             return
@@ -132,6 +132,7 @@ class WireDetectionWorker {
 }
 
 // MARK: - VideoBufferReaderDelegate
+
 extension WireDetectionWorker: VideoBufferReaderDelegate {
     func videoBufferReaderDidFinishReading(buffers: [CVImageBuffer]) {
         print("videoBufferReaderDidFinishReading")
@@ -146,17 +147,16 @@ extension WireDetectionWorker: VideoRendererDelegate {
         do {
             try writter.writeFrame(buffer: buffer)
         } catch {
-           print("Failed to write frame: \(error)")
+            print("Failed to write frame: \(error)")
         }
     }
 }
 
 extension WireDetectionWorker: VideoWritterDelegate {
-    
     var isAllProcessFinished: Bool {
         return videoBufferReader.isAllFramesRead && !isProcessingFrames && !renderer.isRendering
     }
-    
+
     func videoWritterDidFinishWritingFrames() {
         print("videoWritterDidFinishWritingFrames")
         if isAllProcessFinished {
@@ -169,11 +169,9 @@ extension WireDetectionWorker: VideoWritterDelegate {
             print("isAllFramesRead: \(videoBufferReader.isAllFramesRead), isProcessingFrames: \(isProcessingFrames), isRendering: \(renderer.isRendering)")
         }
     }
-    
+
     func videoWritterDidFinishWritingFile() {
         print("videoWritterDidFinishWritingFile")
         progressHandler?(1, nil)
     }
-    
-    
 }

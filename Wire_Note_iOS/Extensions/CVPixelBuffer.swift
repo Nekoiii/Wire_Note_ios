@@ -47,14 +47,14 @@ extension CVPixelBuffer {
             let pixelData = CVPixelBufferGetBaseAddress(self)
             let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
             guard let context = CGContext(
-                    data: pixelData,
-                    width: Int(image.size.width),
-                    height: Int(image.size.height),
-                    bitsPerComponent: 8,
-                    bytesPerRow: CVPixelBufferGetBytesPerRow(self),
-                    space: rgbColorSpace,
-                    bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue
-                )
+                data: pixelData,
+                width: Int(image.size.width),
+                height: Int(image.size.height),
+                bitsPerComponent: 8,
+                bytesPerRow: CVPixelBufferGetBytesPerRow(self),
+                space: rgbColorSpace,
+                bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue
+            )
             else {
                 assertionFailure()
                 return

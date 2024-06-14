@@ -1,7 +1,7 @@
 import AVKit
 import SwiftUI
 
-struct WireDetectionPage: View {
+struct OldWireDetectionPage: View {
 //    @State private var originVideoURL: URL? = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
     @State private var originVideoURL: URL?
     @State private var processedVideoURL: URL?
@@ -185,7 +185,7 @@ struct WireDetectionPage: View {
                         self.isShowingOriginVideo = false
                         self.setupProcessedPlayer()
                     }, onFailure: { path in
-                        print("WireDetectionPage - after processVideoWithWireDetection - Processed video does not exist or is empty at path: \(path)")
+                        print("OldWireDetectionPage - after processVideoWithWireDetection - Processed video does not exist or is empty at path: \(path)")
                     })
                 }
             } else {
@@ -198,8 +198,8 @@ struct WireDetectionPage: View {
     }
 }
 
-struct WireDetectionPage_Previews: PreviewProvider {
+struct OldWireDetectionPage_Previews: PreviewProvider {
     static var previews: some View {
-        WireDetectionPage()
+        OldWireDetectionPage()
     }
 }

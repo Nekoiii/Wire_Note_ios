@@ -160,7 +160,7 @@ class VideoWireDetectController: VideoController {
                         }
                     }
                 }
-                
+
 //                writerInput.requestMediaDataWhenReady(on: self.processingQueue) {
 //                    while writerInput.isReadyForMoreMediaData {
 //                        if let sampleBuffer = readerOutput.copyNextSampleBuffer() {
@@ -200,8 +200,8 @@ class VideoWireDetectController: VideoController {
 //
 //                            writerInput.markAsFinished()
 //                            print("writerInput.markAsFinished")
-//                            
-//                            
+//
+//
 //                            //                            group.notify(queue: self.processingQueue) {
 //                            self.group.notify(queue: .main) {
 //                                let currentStatus = self.videoWriter?.status
@@ -212,8 +212,8 @@ class VideoWireDetectController: VideoController {
 //                                    }
 //                                    completion(false)
 //                                } else if currentStatus == .writing {
-////                                    writerInput.markAsFinished()
-////                                    print("writerInput.markAsFinished")
+                ////                                    writerInput.markAsFinished()
+                ////                                    print("writerInput.markAsFinished")
 //                                    self.videoWriter?.finishWriting {
 //                                        let updatedStatus = self.videoWriter?.status
 //                                        if updatedStatus == .completed {
@@ -221,7 +221,7 @@ class VideoWireDetectController: VideoController {
 //                                            checkFileExist(at: outputURL)
 //                                            completion(true)
 //                                        } else {
-////                                            print("Video writer failed: \(String(describing: self.videoWriter?.error))")
+                ////                                            print("Video writer failed: \(String(describing: self.videoWriter?.error))")
 //                                            print("Video writer failed: \(self.videoWriter?.error?.localizedDescription ?? "Unknown error")")
 //                                            completion(false)
 //                                        }
@@ -245,7 +245,7 @@ class VideoWireDetectController: VideoController {
     private func processBatch(with sampleBuffers: [CMSampleBuffer], videoSize: CGSize, orientation: CGAffineTransform, completion: @escaping ([UIImage]) -> Void) {
         DispatchQueue.global().async {
             var finalImages: [UIImage] = []
-            
+
             var rotatedPixelBuffers: [CVPixelBuffer] = []
             for s in sampleBuffers {
                 guard let imageBuffer: CVImageBuffer = CMSampleBufferGetImageBuffer(s) else {
@@ -272,7 +272,7 @@ class VideoWireDetectController: VideoController {
                 }
                 finalImages.append(finalImage)
             }
-            
+
             completion(finalImages)
         }
     }

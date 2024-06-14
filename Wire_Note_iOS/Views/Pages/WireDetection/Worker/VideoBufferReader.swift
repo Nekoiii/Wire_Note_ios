@@ -5,8 +5,8 @@
 //  Created by John Smith on 2024/06/10.
 //
 
-import Foundation
 import AVFoundation
+import Foundation
 
 protocol VideoBufferReaderDelegate: AnyObject {
     func videoBufferReaderDidFinishReading(buffers: [CVImageBuffer])
@@ -19,7 +19,6 @@ enum VideoBufferReaderError: Error {
 }
 
 class VideoBufferReader {
-    
     // public properties
     var framerate: Float
     var duration: CMTime
@@ -27,28 +26,28 @@ class VideoBufferReader {
     var totalFrames: Int
     var isAllFramesRead = false
     var isReadingBuffer = false
-    
+
     // delegate
     weak var delegate: VideoBufferReaderDelegate?
-    
+
     // video properties
-    
+
     private var videoTrack: AVAssetTrack
     private var asset: AVAsset
-    
+
     // video reader
     private var reader: AVAssetReader
-    private let outputSettings: [String: Any]  = [
-        kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)
+    private let outputSettings: [String: Any] = [
+        kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA),
     ]
     private let readerOutput: AVAssetReaderTrackOutput
-    
+
     // thread
     private var isJobCancelled = false
     private var isReaderStarted = false
     private let bufferReadingQueue = DispatchQueue(label: "com.wirenote.bufferReadingQueue")
-    
-    init (url: URL) async throws {
+
+    init(url: URL) async throws {
         guard FileManager.default.fileExists(atPath: url.path)
         else {
             throw VideoBufferReaderError.invalidURL
@@ -59,9 +58,9 @@ class VideoBufferReader {
         }
         let framerate = try await videoTrack.load(.nominalFrameRate)
         self.framerate = framerate
-        self.duration = try await asset.load(.duration)
-        self.videoSize = try await videoTrack.load(.naturalSize)
-        self.totalFrames = Int(duration.seconds * Double(framerate))
+        duration = try await asset.load(.duration)
+        videoSize = try await videoTrack.load(.naturalSize)
+        totalFrames = Int(duration.seconds * Double(framerate))
         self.videoTrack = videoTrack
         self.asset = asset
         let reader = try AVAssetReader(asset: asset)
@@ -76,7 +75,7 @@ class VideoBufferReader {
         reader.timeRange = CMTimeRange(start: .zero, duration: duration)
         reader.timeRange.duration = duration
     }
-    
+
     func readBuffer() {
         if isReadingBuffer || isAllFramesRead {
             return
@@ -107,16 +106,14 @@ class VideoBufferReader {
             self.readComplete(buffers: buffers)
         }
     }
-    
+
     private func readComplete(buffers: [CVImageBuffer]) {
-        self.isReadingBuffer = false
-        self.delegate?.videoBufferReaderDidFinishReading(buffers: buffers)
+        isReadingBuffer = false
+        delegate?.videoBufferReaderDidFinishReading(buffers: buffers)
     }
-    
+
     func cancelReading() {
         isJobCancelled = true
         reader.cancelReading()
     }
-    
-    
 }

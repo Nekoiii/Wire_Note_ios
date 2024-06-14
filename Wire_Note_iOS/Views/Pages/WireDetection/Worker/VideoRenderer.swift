@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import Vision
 import UIKit
+import Vision
 
 protocol VideoRendererDelegate: AnyObject {
     func videoRendererDidFinishRendering(buffer: CVPixelBuffer)
@@ -21,31 +21,31 @@ class VideoRenderer {
     // thread for rendering frames
     private let bufferRenderingQueue = DispatchQueue(label: "com.wirenote.bufferRenderingQueue")
     var isRendering = false
-    
+
     // video metadata
     private var videoSize: CGSize = .zero
     private var wireDetector: WireDetector?
-    
+
     private var classes: [String] {
         return wireDetector?.classes ?? []
     }
-    
+
     private var colors: [UIColor] {
         return wireDetector?.colors ?? []
     }
-    
+
     // update video metadata
     func updateVideoMetadata(videoSize: CGSize, detector: WireDetector) {
         self.videoSize = videoSize
-        self.wireDetector = detector
+        wireDetector = detector
     }
-    
+
     // rendering frames
     func appendFrames(frame: CVImageBuffer, result: [VNRecognizedObjectObservation]) {
-        self.frames.append(frame)
-        self.results.append(result)
+        frames.append(frame)
+        results.append(result)
         if isRendering {
-           return
+            return
         }
         isRendering = true
         bufferRenderingQueue.async {
@@ -86,6 +86,4 @@ class VideoRenderer {
             }
         }
     }
-    
-   
 }

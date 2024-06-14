@@ -5,8 +5,8 @@
 //  Created by John Smith on 2024/06/10.
 //
 
-import Foundation
 import AVFoundation
+import Foundation
 
 enum VideoWritterError: Error {
     case writterNotInitialized
@@ -23,10 +23,10 @@ class VideoWritter {
     private var writterInput: AVAssetWriterInput?
     private var pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor?
     private var isWritterStarted = false
-    
+
     // delegate
     weak var delegate: VideoWritterDelegate?
-    
+
     // thread
     private let bufferWritingQueue = DispatchQueue(label: "com.wirenote.bufferWritingQueue")
     private var isWriting = false
@@ -34,7 +34,7 @@ class VideoWritter {
     private var frames: [CVPixelBuffer] = []
     private var frameCount = 0
     private var fps: CMTimeScale = 30
-    
+
     func updateVideoSettings(outputURL: URL, videoSize: CGSize, fps: CMTimeScale) throws {
         // check output file exists
         if FileManager.default.fileExists(atPath: outputURL.path) {
@@ -45,12 +45,12 @@ class VideoWritter {
         let videoSettings: [String: Any] = [
             AVVideoCodecKey: AVVideoCodecType.h264,
             AVVideoWidthKey: videoSize.width,
-            AVVideoHeightKey: videoSize.height
+            AVVideoHeightKey: videoSize.height,
         ]
         let writterInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
         writterInput.expectsMediaDataInRealTime = true
         writter.add(writterInput)
-        
+
         let sourcePixelBufferAttributes: [String: Any] = [
             kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32ARGB),
             kCVPixelBufferWidthKey as String: videoSize.width,
@@ -58,11 +58,11 @@ class VideoWritter {
             kCVPixelBufferIOSurfacePropertiesKey as String: [:],
         ]
         pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writterInput, sourcePixelBufferAttributes: sourcePixelBufferAttributes)
-        
+
         self.writter = writter
         self.writterInput = writterInput
     }
-    
+
     func start() throws {
         guard let writter = writter else {
             throw VideoWritterError.writterNotInitialized
@@ -70,7 +70,7 @@ class VideoWritter {
         writter.startWriting()
         writter.startSession(atSourceTime: .zero)
     }
-    
+
     func finish() throws {
         guard let writter = writter,
               let writterInput = writterInput
@@ -82,7 +82,7 @@ class VideoWritter {
             self.delegate?.videoWritterDidFinishWritingFile()
         }
     }
-    
+
     func writeFrame(buffer: CVPixelBuffer) throws {
         frames.append(buffer)
         if !isWritterStarted {
@@ -114,6 +114,5 @@ class VideoWritter {
             self.isWriting = false
             self.delegate?.videoWritterDidFinishWritingFrames()
         }
-        
     }
 }

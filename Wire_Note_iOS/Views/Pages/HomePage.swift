@@ -24,11 +24,8 @@ struct HomePage: View {
                     NavigationLink(destination: CameraView(isDetectWire: true)) {
                         Text("Open Camera")
                     }
-                    NavigationLink(destination: WireDetectionPage()) {
-                        Text("Wire Detection")
-                    }
                     NavigationLink {
-                        NewWireDetectionPage()
+                        WireDetectionPage()
                     } label: {
                         Text("Wire Detection")
                     }

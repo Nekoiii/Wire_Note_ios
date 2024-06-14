@@ -5,11 +5,10 @@
 //  Created by John Smith on 2024/06/09.
 //
 
-import SwiftUI
 import AVKit
+import SwiftUI
 
-
-struct NewWireDetectionPage: View {
+struct WireDetectionPage: View {
     @State private var videoUrl: URL?
     @State private var isPickerPresented = false
     @State private var player = AVPlayer()
@@ -22,16 +21,16 @@ struct NewWireDetectionPage: View {
     var percentage: String {
         return String(format: "%.0f%%", progress * 100)
     }
-    
+
     var isProcessButtonDisabled: Bool {
         return videoUrl == nil || isProcessing
     }
-    
+
     var outputURL: URL {
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return documentsPath.appendingPathComponent("output.mp4")
     }
-    
+
     var body: some View {
         ScrollView {
             VStack {
@@ -66,7 +65,7 @@ struct NewWireDetectionPage: View {
                             }
                             .buttonStyle(BorderedButtonStyle(borderColor: .green, isDisable: isProcessButtonDisabled))
                             ShareLink(item: outputURL)
-                            .buttonStyle(BorderedButtonStyle(borderColor: .blue, isDisable: isProcessButtonDisabled))
+                                .buttonStyle(BorderedButtonStyle(borderColor: .blue, isDisable: isProcessButtonDisabled))
                         }
                     }
                     .padding(.top, 10)
@@ -113,7 +112,7 @@ struct NewWireDetectionPage: View {
             Text(errorMsg)
         }
     }
-    
+
     func processVideo() {
         isProcessing = true
         Task {
@@ -123,7 +122,7 @@ struct NewWireDetectionPage: View {
                     throw WireDetectionError.invalidURL
                 }
                 self.worker = try await WireDetectionWorker(inputURL: url, outputURL: outputURL)
-                try await worker?.processVideo(url: url) { progress, error  in
+                try await worker?.processVideo(url: url) { progress, error in
                     DispatchQueue.main.async {
                         if progress == 1 {
                             withAnimation {
@@ -151,11 +150,8 @@ struct NewWireDetectionPage: View {
     }
 }
 
-
-
-
 #Preview {
     NavigationStack {
-        NewWireDetectionPage()
+        WireDetectionPage()
     }
 }

@@ -80,8 +80,8 @@ class WireDetector {
 
         return results
     }
-    
-    func detect(pixelBuffer: CVPixelBuffer, videoSize: CGSize) throws -> [VNRecognizedObjectObservation] {
+
+    func detect(pixelBuffer: CVPixelBuffer, videoSize _: CGSize) throws -> [VNRecognizedObjectObservation] {
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
         try handler.perform([yoloRequest])
         guard let results = yoloRequest.results as? [VNRecognizedObjectObservation] else {
