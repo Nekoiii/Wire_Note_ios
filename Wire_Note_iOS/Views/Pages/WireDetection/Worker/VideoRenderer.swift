@@ -1,10 +1,3 @@
-//
-//  VideoRenderer.swift
-//  Wire_Note_iOS
-//
-//  Created by John Smith on 2024/06/10.
-//
-
 import Foundation
 import UIKit
 import Vision
@@ -15,9 +8,11 @@ protocol VideoRendererDelegate: AnyObject {
 
 class VideoRenderer {
     var delegate: VideoRendererDelegate?
+
     // frames and detect results rendering queue
     private var frames: [CVImageBuffer] = []
     private var results: [[VNRecognizedObjectObservation]] = []
+
     // thread for rendering frames
     private let bufferRenderingQueue = DispatchQueue(label: "com.wirenote.bufferRenderingQueue")
     var isRendering = false

@@ -32,7 +32,7 @@ struct HomePage: View {
                     NavigationLink {
                         OldWireDetectionPage()
                     } label: {
-                        Text("Wire Detection")
+                        Text("(Old) Wire Detection")
                     }
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: false))

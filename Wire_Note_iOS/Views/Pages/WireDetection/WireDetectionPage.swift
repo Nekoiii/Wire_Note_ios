@@ -37,6 +37,9 @@ struct WireDetectionPage: View {
     var body: some View {
         ScrollView {
             VStack {
+//                    Text("originVideoURL: \(originVideoURL?.absoluteString ?? "")")
+//                    Text("processedVideoURL: \(processedVideoURL?.absoluteString ?? "")")
+                
                 if processedVideoURL != nil {
                     Button(action: {}) {
                         Text("Show Origin Video")
@@ -50,9 +53,6 @@ struct WireDetectionPage: View {
                 }
 
                 ZStack {
-                    Text("originVideoURL: \(originVideoURL?.absoluteString ?? "")")
-                    Text("processedVideoURL: \(processedVideoURL?.absoluteString ?? "")")
-
                     // Only show origin video when there is no processed video or pressing the ShowOriginVideo button.
                     VideoPlayer(player: originPlayer)
                         .frame(height: 300)
@@ -146,11 +146,6 @@ struct WireDetectionPage: View {
         .sheet(isPresented: $isPickerPresented, onDismiss: setupOriginPlayers) {
             VideoPicker(videoURL: $originVideoURL)
         }
-//        .onChange(of: videoUrl) { _, url in
-//            if let url = url {
-//                originPlayer = AVPlayer(url: url)
-//            }
-//        }
         .alert(alertTitle, isPresented: $isShowingAlert) {
             Button(role: .cancel) {
                 isShowingAlert = false
@@ -191,6 +186,7 @@ struct WireDetectionPage: View {
         print("setupProcessedPlayer - \(String(describing: processedVideoURL))")
         if let url = processedVideoURL {
             processedPlayer = AVPlayer(url: url)
+            isShowingOriginVideo = false
             originPlayer?.isMuted = true
         }
     }

@@ -14,13 +14,15 @@ VideoWritterDelegate: AnyObject {
 }
 
 class VideoWritter {
+    weak var delegate: VideoWritterDelegate?
+
+    private var fps: CMTimeScale = 30
+    private var orientation: CGAffineTransform = .identity
+
     private var writer: AVAssetWriter?
     private var writerInput: AVAssetWriterInput?
     private var pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor?
     private var isWritterStarted = false
-
-    // delegate
-    weak var delegate: VideoWritterDelegate?
 
     // thread
     private let bufferWritingQueue = DispatchQueue(label: "com.wirenote.bufferWritingQueue")
@@ -28,8 +30,6 @@ class VideoWritter {
     // frames
     private var frames: [CVPixelBuffer] = []
     private var frameCount = 0
-    private var fps: CMTimeScale = 30
-    private var orientation: CGAffineTransform = .identity
 
     func updateVideoSettings(outputURL: URL, videoSize: CGSize, fps: CMTimeScale, orientation: CGAffineTransform) throws {
         // check output file exists

@@ -1,10 +1,3 @@
-//
-//  VideoBufferReader.swift
-//  Wire_Note_iOS
-//
-//  Created by John Smith on 2024/06/10.
-//
-
 import AVFoundation
 import Foundation
 import UIKit
@@ -20,7 +13,9 @@ enum VideoBufferReaderError: Error {
 }
 
 class VideoBufferReader {
-    // public properties
+    weak var delegate: VideoBufferReaderDelegate?
+
+    // basic properties
     var framerate: Float
     var duration: CMTime
     var videoSize: CGSize
@@ -29,13 +24,9 @@ class VideoBufferReader {
     var isAllFramesRead = false
     var isReadingBuffer = false
 
-    // delegate
-    weak var delegate: VideoBufferReaderDelegate?
-
-    // video properties
-
-    private var videoTrack: AVAssetTrack
+    // asset
     private var asset: AVAsset
+    private var videoTrack: AVAssetTrack
 
     // video reader
     private var reader: AVAssetReader
@@ -45,9 +36,9 @@ class VideoBufferReader {
     private let readerOutput: AVAssetReaderTrackOutput
 
     // thread
+    private let bufferReadingQueue = DispatchQueue(label: "com.wirenote.bufferReadingQueue")
     private var isJobCancelled = false
     private var isReaderStarted = false
-    private let bufferReadingQueue = DispatchQueue(label: "com.wirenote.bufferReadingQueue")
 
     init(url: URL) async throws {
         guard FileManager.default.fileExists(atPath: url.path)

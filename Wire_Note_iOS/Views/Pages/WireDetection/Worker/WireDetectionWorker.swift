@@ -1,10 +1,3 @@
-//
-//  WireDetectionWorker.swift
-//  Wire_Note_iOS
-//
-//  Created by John Smith on 2024/06/09.
-//
-
 import AVFoundation
 import Foundation
 import UIKit
@@ -12,7 +5,6 @@ import Vision
 
 typealias progressHandler = (Float, Error?) -> Void
 
-// Error handling
 enum WireDetectionError: Error {
     case invalidURL
     case processingFailed
@@ -42,18 +34,17 @@ extension WireDetectionError: LocalizedError {
 }
 
 class WireDetectionWorker {
+    private let inputURL: URL
     private let videoBufferReader: VideoBufferReader
     private let wireDetector = WireDetector()
     private let renderer = VideoRenderer()
     private let writter = VideoWritter()
 
+    // progress
     var progressHandler: progressHandler? // handler to report progress
-
     private var unhandleFrames: [CVImageBuffer] = [] // unhandled frames
-
-    private var isJobCancelled = false
-
     private var handledFramesCount = 0
+    private var isJobCancelled = false
 
     // thread for processing frames
     var isProcessingFrames = false
@@ -62,23 +53,13 @@ class WireDetectionWorker {
     private let outputURL: URL
 
     // video properties
-    private var videoSize: CGSize {
-        return videoBufferReader.videoSize
-    }
-
-    private var totalFrames: Int {
-        return videoBufferReader.totalFrames
-    }
-
-    private var fps: CMTimeScale {
-        return Int32(videoBufferReader.framerate)
-    }
-
-    private var orientation: CGAffineTransform {
-        return videoBufferReader.orientation
-    }
+    private var videoSize: CGSize { return videoBufferReader.videoSize }
+    private var totalFrames: Int { return videoBufferReader.totalFrames }
+    private var fps: CMTimeScale { return Int32(videoBufferReader.framerate) }
+    private var orientation: CGAffineTransform { return videoBufferReader.orientation }
 
     init(inputURL: URL, outputURL: URL) async throws {
+        self.inputURL = inputURL
         self.outputURL = outputURL
         videoBufferReader = try await VideoBufferReader(url: inputURL)
         videoBufferReader.delegate = self
@@ -116,12 +97,14 @@ class WireDetectionWorker {
                     }
                     let imageBuffer = self.unhandleFrames.removeFirst()
                     let startTs = Date().timeIntervalSince1970
+                    let _detectionTime = Date().timeIntervalSince1970 - startTs
                     let result = try self.wireDetector.detect(pixelBuffer: imageBuffer, videoSize: self.videoSize)
                     self.handledFramesCount += 1
                     let progress = min(Float(self.handledFramesCount) / Float(self.totalFrames), 0.99)
-//                    print("Handled frames: \(self.handledFramesCount) / \(self.totalFrames)")
+                    //                    print("Handled frames: \(self.handledFramesCount) / \(self.totalFrames)")
+                    //                    print("Detection time: \(detectionTime)")
+                    
                     self.progressHandler?(progress, nil)
-//                    print("Detection time: \(Date().timeIntervalSince1970 - startTs)")
                     if self.unhandleFrames.count < self.PRELOAD_FRAMES {
                         self.videoBufferReader.readBuffer()
                     }
@@ -131,6 +114,31 @@ class WireDetectionWorker {
                 self.progressHandler?(0, error)
             }
             self.isProcessingFrames = false
+        }
+    }
+    
+    private func addAudioToNewVideo() async{
+        print("addAudioToNewVideo - began")
+        do {
+            let extractedAudioURL = outputURL.deletingLastPathComponent().appendingPathComponent("extracted_audio.m4a")
+
+
+            let tempOutputVideoUrl = outputURL.deletingLastPathComponent().appendingPathComponent("temp_output_audio.m4a")
+            
+            try await VideoAudioProcessor.extractAudio(from: inputURL, to: extractedAudioURL)
+            try await VideoAudioProcessor.addAudioToVideo(videoURL: outputURL, audioURL: extractedAudioURL, outputURL: tempOutputVideoUrl)
+            print("addAudioToNewVideo - Final video creation completed successfully.")
+            
+            // replace audio in outputURL with audio in tempOutputVideoUrl
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: outputURL.path) {
+                try fileManager.removeItem(at: outputURL)
+            }
+            try fileManager.moveItem(at: tempOutputVideoUrl, to: outputURL)
+
+            
+        } catch {
+            print("addAudioToNewVideo - Failed to finalize processing: \(error.localizedDescription)")
         }
     }
 }
@@ -163,7 +171,6 @@ extension WireDetectionWorker: VideoWritterDelegate {
     }
 
     func videoWritterDidFinishWritingFrames() {
-//        print("videoWritterDidFinishWritingFrames")
         if isAllProcessFinished {
             do {
                 try writter.finish()
@@ -171,12 +178,15 @@ extension WireDetectionWorker: VideoWritterDelegate {
                 print("Failed to finish writter: \(error)")
             }
         } else {
-//            print("isAllFramesRead: \(videoBufferReader.isAllFramesRead), isProcessingFrames: \(isProcessingFrames), isRendering: \(renderer.isRendering)")
+//            print("videoWritterDidFinishWritingFrames -- isAllFramesRead: \(videoBufferReader.isAllFramesRead), isProcessingFrames: \(isProcessingFrames), isRendering: \(renderer.isRendering)")
         }
     }
 
     func videoWritterDidFinishWritingFile() {
         print("videoWritterDidFinishWritingFile")
-        progressHandler?(1, nil)
+        Task{
+            await addAudioToNewVideo()
+            progressHandler?(1, nil)
+        }
     }
 }
