@@ -2,21 +2,31 @@ import AVKit
 import SwiftUI
 
 struct WireDetectionPage: View {
-    @State private var videoUrl: URL?
-    @State private var isPickerPresented = false
-    @State private var player = AVPlayer()
-    @State private var isProcessing = false
+    @State private var worker: WireDetectionWorker?
+
+    @State private var originVideoURL: URL?
+    @State private var processedVideoURL: URL?
+
+    @State private var originPlayer: AVPlayer?
+    @State private var processedPlayer: AVPlayer?
+
     @State private var progress: Float = 0
+    @State private var isProcessing = false
+
+    @State private var isPickerPresented = false
+    @State private var isVideoPlaying = false
+    @State private var isShowingOriginVideo = true
+
     @State private var isShowingAlert = false
     @State private var errorMsg = ""
     @State private var alertTitle = "Error"
-    @State private var worker: WireDetectionWorker?
+
     var percentage: String {
         return String(format: "%.0f%%", progress * 100)
     }
 
     var isProcessButtonDisabled: Bool {
-        return videoUrl == nil || isProcessing
+        return originVideoURL == nil || isProcessing
     }
 
     var outputURL: URL {
@@ -27,8 +37,56 @@ struct WireDetectionPage: View {
     var body: some View {
         ScrollView {
             VStack {
-                VideoPlayer(player: player)
-                    .frame(height: 300)
+                if processedVideoURL != nil {
+                    Button(action: {}) {
+                        Text("Show Origin Video")
+                            .font(.system(size: 15))
+                    }
+                    .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
+                    .onLongPressGesture(minimumDuration: 0.1, pressing: { isPressing in
+                        isShowingOriginVideo = isPressing
+                        originPlayer?.isMuted = !isPressing
+                    }, perform: {})
+                }
+
+                ZStack {
+                    Text("originVideoURL: \(originVideoURL?.absoluteString ?? "")")
+                    Text("processedVideoURL: \(processedVideoURL?.absoluteString ?? "")")
+
+                    // Only show origin video when there is no processed video or pressing the ShowOriginVideo button.
+                    VideoPlayer(player: originPlayer)
+                        .frame(height: 300)
+                        .opacity(isShowingOriginVideo ? 1 : 0)
+                        .onAppear {
+                            NotificationCenter.default.addObserver(
+                                forName: .AVPlayerItemDidPlayToEndTime,
+                                object: originPlayer?.currentItem,
+                                queue: .main
+                            ) { _ in
+                                togglePlayback()
+                                originPlayer?.seek(to: .zero)
+                                print("Video finished playing.")
+                            }
+                        }
+
+                    // Show processed video above the original video.
+                    if let processedPlayer = processedPlayer {
+                        VideoPlayer(player: processedPlayer)
+                            .frame(height: 300)
+                            .opacity(isShowingOriginVideo ? 0 : 1)
+                    }
+                }
+
+                if originPlayer != nil || processedVideoURL != nil {
+                    Button(action: {
+                        togglePlayback()
+                    }) {
+                        Image(systemName: isVideoPlaying ? "pause.circle" : "play.circle")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                    }
+                }
+
                 HStack {
                     Button {
                         isPickerPresented.toggle()
@@ -36,35 +94,33 @@ struct WireDetectionPage: View {
                         Label("Select Video", systemImage: "video")
                     }
                     .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isProcessing))
+                    .disabled(isProcessing)
+
                     Button {
                         processVideo()
                     } label: {
                         Label("Process Video", systemImage: "play.fill")
                     }
                     .buttonStyle(BorderedButtonStyle(borderColor: .green, isDisable: isProcessButtonDisabled))
+                    .disabled(isProcessButtonDisabled)
                 }
                 .padding(.vertical, 10)
+
                 if progress == 1 {
                     Divider()
                     VStack {
                         Text("🎉 Video processed successfully 🎉")
                             .font(.title3)
                         HStack {
-                            Button {
-                                player = AVPlayer(url: outputURL)
-                                player.play()
-                            } label: {
-                                Label("Play Video", systemImage: "play.fill")
-                            }
-                            .buttonStyle(BorderedButtonStyle(borderColor: .green, isDisable: isProcessButtonDisabled))
                             ShareLink(item: outputURL)
                                 .buttonStyle(BorderedButtonStyle(borderColor: .blue, isDisable: isProcessButtonDisabled))
+                                .disabled(isProcessButtonDisabled)
                         }
                     }
                     .padding(.top, 10)
-                    // add scale animation
                     .transition(.scale)
                 }
+
                 if isProcessing {
                     VStack {
                         HStack {
@@ -87,14 +143,14 @@ struct WireDetectionPage: View {
         }
         .navigationTitle("Wire Detection")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isPickerPresented) {
-            VideoPicker(videoURL: $videoUrl)
+        .sheet(isPresented: $isPickerPresented, onDismiss: setupOriginPlayers) {
+            VideoPicker(videoURL: $originVideoURL)
         }
-        .onChange(of: videoUrl) { _, url in
-            if let url = url {
-                player = AVPlayer(url: url)
-            }
-        }
+//        .onChange(of: videoUrl) { _, url in
+//            if let url = url {
+//                originPlayer = AVPlayer(url: url)
+//            }
+//        }
         .alert(alertTitle, isPresented: $isShowingAlert) {
             Button(role: .cancel) {
                 isShowingAlert = false
@@ -106,11 +162,45 @@ struct WireDetectionPage: View {
         }
     }
 
+    private func togglePlayback() {
+        if isVideoPlaying {
+            originPlayer?.pause()
+            processedPlayer?.pause()
+        } else {
+            // Synchronize the original video playback time with the processed video
+            if let currentTime = originPlayer?.currentTime() {
+                processedPlayer?.seek(to: currentTime)
+            }
+            originPlayer?.play()
+            processedPlayer?.play()
+        }
+
+        isVideoPlaying.toggle()
+    }
+
+    private func setupOriginPlayers() {
+        if let url = originVideoURL {
+            processedPlayer = nil
+            processedVideoURL = nil
+            originPlayer = AVPlayer(url: url)
+            print("setupOriginPlayers: \(String(describing: originPlayer))")
+        }
+    }
+
+    private func setupProcessedPlayer() {
+        print("setupProcessedPlayer - \(String(describing: processedVideoURL))")
+        if let url = processedVideoURL {
+            processedPlayer = AVPlayer(url: url)
+            originPlayer?.isMuted = true
+        }
+    }
+
     func processVideo() {
         isProcessing = true
+        progress = 0
         Task {
             do {
-                guard let url = videoUrl
+                guard let url = originVideoURL
                 else {
                     throw WireDetectionError.invalidURL
                 }
@@ -118,6 +208,12 @@ struct WireDetectionPage: View {
                 try await worker?.processVideo(url: url) { progress, error in
                     DispatchQueue.main.async {
                         if progress == 1 {
+                            processedVideoURL = outputURL
+                            setupProcessedPlayer()
+                            originPlayer?.pause()
+                            processedPlayer?.pause()
+                            isVideoPlaying = false
+                            originPlayer?.seek(to: .zero)
                             withAnimation {
                                 self.progress = progress
                                 self.isProcessing = false

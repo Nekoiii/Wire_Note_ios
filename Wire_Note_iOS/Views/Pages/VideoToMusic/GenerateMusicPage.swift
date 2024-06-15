@@ -7,6 +7,7 @@ extension VideoToMusicPages {
         @State private var loadingState: LoadingState?
 
         @State private var isMakeInstrumental: Bool
+        @State private var isDetectWire: Bool = true
 
         init(isMakeInstrumental: Bool = false) {
             _isMakeInstrumental = State(initialValue: isMakeInstrumental)
@@ -25,8 +26,13 @@ extension VideoToMusicPages {
                 GeneratedAudioView(generatedAudioUrls: $videoToMusicData.generatedAudioUrls)
 
                 let isDGeneratedAudiosNil = videoToMusicData.description.isEmpty
-                NavigationLink(destination: VideoToMusicPages.CompositeVideoPage().environmentObject(videoToMusicData)) {
-                    Text("-> Composite Video")
+                VStack {
+                    NavigationLink(destination: VideoToMusicPages.CompositeVideoPage().environmentObject(videoToMusicData)) {
+                        Text("-> Composite Video")
+                    }
+                    Toggle(isOn: $isDetectWire) {
+                        Text("Detect Wire")
+                    }
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isDGeneratedAudiosNil))
                 .disabled(isDGeneratedAudiosNil)

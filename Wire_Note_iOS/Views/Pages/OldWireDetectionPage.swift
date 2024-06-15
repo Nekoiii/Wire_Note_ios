@@ -27,7 +27,6 @@ struct OldWireDetectionPage: View {
             //            print("Test video url: \(url.path)")
 
             if FileManager.default.fileExists(atPath: url.path) {
-                //                print("Video file exists")
                 originVideoURL = url
                 originPlayer = AVPlayer(url: url)
                 if processedPlayer != nil {

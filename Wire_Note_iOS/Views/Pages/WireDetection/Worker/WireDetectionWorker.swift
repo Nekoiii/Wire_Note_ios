@@ -119,9 +119,9 @@ class WireDetectionWorker {
                     let result = try self.wireDetector.detect(pixelBuffer: imageBuffer, videoSize: self.videoSize)
                     self.handledFramesCount += 1
                     let progress = min(Float(self.handledFramesCount) / Float(self.totalFrames), 0.99)
-                    print("Handled frames: \(self.handledFramesCount) / \(self.totalFrames)")
+//                    print("Handled frames: \(self.handledFramesCount) / \(self.totalFrames)")
                     self.progressHandler?(progress, nil)
-                    print("Detection time: \(Date().timeIntervalSince1970 - startTs)")
+//                    print("Detection time: \(Date().timeIntervalSince1970 - startTs)")
                     if self.unhandleFrames.count < self.PRELOAD_FRAMES {
                         self.videoBufferReader.readBuffer()
                     }
@@ -147,7 +147,7 @@ extension WireDetectionWorker: VideoBufferReaderDelegate {
 
 extension WireDetectionWorker: VideoRendererDelegate {
     func videoRendererDidFinishRendering(buffer: CVPixelBuffer) {
-        print("videoRendererDidFinishRendering")
+//        print("videoRendererDidFinishRendering")
         do {
             let inverseOrientation = orientation.inverted()
             try writter.writeFrame(buffer: buffer, orientation: inverseOrientation)
@@ -163,7 +163,7 @@ extension WireDetectionWorker: VideoWritterDelegate {
     }
 
     func videoWritterDidFinishWritingFrames() {
-        print("videoWritterDidFinishWritingFrames")
+//        print("videoWritterDidFinishWritingFrames")
         if isAllProcessFinished {
             do {
                 try writter.finish()
@@ -171,7 +171,7 @@ extension WireDetectionWorker: VideoWritterDelegate {
                 print("Failed to finish writter: \(error)")
             }
         } else {
-            print("isAllFramesRead: \(videoBufferReader.isAllFramesRead), isProcessingFrames: \(isProcessingFrames), isRendering: \(renderer.isRendering)")
+//            print("isAllFramesRead: \(videoBufferReader.isAllFramesRead), isProcessingFrames: \(isProcessingFrames), isRendering: \(renderer.isRendering)")
         }
     }
 

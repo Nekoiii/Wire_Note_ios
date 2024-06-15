@@ -113,7 +113,7 @@ class VideoWritter {
                     let error = self.writer?.error
                     print("[writer] error: \(error?.localizedDescription ?? "unknown error")")
                 } else {
-                    print("[writer] frame appended")
+//                    print("[writer] frame appended")
                 }
                 self.frameCount += 1
             }
