@@ -103,7 +103,7 @@ class WireDetectionWorker {
                     let progress = min(Float(self.handledFramesCount) / Float(self.totalFrames), 0.99)
                     //                    print("Handled frames: \(self.handledFramesCount) / \(self.totalFrames)")
                     //                    print("Detection time: \(detectionTime)")
-                    
+
                     self.progressHandler?(progress, nil)
                     if self.unhandleFrames.count < self.PRELOAD_FRAMES {
                         self.videoBufferReader.readBuffer()
@@ -114,31 +114,6 @@ class WireDetectionWorker {
                 self.progressHandler?(0, error)
             }
             self.isProcessingFrames = false
-        }
-    }
-    
-    private func addAudioToNewVideo() async{
-        print("addAudioToNewVideo - began")
-        do {
-            let extractedAudioURL = outputURL.deletingLastPathComponent().appendingPathComponent("extracted_audio.m4a")
-
-
-            let tempOutputVideoUrl = outputURL.deletingLastPathComponent().appendingPathComponent("temp_output_audio.m4a")
-            
-            try await VideoAudioProcessor.extractAudio(from: inputURL, to: extractedAudioURL)
-            try await VideoAudioProcessor.addAudioToVideo(videoURL: outputURL, audioURL: extractedAudioURL, outputURL: tempOutputVideoUrl)
-            print("addAudioToNewVideo - Final video creation completed successfully.")
-            
-            // replace audio in outputURL with audio in tempOutputVideoUrl
-            let fileManager = FileManager.default
-            if fileManager.fileExists(atPath: outputURL.path) {
-                try fileManager.removeItem(at: outputURL)
-            }
-            try fileManager.moveItem(at: tempOutputVideoUrl, to: outputURL)
-
-            
-        } catch {
-            print("addAudioToNewVideo - Failed to finalize processing: \(error.localizedDescription)")
         }
     }
 }
@@ -184,9 +159,6 @@ extension WireDetectionWorker: VideoWritterDelegate {
 
     func videoWritterDidFinishWritingFile() {
         print("videoWritterDidFinishWritingFile")
-        Task{
-            await addAudioToNewVideo()
-            progressHandler?(1, nil)
-        }
+        progressHandler?(1, nil)
     }
 }

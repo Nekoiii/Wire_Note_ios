@@ -16,7 +16,7 @@ extension VideoToMusicPages {
             VStack {
                 videoArea
 
-                let isVideoUrlNil = videoToMusicData.videoUrl == nil
+                let isVideoUrlNil = videoToMusicData.originVideoUrl == nil
                 NavigationLink(destination: VideoToMusicPages.ExtractAndDescribeFramesPage().environmentObject(videoToMusicData)) {
                     Text("-> Extract And Describe Frames")
                 }
@@ -44,7 +44,7 @@ extension VideoToMusicPages {
                 .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
                 .padding()
                 .sheet(isPresented: $isPickerPresented, onDismiss: setupVideoPlayer) {
-                    VideoPicker(videoURL: $videoToMusicData.videoUrl)
+                    VideoPicker(videoURL: $videoToMusicData.originVideoUrl)
                 }
 
                 VideoPlayer(player: videoPlayer)
@@ -53,9 +53,11 @@ extension VideoToMusicPages {
         }
 
         private func setupVideoPlayer() {
-            if let url = videoToMusicData.videoUrl {
-                videoPlayer = AVPlayer(url: url)
-                print("setupVideoPlayer: \(String(describing: videoPlayer))")
+            DispatchQueue.main.async {
+                if let url = videoToMusicData.originVideoUrl {
+                    videoPlayer = AVPlayer(url: url)
+                    print("setupVideoPlayer: \(String(describing: videoPlayer))")
+                }
             }
         }
     }

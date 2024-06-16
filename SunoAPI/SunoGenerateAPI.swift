@@ -69,10 +69,6 @@ class SunoGenerateAPI {
                 let responses = try JSONDecoder().decode([SunoResponse].self, from: data)
                 let audioUrls = extractAudioUrlsFromResponse(responses: responses)
 
-                Task {
-                    await self.downloadAndSaveFiles(audioUrls: audioUrls)
-                }
-
                 return audioUrls
 
             } catch {
@@ -105,7 +101,7 @@ class SunoGenerateAPI {
         return generatedAudioUrls
     }
 
-    private func downloadAndSaveFiles(audioUrls: [URL]) async {
+    func downloadAndSaveFiles(audioUrls: [URL]) async -> [URL] {
         var localUrls: [URL] = []
         for audioUrl in audioUrls {
             guard let queryItems = URLComponents(url: audioUrl, resolvingAgainstBaseURL: true)?.queryItems,
@@ -119,5 +115,6 @@ class SunoGenerateAPI {
             }
         }
         print("Files downloaded: \(localUrls)")
+        return localUrls
     }
 }

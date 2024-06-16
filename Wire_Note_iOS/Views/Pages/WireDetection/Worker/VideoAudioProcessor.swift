@@ -3,7 +3,7 @@ import AVFoundation
 class VideoAudioProcessor {
     static func extractAudio(from inputURL: URL, to outputURL: URL) async throws {
         print("VideoAudioProcessor - extractAudio")
-        
+
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: outputURL.path) {
             do {
@@ -13,7 +13,7 @@ class VideoAudioProcessor {
                 throw error
             }
         }
-        
+
         let asset = AVAsset(url: inputURL)
         guard let audioTrack = try await asset.loadTracks(withMediaType: .audio).first else {
             throw NSError(domain: "Audio extraction", code: -1, userInfo: [NSLocalizedDescriptionKey: "No audio track found in video"])
@@ -41,17 +41,17 @@ class VideoAudioProcessor {
     }
 
     static func addAudioToVideo(videoURL: URL, audioURL: URL, outputURL: URL) async throws {
-        print("VideoAudioProcessor - combineVideoAndAudio")
+        print("VideoAudioProcessor - combineVideoAndAudio - began")
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: outputURL.path) {
             try fileManager.removeItem(at: outputURL)
         }
-        
+
         let mixComposition = AVMutableComposition()
 
         let videoAsset = AVAsset(url: videoURL)
         let audioAsset = AVAsset(url: audioURL)
-        
+
         let videoTracks = try await videoAsset.loadTracks(withMediaType: .video)
         guard let videoTrack = videoTracks.first(where: { $0.mediaType == .video }) else {
             throw NSError(domain: "Video and audio combination", code: -1, userInfo: [NSLocalizedDescriptionKey: "No video track found"])
@@ -69,7 +69,7 @@ class VideoAudioProcessor {
         let audioDuration = try await audioAsset.load(.duration)
         let minDuration = CMTimeMinimum(videoDuration, audioDuration)
 //        print("xxxxx   \(videoDuration)   xxx   \(audioDuration) ")
-        
+
         let videoTimeRange = CMTimeRangeMake(start: .zero, duration: minDuration)
         let audioTimeRange = CMTimeRangeMake(start: .zero, duration: minDuration)
 
@@ -87,15 +87,15 @@ class VideoAudioProcessor {
         } else {
             videoComposition.renderSize = videoSize
         }
-        
+
         videoComposition.frameDuration = CMTime(value: 1, timescale: 30)
-        
+
         let instruction = AVMutableVideoCompositionInstruction()
         instruction.timeRange = videoTimeRange
-        
+
         let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
         layerInstruction.setTransform(transform, at: .zero)
-        
+
         instruction.layerInstructions = [layerInstruction]
         videoComposition.instructions = [instruction]
 
@@ -108,6 +108,7 @@ class VideoAudioProcessor {
         exportSession.videoComposition = videoComposition
 
         await exportSession.export()
+        print("VideoAudioProcessor - combineVideoAndAudio - finished")
         if let error = exportSession.error {
             print("combineVideoAndAudio - error: \(error)")
             throw error

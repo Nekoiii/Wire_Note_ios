@@ -25,17 +25,17 @@ extension VideoToMusicPages {
 
                 GeneratedAudioView(generatedAudioUrls: $videoToMusicData.generatedAudioUrls)
 
-                let isDGeneratedAudiosNil = videoToMusicData.description.isEmpty
+                let isCompositeVideoDisable = loadingState != nil || videoToMusicData.downloadedGeneratedAudioUrls.isEmpty
                 VStack {
-                    NavigationLink(destination: VideoToMusicPages.CompositeVideoPage().environmentObject(videoToMusicData)) {
+                    NavigationLink(destination: VideoToMusicPages.CompositeVideoPage(isDetectWire: isDetectWire).environmentObject(videoToMusicData)) {
                         Text("-> Composite Video")
                     }
                     Toggle(isOn: $isDetectWire) {
                         Text("Detect Wire")
                     }
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isDGeneratedAudiosNil))
-                .disabled(isDGeneratedAudiosNil)
+                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isCompositeVideoDisable))
+                .disabled(isCompositeVideoDisable)
             }
             .onAppear {
                 Task {
@@ -49,11 +49,11 @@ extension VideoToMusicPages {
         // *unfinished: need to be refactor with same function in ImageToMusicPage.swift
         private var generateMusicArea: some View {
             Group {
-                if let state = loadingState, state == .generate_music {
+                if let state = loadingState, state == .generate_music || state == .download_file {
                     Text(state.description)
                 }
 
-                let isGenerateMusicButtonDisable = videoToMusicData.description.isEmpty
+                let isGenerateMusicButtonDisable = videoToMusicData.description.isEmpty || loadingState != nil
                 Button(action: {
                     Task {
                         loadingState = .generate_music
@@ -80,6 +80,11 @@ extension VideoToMusicPages {
 
             let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
             videoToMusicData.generatedAudioUrls = audioUrls
+            Task {
+                loadingState = .download_file
+                videoToMusicData.downloadedGeneratedAudioUrls = await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
+                loadingState = nil
+            }
         }
     }
 }

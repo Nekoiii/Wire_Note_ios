@@ -63,6 +63,9 @@ struct TextToMusicPage: View {
 
         let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental)
         generatedAudioUrls = audioUrls
+        Task {
+            await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
+        }
     }
 }
 

@@ -40,7 +40,7 @@ extension VideoToMusicPages {
         }
 
         private func doExtractRandomFrames() {
-            guard let videoUrl = videoToMusicData.videoUrl else {
+            guard let videoUrl = videoToMusicData.originVideoUrl else {
                 print("Video URL is nil")
                 return
             }
