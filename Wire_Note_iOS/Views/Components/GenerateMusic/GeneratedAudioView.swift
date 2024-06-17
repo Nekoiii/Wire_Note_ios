@@ -23,15 +23,15 @@ struct GeneratedAudioView: View {
 
 struct GeneratedAudioView_Previews: PreviewProvider {
     @State static var audioUrls: [URL] = {
-        guard let audio1Data = NSDataAsset(name: "audio-1")?.data,
-              let audio2Data = NSDataAsset(name: "audio-2")?.data
+        guard let audio1Data = NSDataAsset(name: "song-1")?.data,
+              let audio2Data = NSDataAsset(name: "song-2")?.data
         else {
             return []
         }
 
         let tempDir = FileManager.default.temporaryDirectory
-        let audio1URL = tempDir.appendingPathComponent("audio-1.mp3")
-        let audio2URL = tempDir.appendingPathComponent("audio-2.mp3")
+        let audio1URL = tempDir.appendingPathComponent("song-1.mp3")
+        let audio2URL = tempDir.appendingPathComponent("song-2.mp3")
 
         do {
             try audio1Data.write(to: audio1URL)

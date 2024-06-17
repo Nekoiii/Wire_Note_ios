@@ -59,7 +59,7 @@ struct AudioToTextView: View {
     private func doAudioToText() {
         isLoadingTranscription = true
 
-        guard let audioAsset = NSDataAsset(name: "audio-2") else {
+        guard let audioAsset = NSDataAsset(name: "song-2") else {
             errorMessage = "Failed to load audio asset."
             return
         }
@@ -83,10 +83,10 @@ struct AudioToTextView: View {
 
 struct AudioToTextView_Previews: PreviewProvider {
     @State static var audioUrl: URL? = {
-        guard let audio1Data = NSDataAsset(name: "audio-1")?.data
+        guard let audio1Data = NSDataAsset(name: "song-1")?.data
         else { return nil }
         let tempDir = FileManager.default.temporaryDirectory
-        let audio1URL = tempDir.appendingPathComponent("audio-1.mp3")
+        let audio1URL = tempDir.appendingPathComponent("song-1.mp3")
 
         do {
             try audio1Data.write(to: audio1URL)

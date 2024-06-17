@@ -39,12 +39,12 @@ struct AudioPlayerView: View {
 
 struct AudioPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        if let audio1 = NSDataAsset(name: "audio-1"),
-           let audio2 = NSDataAsset(name: "audio-2")
+        if let audio1 = NSDataAsset(name: "song-1"),
+           let audio2 = NSDataAsset(name: "song-2")
         {
             let tempDir = FileManager.default.temporaryDirectory
-            let tempFileURL1 = tempDir.appendingPathComponent("audio-1.mp3")
-            let tempFileURL2 = tempDir.appendingPathComponent("audio-2.mp3")
+            let tempFileURL1 = tempDir.appendingPathComponent("song-1.mp3")
+            let tempFileURL2 = tempDir.appendingPathComponent("song-2.mp3")
 
             do {
                 try audio1.data.write(to: tempFileURL1)

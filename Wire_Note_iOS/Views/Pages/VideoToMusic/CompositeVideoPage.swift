@@ -58,12 +58,13 @@ extension VideoToMusicPages {
                 .disabled(isCreateCompositeVideoButtonDisable)
             }
             .onAppear {
-                Task {
-                    loadingState = .composite_video
-                    setupOutputDirectory()
-                    await createCompositeVideo()
-                    loadingState = nil
-                }
+                // *problem here
+//                Task {
+//                    loadingState = .composite_video
+//                    setupOutputDirectory()
+//                    await createCompositeVideo()
+//                    loadingState = nil
+//                }
             }
         }
 
@@ -137,5 +138,20 @@ extension VideoToMusicPages {
                 print("Error loading video files: \(error)")
             }
         }
+    }
+}
+
+// *unfinished: not working
+struct CompositeVideoPage_Previews: PreviewProvider {
+    static var previews: some View {
+        let testVideoUrl = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
+        let testAudioUrl1 = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Audios/song-1.dataset/song-1.mp3")
+        let testAudioUrl2 = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Audios/SpongeBob.dataset/SpongeBob.mp3")
+        let videoToMusicData = VideoToMusicData()
+        videoToMusicData.originVideoUrl = testVideoUrl
+        videoToMusicData.downloadedGeneratedAudioUrls = [testAudioUrl1, testAudioUrl2]
+
+        return VideoToMusicPages.CompositeVideoPage()
+            .environmentObject(videoToMusicData)
     }
 }

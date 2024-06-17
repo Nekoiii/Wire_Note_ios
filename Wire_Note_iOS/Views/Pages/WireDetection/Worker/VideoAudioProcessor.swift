@@ -52,7 +52,7 @@ class VideoAudioProcessor {
         let audioDuration = try await audioAsset.load(.duration)
         let maxDuration = CMTimeMaximum(videoDuration, audioDuration)
 
-        try insertTracks(videoTrack: videoTrack, audioTrack: audioTrack, videoDuration: videoDuration, audioDuration: audioDuration, videoCompositionTrack: videoCompositionTrack, audioCompositionTrack: audioCompositionTrack)
+        try insertTracks(videoTrack: videoTrack, audioTrack: audioTrack, videoDuration: videoDuration, audioDuration: audioDuration, videoCompositionTrack: videoCompositionTrack, audioCompositionTrack: audioCompositionTrack, maxDuration: maxDuration)
 
         let videoComposition = try await createVideoComposition(videoTrack: videoTrack, videoDuration: maxDuration, videoCompositionTrack: videoCompositionTrack)
 
@@ -69,30 +69,23 @@ class VideoAudioProcessor {
         return track
     }
 
-    private static func insertTracks(videoTrack: AVAssetTrack, audioTrack: AVAssetTrack, videoDuration: CMTime, audioDuration: CMTime, videoCompositionTrack: AVMutableCompositionTrack?, audioCompositionTrack: AVMutableCompositionTrack?) throws {
-        let videoTimeRange = CMTimeRangeMake(start: .zero, duration: videoDuration)
-        let audioTimeRange = CMTimeRangeMake(start: .zero, duration: audioDuration)
+    private static func insertTracks(videoTrack: AVAssetTrack, audioTrack: AVAssetTrack, videoDuration: CMTime, audioDuration: CMTime, videoCompositionTrack: AVMutableCompositionTrack?, audioCompositionTrack: AVMutableCompositionTrack?, maxDuration: CMTime) throws {
+        var currentVideoTime = CMTime.zero
+        var currentAudioTime = CMTime.zero
 
-        try videoCompositionTrack?.insertTimeRange(videoTimeRange, of: videoTrack, at: .zero)
-        try audioCompositionTrack?.insertTimeRange(audioTimeRange, of: audioTrack, at: .zero)
+        while currentVideoTime < maxDuration {
+            let remainingTime = CMTimeSubtract(maxDuration, currentVideoTime)
+            let loopDuration = CMTimeMinimum(videoDuration, remainingTime)
+            try videoCompositionTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: loopDuration), of: videoTrack, at: currentVideoTime)
+            currentVideoTime = CMTimeAdd(currentVideoTime, loopDuration)
+        }
 
-//        if videoDuration > audioDuration {
-//            var currentAudioTime = CMTime.zero
-//            while currentAudioTime < videoDuration {
-//                let remainingDuration = CMTimeSubtract(videoDuration, currentAudioTime)
-//                let currentDuration = CMTimeMinimum(audioDuration, remainingDuration)
-//                try audioCompositionTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: currentDuration), of: audioTrack, at: currentAudioTime)
-//                currentAudioTime = CMTimeAdd(currentAudioTime, currentDuration)
-//            }
-//        } else {
-//            var currentVideoTime = CMTime.zero
-//            while currentVideoTime < audioDuration {
-//                let remainingDuration = CMTimeSubtract(audioDuration, currentVideoTime)
-//                let currentDuration = CMTimeMinimum(videoDuration, remainingDuration)
-//                try videoCompositionTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: currentDuration), of: videoTrack, at: currentVideoTime)
-//                currentVideoTime = CMTimeAdd(currentVideoTime, currentDuration)
-//            }
-//        }
+        while currentAudioTime < maxDuration {
+            let remainingTime = CMTimeSubtract(maxDuration, currentAudioTime)
+            let loopDuration = CMTimeMinimum(audioDuration, remainingTime)
+            try audioCompositionTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: loopDuration), of: audioTrack, at: currentAudioTime)
+            currentAudioTime = CMTimeAdd(currentAudioTime, loopDuration)
+        }
     }
 
     private static func createVideoComposition(videoTrack: AVAssetTrack, videoDuration: CMTime, videoCompositionTrack: AVMutableCompositionTrack?) async throws -> AVMutableVideoComposition {
