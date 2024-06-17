@@ -13,12 +13,11 @@
 		0024D7752C10795E002D8402 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7742C10795E002D8402 /* LoadingState.swift */; };
 		0024D7772C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */; };
 		0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7782C134420002D8402 /* CGAffineTransform.swift */; };
-		005FFE3C2C0C2B1C00D28AD8 /* CheckFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005FFE3B2C0C2B1C00D28AD8 /* CheckFile.swift */; };
+		005FFE3C2C0C2B1C00D28AD8 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005FFE3B2C0C2B1C00D28AD8 /* File.swift */; };
 		006FCE5C2C0CB1370081546E /* VideoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5B2C0CB1370081546E /* VideoUtils.swift */; };
 		006FCE5E2C0CB1560081546E /* ImageViewer.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */; };
 		006FCE602C0CB1650081546E /* UploadVideoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE5F2C0CB1650081546E /* UploadVideoPage.swift */; };
 		006FCE622C0F34ED0081546E /* CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006FCE612C0F34ED0081546E /* CVPixelBuffer.swift */; };
-		00874DD22C0C6D5C00F10B69 /* RemoveExistingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */; };
 		0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */; };
 		0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB0B2C07267E007D3328 /* ImagePickerView.swift */; };
 		0097DB0E2C072B64007D3328 /* GeneratedAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0097DB0D2C072B64007D3328 /* GeneratedAudioView.swift */; };
@@ -80,12 +79,11 @@
 		0024D7742C10795E002D8402 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetWriterInputPixelBufferAdaptor.swift; sourceTree = "<group>"; };
 		0024D7782C134420002D8402 /* CGAffineTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransform.swift; sourceTree = "<group>"; };
-		005FFE3B2C0C2B1C00D28AD8 /* CheckFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckFile.swift; sourceTree = "<group>"; };
+		005FFE3B2C0C2B1C00D28AD8 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		006FCE5B2C0CB1370081546E /* VideoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUtils.swift; sourceTree = "<group>"; };
 		006FCE5D2C0CB1560081546E /* ImageViewer.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageViewer.swift .swift"; sourceTree = "<group>"; };
 		006FCE5F2C0CB1650081546E /* UploadVideoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadVideoPage.swift; sourceTree = "<group>"; };
 		006FCE612C0F34ED0081546E /* CVPixelBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPixelBuffer.swift; sourceTree = "<group>"; };
-		00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveExistingFile.swift; sourceTree = "<group>"; };
 		0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentalToggleView.swift; sourceTree = "<group>"; };
 		0097DB0B2C07267E007D3328 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		0097DB0D2C072B64007D3328 /* GeneratedAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratedAudioView.swift; sourceTree = "<group>"; };
@@ -188,8 +186,7 @@
 		00AC98942C02836A00C3F325 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				005FFE3B2C0C2B1C00D28AD8 /* CheckFile.swift */,
-				00874DD12C0C6D5C00F10B69 /* RemoveExistingFile.swift */,
+				005FFE3B2C0C2B1C00D28AD8 /* File.swift */,
 				00D32CC42C07631800EE7EDA /* FileTypes.swift */,
 				00AC98992C028E4000C3F325 /* MusicalNotes.swift */,
 				00D32CC62C07663500EE7EDA /* Paths.swift */,
@@ -507,7 +504,6 @@
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
 				00AC98B22C04BFAB00C3F325 /* ImageToText.swift in Sources */,
 				00E45A9A2C0AFEA300F8599A /* VideoPicker.swift in Sources */,
-				00874DD22C0C6D5C00F10B69 /* RemoveExistingFile.swift in Sources */,
 				00D32CC52C07631800EE7EDA /* FileTypes.swift in Sources */,
 				006FCE5C2C0CB1370081546E /* VideoUtils.swift in Sources */,
 				00D32CC02C0744D900EE7EDA /* DownloadAndSaveFile.swift in Sources */,
@@ -536,7 +532,7 @@
 				00AC98AD2C03759400C3F325 /* GenerateMode.swift in Sources */,
 				4B3941502BF9FC4000A5B694 /* ContentView.swift in Sources */,
 				00E45A942C0A256800F8599A /* TitleBar.swift in Sources */,
-				005FFE3C2C0C2B1C00D28AD8 /* CheckFile.swift in Sources */,
+				005FFE3C2C0C2B1C00D28AD8 /* File.swift in Sources */,
 				006FCE5E2C0CB1560081546E /* ImageViewer.swift .swift in Sources */,
 				00D32CC72C07663500EE7EDA /* Paths.swift in Sources */,
 				4B26531A2C16B58D00BDE950 /* VideoRenderer.swift in Sources */,

@@ -4,6 +4,9 @@
 # Mac
 .DS_Store
 
+# 
+DownloadedFiles/
+
 # Python Virtual Environment
 venv/
 flask_backend/wire_note_venv/

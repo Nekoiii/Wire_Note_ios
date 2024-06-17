@@ -4,15 +4,7 @@ class VideoAudioProcessor {
     static func extractAudio(from inputURL: URL, to outputURL: URL) async throws {
         print("VideoAudioProcessor - extractAudio")
 
-        let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: outputURL.path) {
-            do {
-                try fileManager.removeItem(at: outputURL)
-            } catch {
-                print("VideoAudioProcessor - Failed to remove existing file: \(error)")
-                throw error
-            }
-        }
+        removeExistingFile(at: outputURL)
 
         let asset = AVAsset(url: inputURL)
         guard let audioTrack = try await asset.loadTracks(withMediaType: .audio).first else {
@@ -42,41 +34,68 @@ class VideoAudioProcessor {
 
     static func addAudioToVideo(videoURL: URL, audioURL: URL, outputURL: URL) async throws {
         print("VideoAudioProcessor - combineVideoAndAudio - began")
-        let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: outputURL.path) {
-            try fileManager.removeItem(at: outputURL)
-        }
+
+        removeExistingFile(at: outputURL)
 
         let mixComposition = AVMutableComposition()
 
         let videoAsset = AVAsset(url: videoURL)
         let audioAsset = AVAsset(url: audioURL)
 
-        let videoTracks = try await videoAsset.loadTracks(withMediaType: .video)
-        guard let videoTrack = videoTracks.first(where: { $0.mediaType == .video }) else {
-            throw NSError(domain: "Video and audio combination", code: -1, userInfo: [NSLocalizedDescriptionKey: "No video track found"])
-        }
-
-        let audioTracks = try await audioAsset.loadTracks(withMediaType: .audio)
-        guard let audioTrack = audioTracks.first(where: { $0.mediaType == .audio }) else {
-            throw NSError(domain: "Video and audio combination", code: -1, userInfo: [NSLocalizedDescriptionKey: "No audio track found"])
-        }
+        let videoTrack = try await loadTrack(from: videoAsset, mediaType: .video)
+        let audioTrack = try await loadTrack(from: audioAsset, mediaType: .audio)
 
         let videoCompositionTrack = mixComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
         let audioCompositionTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
 
         let videoDuration = try await videoAsset.load(.duration)
         let audioDuration = try await audioAsset.load(.duration)
-        let minDuration = CMTimeMinimum(videoDuration, audioDuration)
-//        print("xxxxx   \(videoDuration)   xxx   \(audioDuration) ")
+        let maxDuration = CMTimeMaximum(videoDuration, audioDuration)
 
-        let videoTimeRange = CMTimeRangeMake(start: .zero, duration: minDuration)
-        let audioTimeRange = CMTimeRangeMake(start: .zero, duration: minDuration)
+        try insertTracks(videoTrack: videoTrack, audioTrack: audioTrack, videoDuration: videoDuration, audioDuration: audioDuration, videoCompositionTrack: videoCompositionTrack, audioCompositionTrack: audioCompositionTrack)
+
+        let videoComposition = try await createVideoComposition(videoTrack: videoTrack, videoDuration: maxDuration, videoCompositionTrack: videoCompositionTrack)
+
+        try await exportComposition(mixComposition: mixComposition, videoComposition: videoComposition, outputURL: outputURL, duration: maxDuration)
+
+        print("VideoAudioProcessor - combineVideoAndAudio - finished")
+    }
+
+    private static func loadTrack(from asset: AVAsset, mediaType: AVMediaType) async throws -> AVAssetTrack {
+        let tracks = try await asset.loadTracks(withMediaType: mediaType)
+        guard let track = tracks.first(where: { $0.mediaType == mediaType }) else {
+            throw NSError(domain: "Video and audio combination", code: -1, userInfo: [NSLocalizedDescriptionKey: "No \(mediaType) track found"])
+        }
+        return track
+    }
+
+    private static func insertTracks(videoTrack: AVAssetTrack, audioTrack: AVAssetTrack, videoDuration: CMTime, audioDuration: CMTime, videoCompositionTrack: AVMutableCompositionTrack?, audioCompositionTrack: AVMutableCompositionTrack?) throws {
+        let videoTimeRange = CMTimeRangeMake(start: .zero, duration: videoDuration)
+        let audioTimeRange = CMTimeRangeMake(start: .zero, duration: audioDuration)
 
         try videoCompositionTrack?.insertTimeRange(videoTimeRange, of: videoTrack, at: .zero)
         try audioCompositionTrack?.insertTimeRange(audioTimeRange, of: audioTrack, at: .zero)
 
-//
+//        if videoDuration > audioDuration {
+//            var currentAudioTime = CMTime.zero
+//            while currentAudioTime < videoDuration {
+//                let remainingDuration = CMTimeSubtract(videoDuration, currentAudioTime)
+//                let currentDuration = CMTimeMinimum(audioDuration, remainingDuration)
+//                try audioCompositionTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: currentDuration), of: audioTrack, at: currentAudioTime)
+//                currentAudioTime = CMTimeAdd(currentAudioTime, currentDuration)
+//            }
+//        } else {
+//            var currentVideoTime = CMTime.zero
+//            while currentVideoTime < audioDuration {
+//                let remainingDuration = CMTimeSubtract(audioDuration, currentVideoTime)
+//                let currentDuration = CMTimeMinimum(videoDuration, remainingDuration)
+//                try videoCompositionTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: currentDuration), of: videoTrack, at: currentVideoTime)
+//                currentVideoTime = CMTimeAdd(currentVideoTime, currentDuration)
+//            }
+//        }
+    }
+
+    private static func createVideoComposition(videoTrack: AVAssetTrack, videoDuration: CMTime, videoCompositionTrack: AVMutableCompositionTrack?) async throws -> AVMutableVideoComposition {
         let transform = try await videoTrack.load(.preferredTransform)
         let videoOrientation = transform.videoOrientation()
 
@@ -91,7 +110,7 @@ class VideoAudioProcessor {
         videoComposition.frameDuration = CMTime(value: 1, timescale: 30)
 
         let instruction = AVMutableVideoCompositionInstruction()
-        instruction.timeRange = videoTimeRange
+        instruction.timeRange = CMTimeRangeMake(start: .zero, duration: videoDuration)
 
         let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack!)
         layerInstruction.setTransform(transform, at: .zero)
@@ -99,7 +118,10 @@ class VideoAudioProcessor {
         instruction.layerInstructions = [layerInstruction]
         videoComposition.instructions = [instruction]
 
-        //
+        return videoComposition
+    }
+
+    private static func exportComposition(mixComposition: AVMutableComposition, videoComposition: AVMutableVideoComposition, outputURL: URL, duration _: CMTime) async throws {
         guard let exportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetHighestQuality) else {
             throw NSError(domain: "Video and audio combination", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create export session"])
         }
@@ -108,7 +130,7 @@ class VideoAudioProcessor {
         exportSession.videoComposition = videoComposition
 
         await exportSession.export()
-        print("VideoAudioProcessor - combineVideoAndAudio - finished")
+
         if let error = exportSession.error {
             print("combineVideoAndAudio - error: \(error)")
             throw error
