@@ -49,7 +49,6 @@ class VideoBufferReader {
         guard let videoTrack = try await asset.loadTracks(withMediaType: .video).first else {
             throw VideoBufferReaderError.noVideoTrack
         }
-
         let framerate = try await videoTrack.load(.nominalFrameRate)
         self.framerate = framerate
         duration = try await asset.load(.duration)
@@ -107,6 +106,7 @@ class VideoBufferReader {
             self.isAllFramesRead = true
             self.readComplete(buffers: buffers)
         }
+        
     }
 
     private func readComplete(buffers: [CVImageBuffer]) {

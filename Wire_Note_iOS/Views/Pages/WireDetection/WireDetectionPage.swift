@@ -198,21 +198,20 @@ struct WireDetectionPage: View {
                     throw WireDetectionError.invalidURL
                 }
                 self.worker = try await WireDetectionWorker(inputURL: url, outputURL: outputURL)
-                try await worker?.processVideo(url: url) { progress, error in
+                worker?.processVideo(url: url) { progress, error in
                     DispatchQueue.main.async {
                         if progress == 1 {
+                            withAnimation {
+                                self.progress = progress
+                                self.isProcessing = false
+                            }
+                            processedVideoURL = outputURL
+                            setupProcessedPlayer()
+                            originPlayer?.pause()
+                            processedPlayer?.pause()
+                            isVideoPlaying = false
                             Task {
-                                await addAudioToNewVideo()
-                                processedVideoURL = outputURL
-                                setupProcessedPlayer()
-                                originPlayer?.pause()
-                                processedPlayer?.pause()
-                                isVideoPlaying = false
                                 await originPlayer?.seek(to: .zero)
-                                withAnimation {
-                                    self.progress = progress
-                                    self.isProcessing = false
-                                }
                             }
                         } else {
                             self.progress = progress
@@ -231,29 +230,6 @@ struct WireDetectionPage: View {
                     errorMsg = error.localizedDescription
                 }
             }
-        }
-    }
-
-    private func addAudioToNewVideo() async {
-        do {
-            let extractedAudioURL = outputURL.deletingLastPathComponent().appendingPathComponent("extracted_audio.m4a")
-            let tempOutputVideoUrl = outputURL.deletingLastPathComponent().appendingPathComponent("temp_output_video.m4a")
-
-            if let originVideoURL = originVideoURL {
-                try await VideoAudioProcessor.extractAudio(from: originVideoURL, to: extractedAudioURL)
-                try await VideoAudioProcessor.addAudioToVideo(videoURL: outputURL, audioURL: extractedAudioURL, outputURL: tempOutputVideoUrl)
-                print("addAudioToNewVideo - Final video creation completed successfully.")
-
-                // replace audio in outputURL with audio in tempOutputVideoUrl
-                let fileManager = FileManager.default
-                if fileManager.fileExists(atPath: outputURL.path) {
-                    try fileManager.removeItem(at: outputURL)
-                }
-                try fileManager.moveItem(at: tempOutputVideoUrl, to: outputURL)
-            }
-
-        } catch {
-            print("addAudioToNewVideo - Failed to finalize processing: \(error.localizedDescription)")
         }
     }
 }

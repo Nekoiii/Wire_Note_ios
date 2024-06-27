@@ -678,7 +678,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Wire_Note_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = PLPSWS6683;
+				DEVELOPMENT_TEAM = WZ2328U4W4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wire-Note-iOS-Info.plist";
@@ -693,7 +693,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nekosa;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nekosa.js;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -709,7 +709,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Wire_Note_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = PLPSWS6683;
+				DEVELOPMENT_TEAM = WZ2328U4W4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wire-Note-iOS-Info.plist";
@@ -724,7 +724,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nekosa;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nekosa.js;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
