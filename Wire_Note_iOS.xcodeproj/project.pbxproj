@@ -265,7 +265,7 @@
 		00D32CC32C075AF200EE7EDA /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				4B26530C2C15D75300BDE950 /* WireDetection */,
+				4B26530D2C15D76500BDE950 /* WireDetectionPage.swift */,
 				00AC98B32C04C0C500C3F325 /* ImageToMusicPage.swift */,
 				00AC98A02C02F1F000C3F325 /* TextToMusicPage.swift */,
 				00AC98922C027FA600C3F325 /* HomePage.swift */,
@@ -279,6 +279,7 @@
 		00E45A972C0AFAB600F8599A /* Contorllers */ = {
 			isa = PBXGroup;
 			children = (
+				4B26530F2C15DFE500BDE950 /* WireDetection */,
 				4B3941632BF9FED300A5B694 /* Camera */,
 			);
 			path = Contorllers;
@@ -293,16 +294,7 @@
 			path = Representables;
 			sourceTree = "<group>";
 		};
-		4B26530C2C15D75300BDE950 /* WireDetection */ = {
-			isa = PBXGroup;
-			children = (
-				4B26530F2C15DFE500BDE950 /* Worker */,
-				4B26530D2C15D76500BDE950 /* WireDetectionPage.swift */,
-			);
-			path = WireDetection;
-			sourceTree = "<group>";
-		};
-		4B26530F2C15DFE500BDE950 /* Worker */ = {
+		4B26530F2C15DFE500BDE950 /* WireDetection */ = {
 			isa = PBXGroup;
 			children = (
 				4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */,
@@ -311,7 +303,7 @@
 				4B26531B2C16D29E00BDE950 /* VideoWritter.swift */,
 				0021DF862C1D9342009EDAF5 /* VideoAudioProcessor.swift */,
 			);
-			path = Worker;
+			path = WireDetection;
 			sourceTree = "<group>";
 		};
 		4B3941412BF9FC4000A5B694 = {
@@ -678,7 +670,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Wire_Note_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = WZ2328U4W4;
+				DEVELOPMENT_TEAM = PLPSWS6683;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wire-Note-iOS-Info.plist";
@@ -693,7 +685,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nekosa.js;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nekosa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -709,7 +701,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Wire_Note_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = WZ2328U4W4;
+				DEVELOPMENT_TEAM = PLPSWS6683;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Wire-Note-iOS-Info.plist";
@@ -724,7 +716,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nekosa.js;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nekosa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

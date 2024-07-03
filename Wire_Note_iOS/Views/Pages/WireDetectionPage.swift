@@ -3,6 +3,7 @@ import SwiftUI
 
 struct WireDetectionPage: View {
     @State private var worker: WireDetectionWorker?
+    @State private var videoAudioProcessor: VideoAudioProcessor?
 
     @State private var originVideoURL: URL?
     @State private var processedVideoURL: URL?
@@ -205,14 +206,21 @@ struct WireDetectionPage: View {
                                 self.progress = progress
                                 self.isProcessing = false
                             }
-                            processedVideoURL = outputURL
-                            setupProcessedPlayer()
-                            originPlayer?.pause()
-                            processedPlayer?.pause()
-                            isVideoPlaying = false
+
                             Task {
+                                await addAudioToNewVideo()
+
+                                self.progress = 1
+                                self.isProcessing = false
+
+                                processedVideoURL = outputURL
+                                setupProcessedPlayer()
+                                originPlayer?.pause()
+                                processedPlayer?.pause()
+                                isVideoPlaying = false
                                 await originPlayer?.seek(to: .zero)
                             }
+
                         } else {
                             self.progress = progress
                         }
@@ -230,6 +238,42 @@ struct WireDetectionPage: View {
                     errorMsg = error.localizedDescription
                 }
             }
+        }
+    }
+
+    private func addAudioToNewVideo() async {
+        isProcessing = true
+        progress = 0
+        do {
+            let extractedAudioURL = outputURL.deletingLastPathComponent().appendingPathComponent("extracted_audio.m4a")
+            let tempOutputVideoUrl = outputURL.deletingLastPathComponent().appendingPathComponent("temp_output_video.m4a")
+
+            guard let originVideoURL = originVideoURL else {
+                print("no originVideoURL")
+                return
+            }
+            videoAudioProcessor = VideoAudioProcessor()
+
+            try await videoAudioProcessor?.extractAndAddAudioToVideo(originVideoURL: originVideoURL, extractedAudioURL: extractedAudioURL, videoURL: outputURL, outputVideoURL: tempOutputVideoUrl) { progress, _ in
+                DispatchQueue.main.async {
+                    if progress == 1 {
+                        withAnimation {
+                            self.progress = progress
+                            self.isProcessing = false
+                        }
+                    } else {
+                        self.progress = progress
+                    }
+                }
+            }
+
+            // replace audio in outputURL with audio in tempOutputVideoUrl
+            removeExistingFile(at: outputURL)
+            try FileManager.default.moveItem(at: tempOutputVideoUrl, to: outputURL)
+            progress = 1
+            isProcessing = false
+        } catch {
+            print("addAudioToNewVideo - error : \(error)")
         }
     }
 }

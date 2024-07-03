@@ -6,8 +6,12 @@ extension VideoToMusicPages {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
 
         @State private var wireDetectionWorker: WireDetectionWorker?
+        @State private var videoAudioProcessor: VideoAudioProcessor?
 
         @State private var players: [AVPlayer] = []
+
+        @State private var progress: Float = 0
+        @State private var isProcessing = false
 
         @State private var loadingState: LoadingState?
         @State private var isDetectWire: Bool
@@ -26,6 +30,11 @@ extension VideoToMusicPages {
 
         var body: some View {
             VStack {
+                if isProcessing {
+                    ProgressView(value: progress)
+                        .progressViewStyle(LinearProgressViewStyle())
+                }
+
                 ForEach(players.indices, id: \.self) { index in
                     VideoPlayer(player: players[index])
                         .frame(height: 300)
@@ -90,21 +99,29 @@ extension VideoToMusicPages {
         }
 
         private func createCompositeVideo() async throws {
-            clearOutputDirectory()
             print("createCompositeVideo - began")
+            isProcessing = true
+            progress = 0
+            clearOutputDirectory()
             do {
                 guard let originVideoUrl = videoToMusicData.originVideoUrl
                 else {
                     throw WireDetectionError.invalidURL
                 }
                 wireDetectionWorker = try await WireDetectionWorker(inputURL: originVideoUrl, outputURL: wireDetectionOutputURL)
-                try await wireDetectionWorker?.processVideo(url: originVideoUrl) { progress, _ in
+                wireDetectionWorker?.processVideo(url: originVideoUrl) { progress, error in
                     DispatchQueue.main.async {
                         if progress == 1 {
                             Task {
                                 try await addMusicToNewVideo()
                                 loadingState = nil
+                                self.progress = progress
+                                self.isProcessing = false
                             }
+                        }
+                        if let error = error {
+                            print("createCompositeVideo - processVideo - error: \(error)")
+                            isProcessing = false
                         }
                     }
                 }
@@ -122,7 +139,7 @@ extension VideoToMusicPages {
 
                     let outputVideoUrl = outputDirectoryURL.appendingPathComponent("output_\(index).mp4")
 
-                    try await VideoAudioProcessor.addAudioToVideo(videoURL: wireDetectionOutputURL, audioURL: url, outputURL: outputVideoUrl)
+                    try await videoAudioProcessor?.addAudioToVideo(videoURL: wireDetectionOutputURL, audioURL: url, outputURL: outputVideoUrl)
                 }
                 loadVideoFiles()
             } catch {

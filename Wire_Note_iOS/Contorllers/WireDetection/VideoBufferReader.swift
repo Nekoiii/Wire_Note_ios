@@ -106,7 +106,6 @@ class VideoBufferReader {
             self.isAllFramesRead = true
             self.readComplete(buffers: buffers)
         }
-        
     }
 
     private func readComplete(buffers: [CVImageBuffer]) {

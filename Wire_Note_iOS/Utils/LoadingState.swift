@@ -21,7 +21,6 @@ enum LoadingState {
             return "Extracting frames..."
         case .image_to_text:
             return "Descriptions image..."
-
         case .composite_video:
             return "Compositing video..."
         }
