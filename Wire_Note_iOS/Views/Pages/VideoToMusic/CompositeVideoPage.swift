@@ -139,11 +139,12 @@ extension VideoToMusicPages {
 
         private func addMusicToNewVideo() async throws {
             print("CompositeVideoPage - addMusicToNewVideo")
-            isProcessing = true
-            progress = 0
+
             do {
                 for (index, url) in videoToMusicData.downloadedGeneratedAudioUrls.enumerated() {
                     print("addMusicToNewVideo - Index: \(index), URL: \(url)")
+                    isProcessing = true
+                    progress = 0
 
                     let outputVideoUrl = outputDirectoryURL.appendingPathComponent("output_\(index).mp4")
 
