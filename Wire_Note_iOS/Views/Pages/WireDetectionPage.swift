@@ -254,7 +254,7 @@ struct WireDetectionPage: View {
             }
             videoAudioProcessor = VideoAudioProcessor()
 
-            try await videoAudioProcessor?.extractAndAddAudioToVideo(originVideoURL: originVideoURL, extractedAudioURL: extractedAudioURL, videoURL: outputURL, outputVideoURL: tempOutputVideoUrl) { progress, _ in
+            try await videoAudioProcessor?.extractAndAddAudioToVideo(originVideoURL: originVideoURL, extractedAudioURL: extractedAudioURL, videoURL: outputURL, outputVideoURL: tempOutputVideoUrl) { progress, error in
                 DispatchQueue.main.async {
                     if progress == 1 {
                         withAnimation {
@@ -263,6 +263,10 @@ struct WireDetectionPage: View {
                         }
                     } else {
                         self.progress = progress
+                    }
+                    if let error = error {
+                        print("addAudioToNewVideo - extractAndAddAudioToVideo - error: \(error)")
+                        isProcessing = false
                     }
                 }
             }

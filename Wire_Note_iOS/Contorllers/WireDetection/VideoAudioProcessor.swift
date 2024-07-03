@@ -7,8 +7,18 @@ class VideoAudioProcessor {
         progressHandler = handler
         progressHandler?(0, nil)
         try await extractAudio(from: originVideoURL, to: extractedAudioURL)
-        progressHandler?(0.5, nil) //*unfinished: need to be refine
-        try await addAudioToVideo(videoURL: videoURL, audioURL: extractedAudioURL, outputURL: outputVideoURL)
+        try await addAudioToVideo(videoURL: videoURL, audioURL: extractedAudioURL, outputURL: outputVideoURL) { progress, error in
+            DispatchQueue.main.async {
+                if progress == 1 {
+                    self.progressHandler?(progress, nil)
+                } else {
+                    self.progressHandler?(progress, nil)
+                }
+                if let error = error {
+                    print("extractAndAddAudioToVideo - addAudioToVideo - error: \(error)")
+                }
+            }
+        } // *unfinished
         progressHandler?(1, nil)
     }
 
@@ -40,7 +50,7 @@ class VideoAudioProcessor {
 //        let exportProgressChecker = Task {
 //            while exportSession.status == .exporting {
 //                self.progressHandler?(exportSession.progress, nil)
-//                try await Task.sleep(nanoseconds: 100_000_000) // Sleep for 0.1 second
+//                try await Task.sleep(nanoseconds: 100_000_000) // 让循环每 0.1 秒检查一次 exportSession.progress 的值
 //            }
 //        }
         await exportSession.export()
@@ -56,9 +66,12 @@ class VideoAudioProcessor {
         print("extractAudio time: \(end.timeIntervalSince1970 - start.timeIntervalSince1970)")
     }
 
-    func addAudioToVideo(videoURL: URL, audioURL: URL, outputURL: URL) async throws {
+    func addAudioToVideo(videoURL: URL, audioURL: URL, outputURL: URL, handler: @escaping progressHandler) async throws {
         print("VideoAudioProcessor - combineVideoAndAudio - began. The Video will be created at outputURL: \(outputURL)")
         let start = Date()
+
+        progressHandler = handler
+        progressHandler?(0.2, nil)
 
         removeExistingFile(at: outputURL)
 
@@ -69,6 +82,7 @@ class VideoAudioProcessor {
 
         let videoTrack = try await loadTrack(from: videoAsset, mediaType: .video)
         let audioTrack = try await loadTrack(from: audioAsset, mediaType: .audio)
+        progressHandler?(0.3, nil)
 
         let videoCompositionTrack = mixComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
         let audioCompositionTrack = mixComposition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
@@ -79,10 +93,15 @@ class VideoAudioProcessor {
 
         try insertTracks(videoTrack: videoTrack, audioTrack: audioTrack, videoDuration: videoDuration, audioDuration: audioDuration, videoCompositionTrack: videoCompositionTrack, audioCompositionTrack: audioCompositionTrack, maxDuration: maxDuration)
 
+        progressHandler?(0.4, nil)
+
         let videoComposition = try await createVideoComposition(videoTrack: videoTrack, videoDuration: maxDuration, videoCompositionTrack: videoCompositionTrack)
+
+        progressHandler?(0.5, nil)
 
         try await exportComposition(mixComposition: mixComposition, videoComposition: videoComposition, outputURL: outputURL, duration: maxDuration)
 
+        progressHandler?(1, nil)
         print("VideoAudioProcessor - combineVideoAndAudio - finished")
 
         let end = Date()
@@ -159,15 +178,7 @@ class VideoAudioProcessor {
         exportSession.outputFileType = .mov
         exportSession.videoComposition = videoComposition
 
-//        let exportProgressChecker = Task {
-//            while exportSession.status == .exporting {
-//                self.progressHandler?(exportSession.progress, nil)
-//                try await Task.sleep(nanoseconds: 100_000_000) // Sleep for 0.1 second
-//            }
-//        }
-
         await exportSession.export()
-//        exportProgressChecker.cancel()
 
         if let error = exportSession.error {
             print("combineVideoAndAudio - error: \(error)")

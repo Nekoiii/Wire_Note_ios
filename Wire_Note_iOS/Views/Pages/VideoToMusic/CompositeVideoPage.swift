@@ -99,7 +99,7 @@ extension VideoToMusicPages {
         }
 
         private func createCompositeVideo() async throws {
-            print("createCompositeVideo - began")
+            print("CompositeVideoPage - createCompositeVideo")
             isProcessing = true
             progress = 0
             clearOutputDirectory()
@@ -112,12 +112,18 @@ extension VideoToMusicPages {
                 wireDetectionWorker?.processVideo(url: originVideoUrl) { progress, error in
                     DispatchQueue.main.async {
                         if progress == 1 {
-                            Task {
-                                try await addMusicToNewVideo()
-                                loadingState = nil
+                            withAnimation {
                                 self.progress = progress
                                 self.isProcessing = false
                             }
+                            Task {
+                                try await addMusicToNewVideo()
+                                loadingState = nil
+                                self.progress = 1
+                                self.isProcessing = false
+                            }
+                        } else {
+                            self.progress = progress
                         }
                         if let error = error {
                             print("createCompositeVideo - processVideo - error: \(error)")
@@ -129,21 +135,42 @@ extension VideoToMusicPages {
                 loadingState = nil
                 print("createCompositeVideo - error: \(error)")
             }
-            print("createCompositeVideo - end")
         }
 
         private func addMusicToNewVideo() async throws {
+            print("CompositeVideoPage - addMusicToNewVideo")
+            isProcessing = true
+            progress = 0
             do {
                 for (index, url) in videoToMusicData.downloadedGeneratedAudioUrls.enumerated() {
                     print("addMusicToNewVideo - Index: \(index), URL: \(url)")
 
                     let outputVideoUrl = outputDirectoryURL.appendingPathComponent("output_\(index).mp4")
 
-                    try await videoAudioProcessor?.addAudioToVideo(videoURL: wireDetectionOutputURL, audioURL: url, outputURL: outputVideoUrl)
+                    videoAudioProcessor = VideoAudioProcessor()
+
+                    try await videoAudioProcessor?.addAudioToVideo(videoURL: wireDetectionOutputURL, audioURL: url, outputURL: outputVideoUrl) { progress, error in
+                        DispatchQueue.main.async {
+                            if progress == 1 {
+                                withAnimation {
+                                    self.progress = progress
+                                    self.isProcessing = false
+                                }
+                            } else {
+                                self.progress = progress
+                            }
+                            if let error = error {
+                                print("addMusicToNewVideo - addAudioToVideo - error: \(error)")
+                                isProcessing = false
+                            }
+                        }
+                    }
                 }
                 loadVideoFiles()
             } catch {
                 loadingState = nil
+                isProcessing = false
+                progress = 1
                 print("addMusicToNewVideo error: \(error)")
             }
         }
