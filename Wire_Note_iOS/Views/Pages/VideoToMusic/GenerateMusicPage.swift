@@ -3,14 +3,10 @@ import SwiftUI
 extension VideoToMusicPages {
     struct GenerateMusicPage: View {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
-
-        @State private var loadingState: LoadingState?
-
-        @State private var isMakeInstrumental: Bool
-        @State private var isDetectWire: Bool = true
+        @StateObject private var viewModel: GenerateMusicViewModel
 
         init(isMakeInstrumental: Bool = false) {
-            _isMakeInstrumental = State(initialValue: isMakeInstrumental)
+            _viewModel = StateObject(wrappedValue: GenerateMusicViewModel(isMakeInstrumental: isMakeInstrumental))
         }
 
         var body: some View {
@@ -25,12 +21,12 @@ extension VideoToMusicPages {
 
                 GeneratedAudioView(generatedAudioUrls: $videoToMusicData.generatedAudioUrls)
 
-                let isCompositeVideoDisable = loadingState != nil || videoToMusicData.downloadedGeneratedAudioUrls.isEmpty
+                let isCompositeVideoDisable = viewModel.loadingState != nil || videoToMusicData.downloadedGeneratedAudioUrls.isEmpty
                 VStack {
-                    NavigationLink(destination: VideoToMusicPages.CompositeVideoPage(isDetectWire: isDetectWire).environmentObject(videoToMusicData)) {
+                    NavigationLink(destination: VideoToMusicPages.CompositeVideoPage(isDetectWire: viewModel.isDetectWire).environmentObject(videoToMusicData)) {
                         Text("-> Composite Video")
                     }
-                    Toggle(isOn: $isDetectWire) {
+                    Toggle(isOn: $viewModel.isDetectWire) {
                         Text("Detect Wire")
                     }
                 }
@@ -39,9 +35,9 @@ extension VideoToMusicPages {
             }
             .onAppear {
                 Task {
-                    loadingState = .generate_music
-                    await generateMusicWithDescription()
-                    loadingState = nil
+                    viewModel.loadingState = .generate_music
+                    await viewModel.generateMusicWithDescription()
+                    viewModel.loadingState = nil
                 }
             }
         }
@@ -49,16 +45,16 @@ extension VideoToMusicPages {
         // *unfinished: need to be refactor with same function in ImageToMusicPage.swift
         private var generateMusicArea: some View {
             Group {
-                if let state = loadingState, state == .generate_music || state == .download_file {
+                if let state = viewModel.loadingState, state == .generate_music || state == .download_file {
                     Text(state.description)
                 }
 
-                let isGenerateMusicButtonDisable = videoToMusicData.description.isEmpty || loadingState != nil
+                let isGenerateMusicButtonDisable = videoToMusicData.description.isEmpty || viewModel.loadingState != nil
                 Button(action: {
                     Task {
-                        loadingState = .generate_music
-                        await generateMusicWithDescription()
-                        loadingState = nil
+                        viewModel.loadingState = .generate_music
+                        await viewModel.generateMusicWithDescription()
+                        viewModel.loadingState = nil
                     }
                 }) {
                     Text("Generate Music Again")
@@ -66,24 +62,8 @@ extension VideoToMusicPages {
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isGenerateMusicButtonDisable))
                 .disabled(isGenerateMusicButtonDisable)
 
-                InstrumentalToggleView(isMakeInstrumental: $isMakeInstrumental)
+                InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
                     .padding()
-            }
-        }
-
-        private func generateMusicWithDescription() async {
-            let generatePrompt = videoToMusicData.description
-            let generateIsMakeInstrumental = isMakeInstrumental
-            let generateMode = GenerateMode.generate
-
-            let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-
-            let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
-            videoToMusicData.generatedAudioUrls = audioUrls
-            Task {
-                loadingState = .download_file
-                videoToMusicData.downloadedGeneratedAudioUrls = await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
-                loadingState = nil
             }
         }
     }
