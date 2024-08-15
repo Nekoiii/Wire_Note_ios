@@ -3,14 +3,7 @@ import SwiftUI
 extension VideoToMusicPages {
     struct ExtractAndDescribeFramesPage: View {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
-
-        @State private var extractedFrames: [UIImage] = []
-        @State private var selectedImage: UIImage? = nil
-        @State private var isImageViewerPresented = false
-
-        @State private var isMakeInstrumental: Bool = false
-
-        @State private var loadingState: LoadingState?
+        @StateObject private var viewModel = ExtractAndDescribeFramesViewModel()
 
         var body: some View {
             VStack {
@@ -19,90 +12,44 @@ extension VideoToMusicPages {
 
                 let isDescrptionNil = videoToMusicData.description.isEmpty
                 VStack {
-                    NavigationLink(destination: VideoToMusicPages.GenerateMusicPage(isMakeInstrumental: isMakeInstrumental).environmentObject(videoToMusicData)) {
+                    NavigationLink(destination: VideoToMusicPages.GenerateMusicPage(isMakeInstrumental: viewModel.isMakeInstrumental).environmentObject(videoToMusicData)) {
                         Text("-> Generate Music")
                     }
-                    InstrumentalToggleView(isMakeInstrumental: $isMakeInstrumental)
+                    InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isDescrptionNil))
                 .disabled(isDescrptionNil)
             }
-            .sheet(isPresented: $isImageViewerPresented) { // *problem
-                if let selectedImage = selectedImage {
+            .sheet(isPresented: $viewModel.isImageViewerPresented) { // *problem
+                if let selectedImage = viewModel.selectedImage {
                     ImageViewer(image: selectedImage)
                 } else {
                     Text("No Image Selected")
                 }
             }
             .onAppear {
-                doExtractRandomFrames()
-            }
-        }
-
-        private func doExtractRandomFrames() {
-            guard let videoUrl = videoToMusicData.originVideoUrl else {
-                print("Video URL is nil")
-                return
-            }
-            videoToMusicData.description = ""
-            loadingState = .extract_frames
-            extractRandomFrames(from: videoUrl, frameCount: 6) { extractedFrames in
-                self.extractedFrames = extractedFrames
-                loadingState = nil
-            }
-        }
-
-        private func describeFrames() {
-            loadingState = .image_to_text
-
-            for image in extractedFrames {
-                guard let imageData = image.pngData() else {
-                    print("describeFrames - no imageData")
-                    return
-                }
-
-                imageToText(imageData: imageData) { result in
-                    switch result {
-                    case let .success(desc):
-                        DispatchQueue.main.async {
-                            if videoToMusicData.description.isEmpty {
-                                videoToMusicData.description += desc
-                            } else {
-                                videoToMusicData.description += ". " + desc
-                            }
-                        }
-                    case let .failure(error):
-                        DispatchQueue.main.async {
-                            print("describeFrames - error: \(error.localizedDescription)")
-                        }
-                    }
-                    loadingState = nil
-
-                    if videoToMusicData.description.count > 150 { // *unfinished
-                        videoToMusicData.description = String(videoToMusicData.description.prefix(150))
-                    }
-                }
+                viewModel.doExtractRandomFrames()
             }
         }
 
         private var extractFramesArea: some View {
             Group {
-                if let state = loadingState, state == .extract_frames {
+                if let state = viewModel.loadingState, state == .extract_frames {
                     Text(state.description)
                 }
 
-                if !extractedFrames.isEmpty {
+                if !viewModel.extractedFrames.isEmpty {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                            ForEach(extractedFrames, id: \.self) { frame in
+                            ForEach(viewModel.extractedFrames, id: \.self) { frame in
                                 Image(uiImage: frame)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(height: 100)
                                     .onTapGesture {
-                                        selectedImage = frame
-                                        print("onTapGesture -- Selected Image: \(selectedImage!)")
-                                        isImageViewerPresented = true
+                                        viewModel.selectedImage = frame
+                                        print("onTapGesture -- Selected Image: \(viewModel.selectedImage!)")
+                                        viewModel.isImageViewerPresented = true
                                     }
                             }
                         }
@@ -111,7 +58,7 @@ extension VideoToMusicPages {
                     Text("No frames extracted")
                 }
 
-                Button(action: { doExtractRandomFrames() }) {
+                Button(action: { viewModel.doExtractRandomFrames() }) {
                     Text("Extract Frames Again")
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor")))
@@ -120,11 +67,11 @@ extension VideoToMusicPages {
 
         private var describeFramesArea: some View {
             Group {
-                if let state = loadingState, state == .image_to_text {
+                if let state = viewModel.loadingState, state == .image_to_text {
                     Text(state.description)
                 }
-                let isExtractedFramesEmpty = extractedFrames.isEmpty
-                Button(action: { describeFrames() }) {
+                let isExtractedFramesEmpty = viewModel.extractedFrames.isEmpty
+                Button(action: { viewModel.describeFrames() }) {
                     Text("Describe Image")
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isExtractedFramesEmpty))

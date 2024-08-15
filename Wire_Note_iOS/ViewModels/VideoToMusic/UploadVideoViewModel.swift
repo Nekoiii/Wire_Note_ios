@@ -2,16 +2,12 @@ import AVKit
 import SwiftUI
 
 class UploadVideoViewModel: ObservableObject {
+    @EnvironmentObject private var videoToMusicData: VideoToMusicData
+
     @Published var videoPlayer: AVPlayer?
 
     @Published var isPickerPresented = false
     @Published var loadingState: LoadingState?
-
-    private var videoToMusicData: VideoToMusicData
-
-    init(videoToMusicData: VideoToMusicData) {
-        self.videoToMusicData = videoToMusicData
-    }
 
     func setupVideoPlayer() {
         DispatchQueue.main.async {

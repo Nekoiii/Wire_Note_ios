@@ -6,11 +6,7 @@ enum VideoToMusicPages {}
 extension VideoToMusicPages {
     struct UploadVideoPage: View {
         @EnvironmentObject private var videoToMusicData: VideoToMusicData
-        @StateObject private var viewModel: UploadVideoViewModel
-
-        init() {
-            _viewModel = StateObject(wrappedValue: UploadVideoViewModel(videoToMusicData: VideoToMusicData()))
-        }
+        @StateObject private var viewModel = UploadVideoViewModel()
 
         var body: some View {
             VStack {
@@ -24,7 +20,7 @@ extension VideoToMusicPages {
                 .disabled(isVideoUrlNil)
             }
             .onAppear {
-                if Environment.debugMode {
+                if EnvironmentConfigs.debugMode {
                     let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
                     if FileManager.default.fileExists(atPath: url.path) {
                         videoToMusicData.originVideoUrl = url
