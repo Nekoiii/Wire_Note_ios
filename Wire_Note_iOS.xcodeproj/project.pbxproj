@@ -15,6 +15,7 @@
 		00225B842C6DFF6800A9125F /* TextToMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B832C6DFF6800A9125F /* TextToMusicViewModel.swift */; };
 		00225B862C6E011D00A9125F /* DefaultPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B852C6E011D00A9125F /* DefaultPrompts.swift */; };
 		00225B882C6E028C00A9125F /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B872C6E028C00A9125F /* Environment.swift */; };
+		00225B8A2C6E063300A9125F /* GenerateFieldComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B892C6E063300A9125F /* GenerateFieldComponents.swift */; };
 		0024D7752C10795E002D8402 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7742C10795E002D8402 /* LoadingState.swift */; };
 		0024D7772C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */; };
 		0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7782C134420002D8402 /* CGAffineTransform.swift */; };
@@ -86,6 +87,7 @@
 		00225B832C6DFF6800A9125F /* TextToMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToMusicViewModel.swift; sourceTree = "<group>"; };
 		00225B852C6E011D00A9125F /* DefaultPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPrompts.swift; sourceTree = "<group>"; };
 		00225B872C6E028C00A9125F /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		00225B892C6E063300A9125F /* GenerateFieldComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateFieldComponents.swift; sourceTree = "<group>"; };
 		0024D7742C10795E002D8402 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetWriterInputPixelBufferAdaptor.swift; sourceTree = "<group>"; };
 		0024D7782C134420002D8402 /* CGAffineTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransform.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				00D32CCA2C09FB4600EE7EDA /* AudioToTextView.swift */,
 				0097DB052C061D14007D3328 /* InstrumentalToggleView.swift */,
 				0097DB0D2C072B64007D3328 /* GeneratedAudioView.swift */,
+				00225B892C6E063300A9125F /* GenerateFieldComponents.swift */,
 			);
 			path = GenerateMusic;
 			sourceTree = "<group>";
@@ -527,6 +530,7 @@
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
 				006FCE602C0CB1650081546E /* UploadVideoPage.swift in Sources */,
 				4B3941692BF9FEFD00A5B694 /* AVCaptureVideoOrientation+Extension.swift in Sources */,
+				00225B8A2C6E063300A9125F /* GenerateFieldComponents.swift in Sources */,
 				4B3941712BF9FFFF00A5B694 /* Buttons.swift in Sources */,
 				00AC98B22C04BFAB00C3F325 /* ImageToText.swift in Sources */,
 				00E45A9A2C0AFEA300F8599A /* VideoPicker.swift in Sources */,

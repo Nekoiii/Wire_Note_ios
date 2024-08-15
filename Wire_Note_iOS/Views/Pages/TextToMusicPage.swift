@@ -6,7 +6,6 @@ struct TextToMusicPage: View {
     var body: some View {
         VStack(spacing: 20) {
             Group {
-                generateModePicker
                 generateFields
                 generatemMusicButton
                 InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
@@ -16,25 +15,19 @@ struct TextToMusicPage: View {
         }
     }
 
-    private var generateModePicker: some View {
-        Picker("Generate Mode", selection: $viewModel.generateMode) {
-            Text("Generate").tag(GenerateMode.generate)
-            Text("Custom Generate").tag(GenerateMode.customGenerate)
-        }
-        .pickerStyle(SegmentedPickerStyle())
-        .padding(.vertical, 10)
-    }
-
     private var generateFields: some View {
         Group {
-            TextField("Enter \(viewModel.generateMode == .customGenerate ? "lyrics" : "prompt")", text: $viewModel.prompt)
-            if viewModel.generateMode == .customGenerate {
-                TextField("Enter style", text: $viewModel.style)
-                TextField("Enter title", text: $viewModel.title)
+            GenerateModePicker(generateMode: $viewModel.generateMode)
+            Group {
+                GeneratePromptTextField(prompt: $viewModel.prompt, generateMode: viewModel.generateMode)
+                if viewModel.generateMode == .customGenerate {
+                    GenerateStyleTextField(style: $viewModel.style)
+                    GenerateTitleTextField(title: $viewModel.title)
+                }
             }
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .padding(.vertical, 5)
         }
-        .textFieldStyle(RoundedBorderTextFieldStyle())
-        .padding(.vertical, 5)
     }
 
     private var generatemMusicButton: some View {
