@@ -1,12 +1,7 @@
 import SwiftUI
 
 struct TextToMusicPage: View {
-    @State private var generateMode: GenerateMode = .generate
-    @State private var prompt: String = ""
-    @State private var style: String = ""
-    @State private var title: String = ""
-    @State private var isMakeInstrumental: Bool = false
-    @State private var generatedAudioUrls: [URL] = []
+    @StateObject private var viewModel = TextToMusicViewModel()
 
     var body: some View {
         VStack(spacing: 20) {
@@ -14,15 +9,15 @@ struct TextToMusicPage: View {
                 generateModePicker
                 generateFields
                 generatemMusicButton
-                InstrumentalToggleView(isMakeInstrumental: $isMakeInstrumental)
-                GeneratedAudioView(generatedAudioUrls: $generatedAudioUrls)
+                InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
+                GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
             }
             .padding(.horizontal)
         }
     }
 
     private var generateModePicker: some View {
-        Picker("Generate Mode", selection: $generateMode) {
+        Picker("Generate Mode", selection: $viewModel.generateMode) {
             Text("Generate").tag(GenerateMode.generate)
             Text("Custom Generate").tag(GenerateMode.customGenerate)
         }
@@ -32,10 +27,10 @@ struct TextToMusicPage: View {
 
     private var generateFields: some View {
         Group {
-            TextField("Enter \(generateMode == .customGenerate ? "lyrics" : "prompt")", text: $prompt)
-            if generateMode == .customGenerate {
-                TextField("Enter style", text: $style)
-                TextField("Enter title", text: $title)
+            TextField("Enter \(viewModel.generateMode == .customGenerate ? "lyrics" : "prompt")", text: $viewModel.prompt)
+            if viewModel.generateMode == .customGenerate {
+                TextField("Enter style", text: $viewModel.style)
+                TextField("Enter title", text: $viewModel.title)
             }
         }
         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -45,27 +40,12 @@ struct TextToMusicPage: View {
     private var generatemMusicButton: some View {
         Button(action: {
             Task {
-                await generatemMusic()
+                await viewModel.generatemMusic()
             }
         }) {
             Text("Generate")
         }
         .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
-    }
-
-    func generatemMusic() async {
-        let generatePrompt = prompt.isEmpty ? "Good morning" : prompt
-        let generateTags = style.isEmpty ? "kpop, Chinese" : style
-        let generateTitle = title.isEmpty ? "My Song" : title
-        let generateIsMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : isMakeInstrumental
-
-        let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-
-        let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental)
-        generatedAudioUrls = audioUrls
-        Task {
-            await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
-        }
     }
 }
 
