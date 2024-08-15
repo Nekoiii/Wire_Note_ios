@@ -1,7 +1,7 @@
 import Foundation
 
 func audioToText(audioData: Data, completion: @escaping (Result<String, Error>) -> Void) {
-    guard let url = URL(string: "\(Constants.flaskServiceBaseUrl)/audio_to_text") else {
+    guard let url = URL(string: "\(ServiceURLs.flaskServiceBaseUrl)/audio_to_text") else {
         print("Invalid URL")
         return
     }

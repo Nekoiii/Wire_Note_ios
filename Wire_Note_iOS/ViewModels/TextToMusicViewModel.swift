@@ -9,9 +9,9 @@ class TextToMusicViewModel: ObservableObject {
     @Published var generatedAudioUrls: [URL] = []
 
     func generatemMusic() async {
-        let generatePrompt = prompt.isEmpty ? "Good morning" : prompt
-        let generateTags = style.isEmpty ? "kpop, Chinese" : style
-        let generateTitle = title.isEmpty ? "My Song" : title
+        let generatePrompt = prompt.isEmpty ? DefaultPrompts.sunoGeneratePrompt : prompt
+        let generateTags = style.isEmpty ? DefaultPrompts.sunoGenerateTags : style
+        let generateTitle = title.isEmpty ? DefaultPrompts.sunoGenerateTitle : title
         let generateIsMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : isMakeInstrumental
 
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)

@@ -1,7 +1,4 @@
-enum Constants {
-//    static let debugMode = false
-    static let debugMode = true
-
+enum ServiceURLs {
     // *unfinished
     static let serviceBaseUrl = "http://192.168.0.231"
     static let sunoApiBaseUrl = "\(serviceBaseUrl):3001"

@@ -127,7 +127,9 @@ struct WireDetectionPage: View {
             Text(viewModel.errorMsg)
         }
         .onAppear {
-            if Constants.debugMode {}
+            if Environment.debugMode {
+//                *unfinished
+            }
         }
     }
 }

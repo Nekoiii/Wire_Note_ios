@@ -13,6 +13,8 @@
 		00225B7F2C6DEB7A00A9125F /* WireDetectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B7E2C6DEB7A00A9125F /* WireDetectionViewModel.swift */; };
 		00225B822C6DF9E500A9125F /* ImageToMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B812C6DF9E500A9125F /* ImageToMusicViewModel.swift */; };
 		00225B842C6DFF6800A9125F /* TextToMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B832C6DFF6800A9125F /* TextToMusicViewModel.swift */; };
+		00225B862C6E011D00A9125F /* DefaultPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B852C6E011D00A9125F /* DefaultPrompts.swift */; };
+		00225B882C6E028C00A9125F /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B872C6E028C00A9125F /* Environment.swift */; };
 		0024D7752C10795E002D8402 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7742C10795E002D8402 /* LoadingState.swift */; };
 		0024D7772C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */; };
 		0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7782C134420002D8402 /* CGAffineTransform.swift */; };
@@ -30,7 +32,7 @@
 		00AC989F2C02F1C200C3F325 /* SunoGenerateAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC989E2C02F1C200C3F325 /* SunoGenerateAPI.swift */; };
 		00AC98A12C02F1F000C3F325 /* TextToMusicPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A02C02F1F000C3F325 /* TextToMusicPage.swift */; };
 		00AC98A52C03309100C3F325 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A42C03309100C3F325 /* AudioPlayerView.swift */; };
-		00AC98A82C036A8400C3F325 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A72C036A8400C3F325 /* Constants.swift */; };
+		00AC98A82C036A8400C3F325 /* ServiceURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98A72C036A8400C3F325 /* ServiceURLs.swift */; };
 		00AC98AB2C036C4800C3F325 /* SunoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AA2C036C4800C3F325 /* SunoResponse.swift */; };
 		00AC98AD2C03759400C3F325 /* GenerateMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AC2C03759400C3F325 /* GenerateMode.swift */; };
 		00AC98B02C0485D400C3F325 /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */; };
@@ -82,6 +84,8 @@
 		00225B7E2C6DEB7A00A9125F /* WireDetectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionViewModel.swift; sourceTree = "<group>"; };
 		00225B812C6DF9E500A9125F /* ImageToMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageToMusicViewModel.swift; sourceTree = "<group>"; };
 		00225B832C6DFF6800A9125F /* TextToMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToMusicViewModel.swift; sourceTree = "<group>"; };
+		00225B852C6E011D00A9125F /* DefaultPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPrompts.swift; sourceTree = "<group>"; };
+		00225B872C6E028C00A9125F /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		0024D7742C10795E002D8402 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetWriterInputPixelBufferAdaptor.swift; sourceTree = "<group>"; };
 		0024D7782C134420002D8402 /* CGAffineTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransform.swift; sourceTree = "<group>"; };
@@ -99,7 +103,7 @@
 		00AC989E2C02F1C200C3F325 /* SunoGenerateAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunoGenerateAPI.swift; sourceTree = "<group>"; };
 		00AC98A02C02F1F000C3F325 /* TextToMusicPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToMusicPage.swift; sourceTree = "<group>"; };
 		00AC98A42C03309100C3F325 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
-		00AC98A72C036A8400C3F325 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		00AC98A72C036A8400C3F325 /* ServiceURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceURLs.swift; sourceTree = "<group>"; };
 		00AC98AA2C036C4800C3F325 /* SunoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunoResponse.swift; sourceTree = "<group>"; };
 		00AC98AC2C03759400C3F325 /* GenerateMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateMode.swift; sourceTree = "<group>"; };
 		00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
@@ -232,7 +236,9 @@
 		00AC98A62C036A7600C3F325 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				00AC98A72C036A8400C3F325 /* Constants.swift */,
+				00AC98A72C036A8400C3F325 /* ServiceURLs.swift */,
+				00225B852C6E011D00A9125F /* DefaultPrompts.swift */,
+				00225B872C6E028C00A9125F /* Environment.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -503,15 +509,17 @@
 			files = (
 				00D32CC22C075AE300EE7EDA /* HistoryAudiosPage.swift in Sources */,
 				4B3941622BF9FECB00A5B694 /* wire_model.mlpackage in Sources */,
-				00AC98A82C036A8400C3F325 /* Constants.swift in Sources */,
+				00AC98A82C036A8400C3F325 /* ServiceURLs.swift in Sources */,
 				00C21E0B2C1C8AC900F3FA67 /* VideoToMusicData.swift in Sources */,
 				0097DB0C2C07267E007D3328 /* ImagePickerView.swift in Sources */,
 				00AC989F2C02F1C200C3F325 /* SunoGenerateAPI.swift in Sources */,
 				00D32CCB2C09FB4600EE7EDA /* AudioToTextView.swift in Sources */,
+				00225B882C6E028C00A9125F /* Environment.swift in Sources */,
 				0021DF872C1D9342009EDAF5 /* VideoAudioProcessor.swift in Sources */,
 				00AC98BC2C06193400C3F325 /* SolidButtonStyle.swift in Sources */,
 				0024D7772C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift in Sources */,
 				00AC98B72C05F3D900C3F325 /* ImagePicker.swift in Sources */,
+				00225B862C6E011D00A9125F /* DefaultPrompts.swift in Sources */,
 				0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */,
 				00AC98A12C02F1F000C3F325 /* TextToMusicPage.swift in Sources */,
 				0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */,

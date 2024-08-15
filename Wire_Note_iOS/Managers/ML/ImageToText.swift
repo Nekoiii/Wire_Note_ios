@@ -1,7 +1,7 @@
 import UIKit
 
 func imageToText(imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
-    guard let url = URL(string: "\(Constants.flaskServiceBaseUrl)/img_to_text") else {
+    guard let url = URL(string: "\(ServiceURLs.flaskServiceBaseUrl)/img_to_text") else {
         print("Invalid URL")
         return
     }

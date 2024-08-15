@@ -6,9 +6,9 @@ class SunoGenerateAPI {
     init(generateMode: GenerateMode = .generate) {
         switch generateMode {
         case .customGenerate:
-            apiUrl = "\(Constants.sunoApiBaseUrl)/api/custom_generate"
+            apiUrl = "\(ServiceURLs.sunoApiBaseUrl)/api/custom_generate"
         case .generate:
-            apiUrl = "\(Constants.sunoApiBaseUrl)/api/generate"
+            apiUrl = "\(ServiceURLs.sunoApiBaseUrl)/api/generate"
         }
     }
 
