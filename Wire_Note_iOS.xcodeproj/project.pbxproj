@@ -58,6 +58,7 @@
 		00FA64612C6E0B3F004F80EA /* UploadVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA64602C6E0B3F004F80EA /* UploadVideoViewModel.swift */; };
 		00FA64632C6E1085004F80EA /* ExtractAndDescribeFramesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA64622C6E1085004F80EA /* ExtractAndDescribeFramesViewModel.swift */; };
 		00FA64652C6E1855004F80EA /* GenerateMusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA64642C6E1854004F80EA /* GenerateMusicViewModel.swift */; };
+		00FA64672C6E1AA8004F80EA /* CompositeVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA64662C6E1AA8004F80EA /* CompositeVideoViewModel.swift */; };
 		4B26530E2C15D76500BDE950 /* WireDetectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B26530D2C15D76500BDE950 /* WireDetectionPage.swift */; };
 		4B2653112C15E02000BDE950 /* WireDetectionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */; };
 		4B2653162C169B7B00BDE950 /* VideoBufferReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2653152C169B7B00BDE950 /* VideoBufferReader.swift */; };
@@ -133,6 +134,7 @@
 		00FA64602C6E0B3F004F80EA /* UploadVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadVideoViewModel.swift; sourceTree = "<group>"; };
 		00FA64622C6E1085004F80EA /* ExtractAndDescribeFramesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractAndDescribeFramesViewModel.swift; sourceTree = "<group>"; };
 		00FA64642C6E1854004F80EA /* GenerateMusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateMusicViewModel.swift; sourceTree = "<group>"; };
+		00FA64662C6E1AA8004F80EA /* CompositeVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeVideoViewModel.swift; sourceTree = "<group>"; };
 		4B26530D2C15D76500BDE950 /* WireDetectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionPage.swift; sourceTree = "<group>"; };
 		4B2653102C15E02000BDE950 /* WireDetectionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionWorker.swift; sourceTree = "<group>"; };
 		4B2653122C1606F200BDE950 /* Wire-Note-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Wire-Note-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -337,6 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				00FA64602C6E0B3F004F80EA /* UploadVideoViewModel.swift */,
+				00FA64662C6E1AA8004F80EA /* CompositeVideoViewModel.swift */,
 				00FA64642C6E1854004F80EA /* GenerateMusicViewModel.swift */,
 				00FA64622C6E1085004F80EA /* ExtractAndDescribeFramesViewModel.swift */,
 			);
@@ -545,6 +548,7 @@
 				0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */,
 				00AC98A12C02F1F000C3F325 /* TextToMusicPage.swift in Sources */,
 				0097DB062C061D14007D3328 /* InstrumentalToggleView.swift in Sources */,
+				00FA64672C6E1AA8004F80EA /* CompositeVideoViewModel.swift in Sources */,
 				00225B822C6DF9E500A9125F /* ImageToMusicViewModel.swift in Sources */,
 				4B3941682BF9FEFD00A5B694 /* VideoCapture.swift in Sources */,
 				006FCE602C0CB1650081546E /* UploadVideoPage.swift in Sources */,

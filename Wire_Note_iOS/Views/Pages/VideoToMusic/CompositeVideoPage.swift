@@ -4,58 +4,40 @@ import SwiftUI
 extension VideoToMusicPages {
     struct CompositeVideoPage: View {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
-
-        @State private var wireDetectionWorker: WireDetectionWorker?
-        @State private var videoAudioProcessor: VideoAudioProcessor?
-
-        @State private var players: [AVPlayer] = []
-
-        @State private var progress: Float = 0
-        @State private var isProcessing = false
-
-        @State private var loadingState: LoadingState?
-        @State private var isDetectWire: Bool
-
-        var wireDetectionOutputURL: URL {
-            videoToMusicData.outputDirectoryURL.appendingPathComponent("wire_detection_output.mp4")
-        }
-
-        var outputDirectoryURL: URL {
-            videoToMusicData.outputDirectoryURL.appendingPathComponent("CompositeVideoPage")
-        }
+        @StateObject private var viewModel = CompositeVideoViewModel()
 
         init(isDetectWire: Bool = true) {
-            _isDetectWire = State(initialValue: isDetectWire)
+            _viewModel = StateObject(wrappedValue: CompositeVideoViewModel(isDetectWire: isDetectWire))
         }
 
         var body: some View {
             VStack {
-                if isProcessing {
-                    ProgressView(value: progress)
+                if viewModel.isProcessing {
+                    ProgressView(value: viewModel.progress)
                         .progressViewStyle(LinearProgressViewStyle())
                 }
 
-                ForEach(players.indices, id: \.self) { index in
-                    VideoPlayer(player: players[index])
+                ForEach(viewModel.players.indices, id: \.self) { index in
+                    VideoPlayer(player: viewModel.players[index])
                         .frame(height: 300)
                         .onDisappear {
-                            players[index].pause()
+                            viewModel.players[index].pause()
                         }
                 }
 
-                if let state = loadingState, state == .composite_video {
+                if let state = viewModel.loadingState, state == .composite_video {
                     Text(state.description)
                 }
 
-                Toggle(isOn: $isDetectWire) {
+                Toggle(isOn: $viewModel.isDetectWire) {
                     Text("Detect Wire")
                 }
 
-                let isCreateCompositeVideoButtonDisable = loadingState != nil
+                let isCreateCompositeVideoButtonDisable = viewModel.loadingState != nil
                 Button(action: {
                     Task {
-                        loadingState = .composite_video
-                        try await createCompositeVideo()
+                        viewModel.loadingState = .composite_video
+                        try await viewModel.createCompositeVideo()
                     }
                 }) {
                     Text("Create Composite Video Again")
@@ -65,126 +47,10 @@ extension VideoToMusicPages {
             }
             .onAppear {
                 Task {
-                    loadingState = .composite_video
-                    setupOutputDirectory()
-                    try await createCompositeVideo()
+                    viewModel.loadingState = .composite_video
+                    viewModel.setupOutputDirectory()
+                    try await viewModel.createCompositeVideo()
                 }
-            }
-        }
-
-        private func setupOutputDirectory() {
-            let fileManager = FileManager.default
-            if !fileManager.fileExists(atPath: outputDirectoryURL.path) {
-                do {
-                    try fileManager.createDirectory(at: outputDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-                    print("Directory created at: \(outputDirectoryURL.path)")
-                } catch {
-                    loadingState = nil
-                    print("Error creating directory: \(error)")
-                }
-            }
-        }
-
-        func clearOutputDirectory() {
-            let fileManager = FileManager.default
-            do {
-                let fileURLs = try fileManager.contentsOfDirectory(at: outputDirectoryURL, includingPropertiesForKeys: nil, options: [])
-                for fileURL in fileURLs {
-                    try fileManager.removeItem(at: fileURL)
-                }
-                print("All files in CompositeVideoPage deleted successfully.")
-            } catch {
-                print("Error deleting files: \(error)")
-            }
-        }
-
-        private func createCompositeVideo() async throws {
-            print("CompositeVideoPage - createCompositeVideo")
-            isProcessing = true
-            progress = 0
-            clearOutputDirectory()
-            do {
-                guard let originVideoUrl = videoToMusicData.originVideoUrl
-                else {
-                    throw WireDetectionError.invalidURL
-                }
-                wireDetectionWorker = try await WireDetectionWorker(inputURL: originVideoUrl, outputURL: wireDetectionOutputURL)
-                wireDetectionWorker?.processVideo(url: originVideoUrl) { progress, error in
-                    DispatchQueue.main.async {
-                        if progress == 1 {
-                            withAnimation {
-                                self.progress = progress
-                                self.isProcessing = false
-                            }
-                            Task {
-                                try await addMusicToNewVideo()
-                                loadingState = nil
-                                self.progress = 1
-                                self.isProcessing = false
-                            }
-                        } else {
-                            self.progress = progress
-                        }
-                        if let error = error {
-                            print("createCompositeVideo - processVideo - error: \(error)")
-                            isProcessing = false
-                        }
-                    }
-                }
-            } catch {
-                loadingState = nil
-                print("createCompositeVideo - error: \(error)")
-            }
-        }
-
-        private func addMusicToNewVideo() async throws {
-            print("CompositeVideoPage - addMusicToNewVideo")
-
-            do {
-                for (index, url) in videoToMusicData.downloadedGeneratedAudioUrls.enumerated() {
-                    print("addMusicToNewVideo - Index: \(index), URL: \(url)")
-                    isProcessing = true
-                    progress = 0
-
-                    let outputVideoUrl = outputDirectoryURL.appendingPathComponent("output_\(index).mp4")
-
-                    videoAudioProcessor = VideoAudioProcessor()
-
-                    try await videoAudioProcessor?.addAudioToVideo(videoURL: wireDetectionOutputURL, audioURL: url, outputURL: outputVideoUrl) { progress, error in
-                        DispatchQueue.main.async {
-                            if progress == 1 {
-                                withAnimation {
-                                    self.progress = progress
-                                    self.isProcessing = false
-                                }
-                            } else {
-                                self.progress = progress
-                            }
-                            if let error = error {
-                                print("addMusicToNewVideo - addAudioToVideo - error: \(error)")
-                                isProcessing = false
-                            }
-                        }
-                    }
-                }
-                loadVideoFiles()
-            } catch {
-                loadingState = nil
-                isProcessing = false
-                progress = 1
-                print("addMusicToNewVideo error: \(error)")
-            }
-        }
-
-        private func loadVideoFiles() {
-            do {
-                let videoFiles = try FileManager.default.contentsOfDirectory(at: outputDirectoryURL, includingPropertiesForKeys: nil)
-                    .filter { $0.pathExtension == "mp4" }
-
-                players = videoFiles.map { AVPlayer(url: $0) }
-            } catch {
-                loadingState = nil
-                print("Error loading video files: \(error)")
             }
         }
     }
