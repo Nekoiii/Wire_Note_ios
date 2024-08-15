@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct HomePage: View {
+    @StateObject private var videoToMusicData = VideoToMusicData()
+
     var body: some View {
         NavigationView {
             VStack {
@@ -17,7 +19,7 @@ struct HomePage: View {
                     NavigationLink(destination: ImageToMusicPage()) {
                         Text("Image To Music")
                     }
-                    NavigationLink(destination: VideoToMusicPages.UploadVideoPage()) {
+                    NavigationLink(destination: VideoToMusicPages.UploadVideoPage().environmentObject(videoToMusicData)) {
                         Text("Video To Music")
                     }
                     Spacer().frame(height: 50)
