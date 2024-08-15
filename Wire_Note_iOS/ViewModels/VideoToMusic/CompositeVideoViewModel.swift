@@ -2,8 +2,6 @@ import AVKit
 import SwiftUI
 
 class CompositeVideoViewModel: ObservableObject {
-    @EnvironmentObject var videoToMusicData: VideoToMusicData
-
     @Published var wireDetectionWorker: WireDetectionWorker?
     @Published var videoAudioProcessor: VideoAudioProcessor?
     @Published var players: [AVPlayer] = []
@@ -13,19 +11,27 @@ class CompositeVideoViewModel: ObservableObject {
     @Published var loadingState: LoadingState?
     @Published var isDetectWire: Bool
 
-    var wireDetectionOutputURL: URL {
-        videoToMusicData.outputDirectoryURL.appendingPathComponent("wire_detection_output.mp4")
-    }
+    private(set) var videoToMusicData: VideoToMusicData?
 
-    var outputDirectoryURL: URL {
-        videoToMusicData.outputDirectoryURL.appendingPathComponent("CompositeVideoPage")
-    }
-
-    init(isDetectWire: Bool = true) {
+    init(videoToMusicData: VideoToMusicData?, isDetectWire: Bool = true) {
+        self.videoToMusicData = videoToMusicData
         self.isDetectWire = isDetectWire
     }
 
+    func setVideoToMusicData(_ videoToMusicData: VideoToMusicData) {
+        self.videoToMusicData = videoToMusicData
+    }
+
+    var wireDetectionOutputURL: URL? {
+        videoToMusicData?.outputDirectoryURL.appendingPathComponent("wire_detection_output.mp4")
+    }
+
+    var outputDirectoryURL: URL? {
+        videoToMusicData?.outputDirectoryURL.appendingPathComponent("CompositeVideoPage")
+    }
+
     func setupOutputDirectory() {
+        guard let outputDirectoryURL = outputDirectoryURL else { return }
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: outputDirectoryURL.path) {
             do {
@@ -39,6 +45,7 @@ class CompositeVideoViewModel: ObservableObject {
     }
 
     func clearOutputDirectory() {
+        guard let outputDirectoryURL = outputDirectoryURL else { return }
         let fileManager = FileManager.default
         do {
             let fileURLs = try fileManager.contentsOfDirectory(at: outputDirectoryURL, includingPropertiesForKeys: nil, options: [])
@@ -53,6 +60,10 @@ class CompositeVideoViewModel: ObservableObject {
 
     func createCompositeVideo() async throws {
         print("CompositeVideoPage - createCompositeVideo")
+        guard let videoToMusicData = videoToMusicData else { return }
+
+        guard let wireDetectionOutputURL = wireDetectionOutputURL else { return }
+
         isProcessing = true
         progress = 0
         clearOutputDirectory()
@@ -92,7 +103,9 @@ class CompositeVideoViewModel: ObservableObject {
 
     private func addMusicToNewVideo() async throws {
         print("CompositeVideoPage - addMusicToNewVideo")
-
+        guard let videoToMusicData = videoToMusicData else { return }
+        guard let outputDirectoryURL = outputDirectoryURL else { return }
+        guard let wireDetectionOutputURL = wireDetectionOutputURL else { return }
         do {
             for (index, url) in videoToMusicData.downloadedGeneratedAudioUrls.enumerated() {
                 print("addMusicToNewVideo - Index: \(index), URL: \(url)")
@@ -130,6 +143,7 @@ class CompositeVideoViewModel: ObservableObject {
     }
 
     func loadVideoFiles() {
+        guard let outputDirectoryURL = outputDirectoryURL else { return }
         do {
             let videoFiles = try FileManager.default.contentsOfDirectory(at: outputDirectoryURL, includingPropertiesForKeys: nil)
                 .filter { $0.pathExtension == "mp4" }

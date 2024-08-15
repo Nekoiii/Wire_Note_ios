@@ -1,17 +1,24 @@
 import SwiftUI
 
 class GenerateMusicViewModel: ObservableObject {
-    @EnvironmentObject var videoToMusicData: VideoToMusicData
-
     @Published var loadingState: LoadingState?
     @Published var isMakeInstrumental: Bool
     @Published var isDetectWire: Bool = true
 
-    init(isMakeInstrumental: Bool = false) {
+    private(set) var videoToMusicData: VideoToMusicData?
+
+    init(videoToMusicData: VideoToMusicData?, isMakeInstrumental: Bool = false) {
+        self.videoToMusicData = videoToMusicData
         self.isMakeInstrumental = isMakeInstrumental
     }
 
+    func setVideoToMusicData(_ videoToMusicData: VideoToMusicData) {
+        self.videoToMusicData = videoToMusicData
+    }
+
     func generateMusicWithDescription() async {
+        guard let videoToMusicData = videoToMusicData else { return }
+
         let generatePrompt = videoToMusicData.description
         let generateIsMakeInstrumental = isMakeInstrumental
         let generateMode = GenerateMode.generate

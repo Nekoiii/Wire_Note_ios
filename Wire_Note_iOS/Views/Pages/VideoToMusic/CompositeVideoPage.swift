@@ -4,10 +4,10 @@ import SwiftUI
 extension VideoToMusicPages {
     struct CompositeVideoPage: View {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
-        @StateObject private var viewModel = CompositeVideoViewModel()
+        @StateObject private var viewModel: CompositeVideoViewModel
 
         init(isDetectWire: Bool = true) {
-            _viewModel = StateObject(wrappedValue: CompositeVideoViewModel(isDetectWire: isDetectWire))
+            _viewModel = StateObject(wrappedValue: CompositeVideoViewModel(videoToMusicData: nil, isDetectWire: isDetectWire))
         }
 
         var body: some View {
@@ -46,6 +46,9 @@ extension VideoToMusicPages {
                 .disabled(isCreateCompositeVideoButtonDisable)
             }
             .onAppear {
+                if viewModel.videoToMusicData == nil {
+                    viewModel.setVideoToMusicData(videoToMusicData)
+                }
                 Task {
                     viewModel.loadingState = .composite_video
                     viewModel.setupOutputDirectory()

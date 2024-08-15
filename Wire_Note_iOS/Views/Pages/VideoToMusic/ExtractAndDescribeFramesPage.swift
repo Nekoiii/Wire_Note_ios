@@ -3,7 +3,11 @@ import SwiftUI
 extension VideoToMusicPages {
     struct ExtractAndDescribeFramesPage: View {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
-        @StateObject private var viewModel = ExtractAndDescribeFramesViewModel()
+        @StateObject private var viewModel: ExtractAndDescribeFramesViewModel
+
+        init() {
+            _viewModel = StateObject(wrappedValue: ExtractAndDescribeFramesViewModel(videoToMusicData: nil))
+        }
 
         var body: some View {
             VStack {
@@ -28,6 +32,9 @@ extension VideoToMusicPages {
                 }
             }
             .onAppear {
+                if viewModel.videoToMusicData == nil {
+                    viewModel.setVideoToMusicData(videoToMusicData)
+                }
                 viewModel.doExtractRandomFrames()
             }
         }

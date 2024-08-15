@@ -2,8 +2,6 @@ import AVKit
 import SwiftUI
 
 class ExtractAndDescribeFramesViewModel: ObservableObject {
-    @EnvironmentObject private var videoToMusicData: VideoToMusicData
-
     @Published var extractedFrames: [UIImage] = []
     @Published var selectedImage: UIImage? = nil
 
@@ -11,12 +9,22 @@ class ExtractAndDescribeFramesViewModel: ObservableObject {
     @Published var isMakeInstrumental: Bool = false
     @Published var loadingState: LoadingState?
 
+    private(set) var videoToMusicData: VideoToMusicData?
+
+    init(videoToMusicData: VideoToMusicData?) {
+        self.videoToMusicData = videoToMusicData
+    }
+
+    func setVideoToMusicData(_ videoToMusicData: VideoToMusicData) {
+        self.videoToMusicData = videoToMusicData
+    }
+
     func doExtractRandomFrames() {
-        guard let videoUrl = videoToMusicData.originVideoUrl else {
+        guard let videoUrl = videoToMusicData?.originVideoUrl else {
             print("Video URL is nil")
             return
         }
-        videoToMusicData.description = ""
+        videoToMusicData?.description = ""
         loadingState = .extract_frames
         extractRandomFrames(from: videoUrl, frameCount: 6) { extractedFrames in
             self.extractedFrames = extractedFrames
@@ -25,6 +33,7 @@ class ExtractAndDescribeFramesViewModel: ObservableObject {
     }
 
     func describeFrames() {
+        guard let videoToMusicData = videoToMusicData else { return }
         loadingState = .image_to_text
 
         for image in extractedFrames {
@@ -37,10 +46,10 @@ class ExtractAndDescribeFramesViewModel: ObservableObject {
                 switch result {
                 case let .success(desc):
                     DispatchQueue.main.async {
-                        if self.videoToMusicData.description.isEmpty {
-                            self.videoToMusicData.description += desc
+                        if videoToMusicData.description.isEmpty {
+                            videoToMusicData.description += desc
                         } else {
-                            self.videoToMusicData.description += ". " + desc
+                            videoToMusicData.description += ". " + desc
                         }
                     }
                 case let .failure(error):
@@ -50,8 +59,8 @@ class ExtractAndDescribeFramesViewModel: ObservableObject {
                 }
                 self.loadingState = nil
 
-                if self.videoToMusicData.description.count > 150 { // *unfinished
-                    self.videoToMusicData.description = String(self.videoToMusicData.description.prefix(150))
+                if videoToMusicData.description.count > 150 { // *unfinished
+                    videoToMusicData.description = String(videoToMusicData.description.prefix(150))
                 }
             }
         }

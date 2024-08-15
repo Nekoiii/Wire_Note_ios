@@ -6,7 +6,7 @@ extension VideoToMusicPages {
         @StateObject private var viewModel: GenerateMusicViewModel
 
         init(isMakeInstrumental: Bool = false) {
-            _viewModel = StateObject(wrappedValue: GenerateMusicViewModel(isMakeInstrumental: isMakeInstrumental))
+            _viewModel = StateObject(wrappedValue: GenerateMusicViewModel(videoToMusicData: nil, isMakeInstrumental: isMakeInstrumental))
         }
 
         var body: some View {
@@ -34,6 +34,9 @@ extension VideoToMusicPages {
                 .disabled(isCompositeVideoDisable)
             }
             .onAppear {
+                if viewModel.videoToMusicData == nil {
+                    viewModel.setVideoToMusicData(videoToMusicData)
+                }
                 Task {
                     viewModel.loadingState = .generate_music
                     await viewModel.generateMusicWithDescription()
