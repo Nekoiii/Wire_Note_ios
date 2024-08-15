@@ -1,47 +1,39 @@
 import SwiftUI
 
 struct ImageToMusicPage: View {
-    @State private var image: UIImage?
-    @State private var isImagePickerPresented = false
-
-    @State private var description: String = ""
-    @State private var errorMessage: String?
-    @State private var isLoadingDescription: Bool = false
-
-    @State private var isMakeInstrumental: Bool = false
-    @State private var generatedAudioUrls: [URL] = []
+    @StateObject private var viewModel = ImageToMusicViewModel()
 
     var body: some View {
         VStack {
-            ImagePickerView(image: $image, isImagePickerPresented: $isImagePickerPresented)
+            ImagePickerView(image: $viewModel.image, isImagePickerPresented: $viewModel.isImagePickerPresented)
             imageDescribtion
             musicGeneration
-            GeneratedAudioView(generatedAudioUrls: $generatedAudioUrls)
+            GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
         }
-        .sheet(isPresented: $isImagePickerPresented) {
-            ImagePicker(image: $image)
+        .sheet(isPresented: $viewModel.isImagePickerPresented) {
+            ImagePicker(image: $viewModel.image)
         }
-        .onChange(of: image) {
-            if let newImage = image {
-                saveImageToDefaultPath(image: newImage)
+        .onChange(of: viewModel.image) {
+            if let newImage = viewModel.image {
+                viewModel.saveImageToDefaultPath(image: newImage)
             }
         }
     }
 
     private var imageDescribtion: some View {
         Group {
-            let isImageToTextButtonDisable = image == nil
-            Button(action: { doImageToText() }) {
+            let isImageToTextButtonDisable = viewModel.image == nil
+            Button(action: { viewModel.doImageToText() }) {
                 Text("Describe Image")
             }
             .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isImageToTextButtonDisable))
             .disabled(isImageToTextButtonDisable)
 
-            if let errorMessage = errorMessage {
+            if let errorMessage = viewModel.errorMessage {
                 Text("Error: \(errorMessage)")
                     .foregroundColor(.red)
             } else {
-                Text(isLoadingDescription ? "Loading ..." : description)
+                Text(viewModel.isLoadingDescription ? "Loading ..." : viewModel.description)
                     .padding()
             }
         }
@@ -49,10 +41,10 @@ struct ImageToMusicPage: View {
 
     private var musicGeneration: some View {
         Group {
-            let isGenerateMusicButtonDisable = description.isEmpty
+            let isGenerateMusicButtonDisable = viewModel.description.isEmpty
             Button(action: {
                 Task {
-                    await generateMusicWithDescription()
+                    await viewModel.generateMusicWithDescription()
                 }
             }) {
                 Text("Generate music with image description")
@@ -60,61 +52,8 @@ struct ImageToMusicPage: View {
             .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isGenerateMusicButtonDisable))
             .disabled(isGenerateMusicButtonDisable)
 
-            InstrumentalToggleView(isMakeInstrumental: $isMakeInstrumental)
+            InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
                 .padding()
-        }
-    }
-
-    func saveImageToDefaultPath(image: UIImage) {
-        let fileManager = FileManager.default
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileURL = documentsURL.appendingPathComponent("uploaded_image.png")
-
-        if let imageData = image.pngData() {
-            do {
-                try imageData.write(to: fileURL)
-                print("Image save at: \(fileURL.path)")
-            } catch {
-                print("Save image error: \(error)")
-            }
-        }
-    }
-
-    private func doImageToText() {
-        isLoadingDescription = true
-
-        guard let image = image, let imageData = image.pngData() else {
-            errorMessage = "No image selected."
-            return
-        }
-
-        imageToText(imageData: imageData) { result in
-            switch result {
-            case let .success(description):
-                DispatchQueue.main.async {
-                    self.description = description
-                    self.errorMessage = nil
-                }
-            case let .failure(error):
-                DispatchQueue.main.async {
-                    self.errorMessage = error.localizedDescription
-                }
-            }
-            isLoadingDescription = false
-        }
-    }
-
-    private func generateMusicWithDescription() async {
-        let generatePrompt = description
-        let generateIsMakeInstrumental = isMakeInstrumental
-        let generateMode = GenerateMode.generate
-
-        let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-
-        let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
-        generatedAudioUrls = audioUrls
-        Task {
-            await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
         }
     }
 }

@@ -98,7 +98,7 @@ class WireDetectionViewModel: ObservableObject {
 
         isVideoPlaying.toggle()
     }
-    
+
     func setupOriginPlayers() {
         if let url = originVideoURL {
             processedPlayer = nil
@@ -107,7 +107,7 @@ class WireDetectionViewModel: ObservableObject {
             print("setupOriginPlayers: \(String(describing: originPlayer))")
         }
     }
-    
+
     private func setupProcessedPlayer() {
         print("setupProcessedPlayer - \(String(describing: processedVideoURL))")
         if let url = processedVideoURL {
