@@ -1,8 +1,8 @@
 import Foundation
 
-func checkFileExist(at url: URL, onSuccess: ((URL) -> Void)? = nil, onFailure: ((String) -> Void)? = { path in
-    print("File error at path: \(path)")
-}) {
+let defaultOnFailure: (String) -> Void = { path in print("File error at path: \(path)") }
+
+func checkFileExist(at url: URL, onSuccess: ((URL) -> Void)? = nil, onFailure: ((String) -> Void)? = defaultOnFailure) {
     let fileManager = FileManager.default
 
     if fileManager.fileExists(atPath: url.path) {
@@ -12,9 +12,7 @@ func checkFileExist(at url: URL, onSuccess: ((URL) -> Void)? = nil, onFailure: (
     }
 }
 
-func checkFileNonEmpty(at url: URL, onSuccess: ((URL) -> Void)? = nil, onFailure: ((String) -> Void)? = { path in
-    print("File error at path: \(path)")
-}) {
+func checkFileNonEmpty(at url: URL, onSuccess: ((URL) -> Void)? = nil, onFailure: ((String) -> Void)? = defaultOnFailure) {
     let fileManager = FileManager.default
 
     do {
@@ -29,21 +27,20 @@ func checkFileNonEmpty(at url: URL, onSuccess: ((URL) -> Void)? = nil, onFailure
     }
 }
 
-func checkFileExistAndNonEmpty(at url: URL, onSuccess: ((URL) -> Void)? = nil, onFailure: ((String) -> Void)? = { path in
-    print("File error at path: \(path)")
-}) {
+func checkFileExistAndNonEmpty(at url: URL, onSuccess: ((URL) -> Void)? = nil, onFailure: ((String) -> Void)? = defaultOnFailure) {
     checkFileExist(at: url, onSuccess: { existingURL in
         checkFileNonEmpty(at: existingURL, onSuccess: onSuccess, onFailure: onFailure)
     }, onFailure: onFailure)
 }
 
-func removeExistingFile(at path: URL) {
+func removeExistingFile(at path: URL, onFailure: ((String) -> Void)? = defaultOnFailure) {
     checkFileExist(at: path, onSuccess: { url in
         do {
             try FileManager.default.removeItem(at: url)
             print("Removed existing file: \(url)")
         } catch {
             print("Error removing file: \(error.localizedDescription)")
+            onFailure?("Failed to remove file at path: \(url.path)")
         }
-    }, onFailure: { _ in })
+    }, onFailure: onFailure)
 }

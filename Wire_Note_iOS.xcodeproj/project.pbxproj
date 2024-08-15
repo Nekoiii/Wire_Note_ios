@@ -10,6 +10,7 @@
 		0021DF812C1C99BD009EDAF5 /* GenerateMusicPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021DF802C1C99BD009EDAF5 /* GenerateMusicPage.swift */; };
 		0021DF832C1CA7D2009EDAF5 /* CompositeVideoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021DF822C1CA7D2009EDAF5 /* CompositeVideoPage.swift */; };
 		0021DF872C1D9342009EDAF5 /* VideoAudioProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021DF862C1D9342009EDAF5 /* VideoAudioProcessor.swift */; };
+		00225B7F2C6DEB7A00A9125F /* WireDetectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00225B7E2C6DEB7A00A9125F /* WireDetectionViewModel.swift */; };
 		0024D7752C10795E002D8402 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7742C10795E002D8402 /* LoadingState.swift */; };
 		0024D7772C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */; };
 		0024D7792C134420002D8402 /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0024D7782C134420002D8402 /* CGAffineTransform.swift */; };
@@ -76,6 +77,7 @@
 		0021DF802C1C99BD009EDAF5 /* GenerateMusicPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateMusicPage.swift; sourceTree = "<group>"; };
 		0021DF822C1CA7D2009EDAF5 /* CompositeVideoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeVideoPage.swift; sourceTree = "<group>"; };
 		0021DF862C1D9342009EDAF5 /* VideoAudioProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoAudioProcessor.swift; sourceTree = "<group>"; };
+		00225B7E2C6DEB7A00A9125F /* WireDetectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WireDetectionViewModel.swift; sourceTree = "<group>"; };
 		0024D7742C10795E002D8402 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		0024D7762C13436A002D8402 /* AVAssetWriterInputPixelBufferAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAssetWriterInputPixelBufferAdaptor.swift; sourceTree = "<group>"; };
 		0024D7782C134420002D8402 /* CGAffineTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransform.swift; sourceTree = "<group>"; };
@@ -151,6 +153,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00225B7D2C6DEB5D00A9125F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				00225B7E2C6DEB7A00A9125F /* WireDetectionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		00225B802C6DEC0000A9125F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		0097DB032C061CC7007D3328 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,8 +352,10 @@
 				00AC98942C02836A00C3F325 /* Utils */,
 				4B39416D2BF9FFE500A5B694 /* Extensions */,
 				4B39416A2BF9FF8300A5B694 /* Views */,
-				4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */,
+				00225B7D2C6DEB5D00A9125F /* ViewModels */,
+				00225B802C6DEC0000A9125F /* Services */,
 				4B39414F2BF9FC4000A5B694 /* ContentView.swift */,
+				4B39414D2BF9FC4000A5B694 /* Wire_Note_iOSApp.swift */,
 				4B3941512BF9FC4100A5B694 /* Assets.xcassets */,
 				4B3941562BF9FC4100A5B694 /* Persistence.swift */,
 				4B3941582BF9FC4100A5B694 /* Wire_Note_iOS.xcdatamodeld */,
@@ -527,6 +546,7 @@
 				005FFE3C2C0C2B1C00D28AD8 /* File.swift in Sources */,
 				006FCE5E2C0CB1560081546E /* ImageViewer.swift .swift in Sources */,
 				00D32CC72C07663500EE7EDA /* Paths.swift in Sources */,
+				00225B7F2C6DEB7A00A9125F /* WireDetectionViewModel.swift in Sources */,
 				4B26531A2C16B58D00BDE950 /* VideoRenderer.swift in Sources */,
 				4B3941702BF9FFFF00A5B694 /* Views.swift in Sources */,
 				00E45AA02C0B21B700F8599A /* VideoWireDetectController.swift in Sources */,

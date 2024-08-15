@@ -2,84 +2,57 @@ import AVKit
 import SwiftUI
 
 struct WireDetectionPage: View {
-    @State private var worker: WireDetectionWorker?
-    @State private var videoAudioProcessor: VideoAudioProcessor?
-
-    @State private var originVideoURL: URL?
-    @State private var processedVideoURL: URL?
-
-    @State private var originPlayer: AVPlayer?
-    @State private var processedPlayer: AVPlayer?
-
-    @State private var progress: Float = 0
-    @State private var isProcessing = false
-
-    @State private var isPickerPresented = false
-    @State private var isVideoPlaying = false
-    @State private var isShowingOriginVideo = true
-
-    @State private var isShowingAlert = false
-    @State private var errorMsg = ""
-    @State private var alertTitle = "Error"
-
-    var percentage: String {
-        return String(format: "%.0f%%", progress * 100)
-    }
+    @StateObject private var viewModel = WireDetectionViewModel()
 
     var isProcessButtonDisabled: Bool {
-        return originVideoURL == nil || isProcessing
-    }
-
-    var outputURL: URL {
-        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentsPath.appendingPathComponent("output.mp4")
+        return viewModel.originVideoURL == nil || viewModel.isProcessing
     }
 
     var body: some View {
         ScrollView {
             VStack {
-                if processedVideoURL != nil {
+                if viewModel.processedVideoURL != nil {
                     Button(action: {}) {
                         Text("Show Origin Video")
                             .font(.system(size: 15))
                     }
                     .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
                     .onLongPressGesture(minimumDuration: 0.1, pressing: { isPressing in
-                        isShowingOriginVideo = isPressing
-                        originPlayer?.isMuted = !isPressing
+                        viewModel.isShowingOriginVideo = isPressing
+                        viewModel.originPlayer?.isMuted = !isPressing
                     }, perform: {})
                 }
 
                 ZStack {
                     // Only show origin video when there is no processed video or pressing the ShowOriginVideo button.
-                    VideoPlayer(player: originPlayer)
+                    VideoPlayer(player: viewModel.originPlayer)
                         .frame(height: 300)
-                        .opacity(isShowingOriginVideo ? 1 : 0)
+                        .opacity(viewModel.isShowingOriginVideo ? 1 : 0)
                         .onAppear {
                             NotificationCenter.default.addObserver(
                                 forName: .AVPlayerItemDidPlayToEndTime,
-                                object: originPlayer?.currentItem,
+                                object: viewModel.originPlayer?.currentItem,
                                 queue: .main
                             ) { _ in
-                                togglePlayback()
-                                originPlayer?.seek(to: .zero)
+                                viewModel.togglePlayback()
+                                viewModel.originPlayer?.seek(to: .zero)
                                 print("Video finished playing.")
                             }
                         }
 
                     // Show processed video above the original video.
-                    if let processedPlayer = processedPlayer {
+                    if let processedPlayer = viewModel.processedPlayer {
                         VideoPlayer(player: processedPlayer)
                             .frame(height: 300)
-                            .opacity(isShowingOriginVideo ? 0 : 1)
+                            .opacity(viewModel.isShowingOriginVideo ? 0 : 1)
                     }
                 }
 
-                if originPlayer != nil || processedVideoURL != nil {
+                if viewModel.originPlayer != nil || viewModel.processedVideoURL != nil {
                     Button(action: {
-                        togglePlayback()
+                        viewModel.togglePlayback()
                     }) {
-                        Image(systemName: isVideoPlaying ? "pause.circle" : "play.circle")
+                        Image(systemName: viewModel.isVideoPlaying ? "pause.circle" : "play.circle")
                             .resizable()
                             .frame(width: 50, height: 50)
                     }
@@ -87,15 +60,15 @@ struct WireDetectionPage: View {
 
                 HStack {
                     Button {
-                        isPickerPresented.toggle()
+                        viewModel.isPickerPresented.toggle()
                     } label: {
                         Label("Select Video", systemImage: "video")
                     }
-                    .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isProcessing))
-                    .disabled(isProcessing)
+                    .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: viewModel.isProcessing))
+                    .disabled(viewModel.isProcessing)
 
                     Button {
-                        processVideo()
+                        viewModel.processVideo()
                     } label: {
                         Label("Process Video", systemImage: "play.fill")
                     }
@@ -104,13 +77,13 @@ struct WireDetectionPage: View {
                 }
                 .padding(.vertical, 10)
 
-                if progress == 1 {
+                if viewModel.progress == 1 {
                     Divider()
                     VStack {
                         Text("🎉 Video processed successfully 🎉")
                             .font(.title3)
                         HStack {
-                            ShareLink(item: outputURL)
+                            ShareLink(item: viewModel.outputURL)
                                 .buttonStyle(BorderedButtonStyle(borderColor: .blue, isDisable: isProcessButtonDisabled))
                                 .disabled(isProcessButtonDisabled)
                         }
@@ -119,20 +92,20 @@ struct WireDetectionPage: View {
                     .transition(.scale)
                 }
 
-                if isProcessing {
+                if viewModel.isProcessing {
                     VStack {
                         HStack {
-                            Text("Video is processing...(\(percentage))")
+                            Text("Video is processing...(\(viewModel.percentage))")
                             Spacer()
                             Button {
-                                worker?.cancelProcessing()
-                                isProcessing = false
+                                viewModel.worker?.cancelProcessing()
+                                viewModel.isProcessing = false
                             } label: {
                                 Text("Cancel")
                                     .foregroundColor(.red)
                             }
                         }
-                        ProgressView(value: progress)
+                        ProgressView(value: viewModel.progress)
                             .progressViewStyle(LinearProgressViewStyle())
                     }
                     .padding()
@@ -141,143 +114,20 @@ struct WireDetectionPage: View {
         }
         .navigationTitle("Wire Detection")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isPickerPresented, onDismiss: setupOriginPlayers) {
-            VideoPicker(videoURL: $originVideoURL)
+        .sheet(isPresented: $viewModel.isPickerPresented, onDismiss: viewModel.setupOriginPlayers) {
+            VideoPicker(videoURL: $viewModel.originVideoURL)
         }
-        .alert(alertTitle, isPresented: $isShowingAlert) {
+        .alert(viewModel.alertTitle, isPresented: $viewModel.isShowingAlert) {
             Button(role: .cancel) {
-                isShowingAlert = false
+                viewModel.isShowingAlert = false
             } label: {
-                Text("OK")
+                Text("Finished!")
             }
         } message: {
-            Text(errorMsg)
+            Text(viewModel.errorMsg)
         }
-    }
-
-    private func togglePlayback() {
-        if isVideoPlaying {
-            originPlayer?.pause()
-            processedPlayer?.pause()
-        } else {
-            // Synchronize the original video playback time with the processed video
-            if let currentTime = originPlayer?.currentTime() {
-                processedPlayer?.seek(to: currentTime)
-            }
-            originPlayer?.play()
-            processedPlayer?.play()
-        }
-
-        isVideoPlaying.toggle()
-    }
-
-    private func setupOriginPlayers() {
-        if let url = originVideoURL {
-            processedPlayer = nil
-            processedVideoURL = nil
-            originPlayer = AVPlayer(url: url)
-            print("setupOriginPlayers: \(String(describing: originPlayer))")
-        }
-    }
-
-    private func setupProcessedPlayer() {
-        print("setupProcessedPlayer - \(String(describing: processedVideoURL))")
-        if let url = processedVideoURL {
-            processedPlayer = AVPlayer(url: url)
-            isShowingOriginVideo = false
-            originPlayer?.isMuted = true
-        }
-    }
-
-    func processVideo() {
-        isProcessing = true
-        progress = 0
-        Task {
-            do {
-                guard let url = originVideoURL
-                else {
-                    throw WireDetectionError.invalidURL
-                }
-                self.worker = try await WireDetectionWorker(inputURL: url, outputURL: outputURL)
-                worker?.processVideo(url: url) { progress, error in
-                    DispatchQueue.main.async {
-                        if progress == 1 {
-                            withAnimation {
-                                self.progress = progress
-                                self.isProcessing = false
-                            }
-
-                            Task {
-                                await addAudioToNewVideo()
-
-                                self.progress = 1
-                                self.isProcessing = false
-
-                                processedVideoURL = outputURL
-                                setupProcessedPlayer()
-                                originPlayer?.pause()
-                                processedPlayer?.pause()
-                                isVideoPlaying = false
-                                await originPlayer?.seek(to: .zero)
-                            }
-
-                        } else {
-                            self.progress = progress
-                        }
-                        if let error = error {
-                            alertTitle = "Error"
-                            isShowingAlert = true
-                            errorMsg = error.localizedDescription
-                            isProcessing = false
-                        }
-                    }
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    isShowingAlert = true
-                    errorMsg = error.localizedDescription
-                }
-            }
-        }
-    }
-
-    private func addAudioToNewVideo() async {
-        isProcessing = true
-        progress = 0
-        do {
-            let extractedAudioURL = outputURL.deletingLastPathComponent().appendingPathComponent("extracted_audio.m4a")
-            let tempOutputVideoUrl = outputURL.deletingLastPathComponent().appendingPathComponent("temp_output_video.m4a")
-
-            guard let originVideoURL = originVideoURL else {
-                print("no originVideoURL")
-                return
-            }
-            videoAudioProcessor = VideoAudioProcessor()
-
-            try await videoAudioProcessor?.extractAndAddAudioToVideo(originVideoURL: originVideoURL, extractedAudioURL: extractedAudioURL, videoURL: outputURL, outputVideoURL: tempOutputVideoUrl) { progress, error in
-                DispatchQueue.main.async {
-                    if progress == 1 {
-                        withAnimation {
-                            self.progress = progress
-                            self.isProcessing = false
-                        }
-                    } else {
-                        self.progress = progress
-                    }
-                    if let error = error {
-                        print("addAudioToNewVideo - extractAndAddAudioToVideo - error: \(error)")
-                        isProcessing = false
-                    }
-                }
-            }
-
-            // replace audio in outputURL with audio in tempOutputVideoUrl
-            removeExistingFile(at: outputURL)
-            try FileManager.default.moveItem(at: tempOutputVideoUrl, to: outputURL)
-            progress = 1
-            isProcessing = false
-        } catch {
-            print("addAudioToNewVideo - error : \(error)")
+        .onAppear {
+            if Constants.debugMode {}
         }
     }
 }
