@@ -1,13 +1,12 @@
 import AVKit
 import SwiftUI
 
-class ExtractAndDescribeFramesViewModel: ObservableObject {
+class ExtractAndDescribeFramesViewModel: BaseViewModel {
     @Published var extractedFrames: [UIImage] = []
     @Published var selectedImage: UIImage? = nil
 
     @Published var isImageViewerPresented = false
     @Published var isMakeInstrumental: Bool = false
-    @Published var loadingState: LoadingState?
 
     private(set) var videoToMusicData: VideoToMusicData?
 

@@ -1,14 +1,13 @@
 import AVKit
 import SwiftUI
 
-class CompositeVideoViewModel: ObservableObject {
+class CompositeVideoViewModel: BaseViewModel {
     @Published var wireDetectionWorker: WireDetectionWorker?
     @Published var videoAudioProcessor: VideoAudioProcessor?
     @Published var players: [AVPlayer] = []
 
     @Published var progress: Float = 0
     @Published var isProcessing = false
-    @Published var loadingState: LoadingState?
     @Published var isDetectWire: Bool
 
     private(set) var videoToMusicData: VideoToMusicData?

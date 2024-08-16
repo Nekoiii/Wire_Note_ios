@@ -1,11 +1,10 @@
 import AVKit
 import SwiftUI
 
-class UploadVideoViewModel: ObservableObject {
+class UploadVideoViewModel: BaseViewModel {
     @Published var videoPlayer: AVPlayer?
 
     @Published var isPickerPresented = false
-    @Published var loadingState: LoadingState?
 
 //    private var videoToMusicData: VideoToMusicData
 //

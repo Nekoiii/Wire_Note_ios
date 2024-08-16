@@ -1,7 +1,6 @@
 import SwiftUI
 
-class GenerateMusicViewModel: ObservableObject {
-    @Published var loadingState: LoadingState?
+class GenerateMusicViewModel: BaseViewModel {
     @Published var isMakeInstrumental: Bool
     @Published var isDetectWire: Bool = true
 
