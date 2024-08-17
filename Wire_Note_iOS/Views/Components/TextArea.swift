@@ -4,17 +4,23 @@ struct TextArea: View {
     @Binding var text: String
     var title: String
     var maxCharacters: Int = 200
+    var minHeight: CGFloat = UIFont.preferredFont(forTextStyle: .body).lineHeight * 2
 
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
                 .font(.headline)
 
-            let cornerRadius: CGFloat = 20
             ZStack(alignment: .bottomTrailing) {
                 TextEditor(text: $text)
-                    .padding(.vertical, 1)
-                    .padding(.horizontal, 5)
+                    .padding(.top, 4)
+                    .padding(.horizontal, 7)
+                    .frame(minHeight: minHeight)
+                    .padding(.bottom, minHeight / 2)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray, lineWidth: 1)
+                    )
                     .onChange(of: text) { _, newValue in
                         if newValue.count > maxCharacters {
                             text = String(newValue.prefix(maxCharacters))
@@ -24,12 +30,6 @@ struct TextArea: View {
                     .foregroundColor(.gray)
                     .padding([.bottom, .trailing], 8)
             }
-            .frame(minHeight: 150)
-            .background(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-            )
-            .cornerRadius(cornerRadius)
         }
     }
 }
