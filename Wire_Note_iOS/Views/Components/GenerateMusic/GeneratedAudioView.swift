@@ -9,10 +9,7 @@ struct GeneratedAudioView: View {
                 TitleBar(title: "Generated Audios")
 
                 ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
-                    HStack {
-                        AudioPlayerView(url: AudioUrl)
-                        AudioToTextView(audioUrl: AudioUrl)
-                    }
+                    AudioPlayerView(url: AudioUrl)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                 }
