@@ -13,12 +13,10 @@ struct GenerateModePicker: View {
     }
 }
 
-struct GeneratePromptTextField: View {
-    @Binding var prompt: String
-    var generateMode: GenerateMode
-
+struct GenerateTitleTextField: View {
+    @Binding var title: String
     var body: some View {
-        TextField("Enter \(generateMode == .customGenerate ? "lyrics" : "prompt")", text: $prompt)
+        TextField("Enter title", text: $title)
     }
 }
 
@@ -29,9 +27,16 @@ struct GenerateStyleTextField: View {
     }
 }
 
-struct GenerateTitleTextField: View {
-    @Binding var title: String
+struct GeneratePromptTextField: View {
+    @Binding var prompt: String
+    var generateMode: GenerateMode
+    var maxCharacters: Int = 200
+
     var body: some View {
-        TextField("Enter title", text: $title)
+        TextArea(
+            text: $prompt,
+            title: generateMode == .customGenerate ? "Lyrics" : "Song description",
+            maxCharacters: 200
+        )
     }
 }

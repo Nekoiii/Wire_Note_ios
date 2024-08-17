@@ -5,29 +5,27 @@ struct TextToMusicPage: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Group {
-                generateFields
-                generatemMusicButton
+            GenerateModePicker(generateMode: $viewModel.generateMode)
+            ScrollView {
                 InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
+                generateFields
                 GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
-            }
-            .padding(.horizontal)
+            }.padding(.horizontal, 20)
+
+            generatemMusicButton
         }
     }
 
     private var generateFields: some View {
         Group {
-            GenerateModePicker(generateMode: $viewModel.generateMode)
-            Group {
-                GeneratePromptTextField(prompt: $viewModel.prompt, generateMode: viewModel.generateMode)
-                if viewModel.generateMode == .customGenerate {
-                    GenerateStyleTextField(style: $viewModel.style)
-                    GenerateTitleTextField(title: $viewModel.title)
-                }
+            if viewModel.generateMode == .customGenerate {
+                GenerateTitleTextField(title: $viewModel.title)
+                GenerateStyleTextField(style: $viewModel.style)
             }
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .padding(.vertical, 5)
+            GeneratePromptTextField(prompt: $viewModel.prompt, generateMode: viewModel.generateMode)
         }
+        .textFieldStyle(RoundedBorderTextFieldStyle())
+        .padding(.vertical, 5)
     }
 
     private var generatemMusicButton: some View {
