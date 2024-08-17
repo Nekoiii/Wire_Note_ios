@@ -116,24 +116,6 @@ class WireDetectionWorker {
             self.isProcessingFrames = false
         }
     }
-
-//    private func addAudioToNewVideo() async {
-//        do {
-//            let extractedAudioURL = outputURL.deletingLastPathComponent().appendingPathComponent("extracted_audio.m4a")
-//            let tempOutputVideoUrl = outputURL.deletingLastPathComponent().appendingPathComponent("temp_output_video.m4a")
-//
-//            try await VideoAudioProcessor.extractAudio(from: inputURL, to: extractedAudioURL)
-//            try await VideoAudioProcessor.addAudioToVideo(videoURL: outputURL, audioURL: extractedAudioURL, outputURL: tempOutputVideoUrl)
-//            print("addAudioToNewVideo - Final video creation completed successfully.")
-//
-//            // replace audio in outputURL with audio in tempOutputVideoUrl
-//            removeExistingFile(at: outputURL)
-//            try FileManager.default.moveItem(at: tempOutputVideoUrl, to: outputURL)
-//            progressHandler?(1, nil)
-//        } catch {
-//            progressHandler?(1, error)
-//        }
-//    }
 }
 
 // MARK: - VideoBufferReaderDelegate

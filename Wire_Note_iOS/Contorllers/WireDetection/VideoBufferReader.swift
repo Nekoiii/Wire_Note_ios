@@ -41,10 +41,10 @@ class VideoBufferReader {
     private var isReaderStarted = false
 
     init(url: URL) async throws {
-        guard FileManager.default.fileExists(atPath: url.path)
-        else {
+        guard checkFileExistAndNonEmpty(at: url) else {
             throw VideoBufferReaderError.invalidURL
         }
+
         let asset = AVAsset(url: url)
         guard let videoTrack = try await asset.loadTracks(withMediaType: .video).first else {
             throw VideoBufferReaderError.noVideoTrack

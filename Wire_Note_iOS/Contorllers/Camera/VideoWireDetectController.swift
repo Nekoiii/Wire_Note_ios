@@ -138,19 +138,9 @@ class VideoWireDetectController: VideoController {
                             self.videoWriter!.finishWriting {
                                 if self.videoWriter!.status == .completed {
                                     print("videoWriter -- finishWriting")
-                                    print("Finished writing video")
-                                    // Check if the processed video file valid
-                                    let fileManager = FileManager.default
-
-                                    do {
-                                        let fileSize = try fileManager.attributesOfItem(atPath: outputURL.path)[.size] as? Int64
-                                        if let size = fileSize, size > 0 {
-                                            print("Processed video URL: \(outputURL)")
-                                        } else {
-                                            print("Processed video file is empty or invalid")
-                                        }
-                                    } catch {
-                                        print("Error checking processed video file: \(error.localizedDescription)")
+                                    guard checkFileNonEmpty(at: outputURL) else {
+                                        completion(false)
+                                        return
                                     }
                                     completion(true)
                                 } else {

@@ -29,10 +29,11 @@ extension VideoToMusicPages {
                 }
                 if EnvironmentConfigs.debugMode {
                     let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
-                    if FileManager.default.fileExists(atPath: url.path) {
+
+                    checkFileExistAndNonEmpty(at: url, onSuccess: { url in
                         videoToMusicData.originVideoUrl = url
                         viewModel.videoPlayer = AVPlayer(url: url)
-                    }
+                    })
                 }
             }
             .environmentObject(videoToMusicData)

@@ -148,7 +148,7 @@ class WireDetectionViewModel: ObservableObject {
             }
 
             // replace audio in outputURL with audio in tempOutputVideoUrl
-            removeExistingFile(at: outputURL)
+            guard removeFileIfExists(at: outputURL) else { return }
             try FileManager.default.moveItem(at: tempOutputVideoUrl, to: outputURL)
             progress = 1
             isProcessing = false

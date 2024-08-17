@@ -31,29 +31,17 @@ class CompositeVideoViewModel: BaseViewModel {
 
     func setupOutputDirectory() {
         guard let outputDirectoryURL = outputDirectoryURL else { return }
-        let fileManager = FileManager.default
-        if !fileManager.fileExists(atPath: outputDirectoryURL.path) {
-            do {
-                try fileManager.createDirectory(at: outputDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-                print("Directory created at: \(outputDirectoryURL.path)")
-            } catch {
-                loadingState = nil
-                print("Error creating directory: \(error)")
-            }
+        guard createDirectoryIfNotExists(at: outputDirectoryURL) else {
+            loadingState = nil
+            return
         }
     }
 
     func clearOutputDirectory() {
         guard let outputDirectoryURL = outputDirectoryURL else { return }
-        let fileManager = FileManager.default
-        do {
-            let fileURLs = try fileManager.contentsOfDirectory(at: outputDirectoryURL, includingPropertiesForKeys: nil, options: [])
-            for fileURL in fileURLs {
-                try fileManager.removeItem(at: fileURL)
-            }
-            print("All files in CompositeVideoPage deleted successfully.")
-        } catch {
-            print("Error deleting files: \(error)")
+        guard removeAllFilesInDirectory(at: outputDirectoryURL) else {
+            loadingState = nil
+            return
         }
     }
 

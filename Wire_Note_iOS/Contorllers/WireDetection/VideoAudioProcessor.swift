@@ -26,7 +26,7 @@ class VideoAudioProcessor {
         print("VideoAudioProcessor - extractAudio")
         let start = Date()
 
-        removeExistingFile(at: outputURL)
+        guard removeFileIfExists(at: outputURL) else { return }
 
         let asset = AVAsset(url: inputURL)
         guard let audioTrack = try await asset.loadTracks(withMediaType: .audio).first else {
@@ -47,14 +47,7 @@ class VideoAudioProcessor {
         exportSession.outputURL = outputURL
         exportSession.outputFileType = .m4a
 
-//        let exportProgressChecker = Task {
-//            while exportSession.status == .exporting {
-//                self.progressHandler?(exportSession.progress, nil)
-//                try await Task.sleep(nanoseconds: 100_000_000) // 让循环每 0.1 秒检查一次 exportSession.progress 的值
-//            }
-//        }
         await exportSession.export()
-//        exportProgressChecker.cancel()
 
         if let error = exportSession.error {
             print("extractAudio - error: \(error)")
@@ -73,7 +66,7 @@ class VideoAudioProcessor {
         progressHandler = handler
         progressHandler?(0.2, nil)
 
-        removeExistingFile(at: outputURL)
+        guard removeFileIfExists(at: outputURL) else { return }
 
         let mixComposition = AVMutableComposition()
 

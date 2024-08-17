@@ -32,10 +32,8 @@ class VideoWritter {
     private var frameCount = 0
 
     func updateVideoSettings(outputURL: URL, videoSize: CGSize, fps: CMTimeScale, orientation: CGAffineTransform) throws {
-        // check output file exists
-        if FileManager.default.fileExists(atPath: outputURL.path) {
-            try FileManager.default.removeItem(at: outputURL)
-        }
+        guard removeFileIfExists(at: outputURL) else { return }
+
         self.fps = fps
         self.orientation = orientation
         let writer = try AVAssetWriter(outputURL: outputURL, fileType: .mp4)

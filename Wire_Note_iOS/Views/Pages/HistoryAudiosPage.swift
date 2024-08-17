@@ -22,10 +22,8 @@ struct HistoryAudiosView: View {
     }
 
     private func loadDownloadedAudioUrls() {
-        let fileManager = FileManager.default
-
         do {
-            let fileUrls = try fileManager.contentsOfDirectory(at: folderPath, includingPropertiesForKeys: nil)
+            let fileUrls = try FileManager.default.contentsOfDirectory(at: folderPath, includingPropertiesForKeys: nil)
             audioUrls = fileUrls.filter {
                 FileTypes.isAudioFile(url: $0)
             }

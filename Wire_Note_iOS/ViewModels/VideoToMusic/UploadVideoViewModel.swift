@@ -3,14 +3,8 @@ import SwiftUI
 
 class UploadVideoViewModel: BaseViewModel {
     @Published var videoPlayer: AVPlayer?
-
     @Published var isPickerPresented = false
 
-//    private var videoToMusicData: VideoToMusicData
-//
-//    init(videoToMusicData: VideoToMusicData) {
-//        self.videoToMusicData = videoToMusicData
-//    }
     private(set) var videoToMusicData: VideoToMusicData?
 
     init(videoToMusicData: VideoToMusicData?) {
