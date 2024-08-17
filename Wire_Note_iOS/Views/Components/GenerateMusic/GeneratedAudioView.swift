@@ -19,27 +19,7 @@ struct GeneratedAudioView: View {
 }
 
 struct GeneratedAudioView_Previews: PreviewProvider {
-    @State static var audioUrls: [URL] = {
-        guard let audio1Data = NSDataAsset(name: "song-1")?.data,
-              let audio2Data = NSDataAsset(name: "song-2")?.data
-        else {
-            return []
-        }
-
-        let tempDir = FileManager.default.temporaryDirectory
-        let audio1URL = tempDir.appendingPathComponent("song-1.mp3")
-        let audio2URL = tempDir.appendingPathComponent("song-2.mp3")
-
-        do {
-            try audio1Data.write(to: audio1URL)
-            try audio2Data.write(to: audio2URL)
-        } catch {
-            print("Error writing audio files: \(error)")
-            return []
-        }
-
-        return [audio1URL, audio2URL]
-    }()
+    @State static var audioUrls: [URL] = DemoFiles.audioUrls
 
     static var previews: some View {
         GeneratedAudioView(generatedAudioUrls: $audioUrls)

@@ -10,10 +10,14 @@ struct TextToMusicPage: View {
             ScrollView {
                 InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
                 generateFields
-                GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
             }.padding(.horizontal, 20)
 
+            GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
             generateMusicButton
+        }.onAppear {
+            if EnvironmentConfigs.debugMode {
+                viewModel.generatedAudioUrls = DemoFiles.audioUrls
+            }
         }
     }
 
