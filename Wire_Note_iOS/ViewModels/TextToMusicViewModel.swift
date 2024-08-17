@@ -8,7 +8,7 @@ class TextToMusicViewModel: ObservableObject {
     @Published var isMakeInstrumental: Bool = false
     @Published var generatedAudioUrls: [URL] = []
 
-    func generatemMusic() async {
+    func generateMusic() async {
         let generatePrompt = prompt.isEmpty ? DefaultPrompts.sunoGeneratePrompt : prompt
         let generateTags = style.isEmpty ? DefaultPrompts.sunoGenerateTags : style
         let generateTitle = title.isEmpty ? DefaultPrompts.sunoGenerateTitle : title
@@ -16,7 +16,7 @@ class TextToMusicViewModel: ObservableObject {
 
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
 
-        let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental)
+        let audioUrls = await sunoGenerateAPI.generateMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental)
         generatedAudioUrls = audioUrls
         Task {
             await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)

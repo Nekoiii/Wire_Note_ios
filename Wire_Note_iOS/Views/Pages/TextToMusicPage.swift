@@ -13,7 +13,7 @@ struct TextToMusicPage: View {
                 GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
             }.padding(.horizontal, 20)
 
-            generatemMusicButton
+            generateMusicButton
         }
     }
 
@@ -29,10 +29,10 @@ struct TextToMusicPage: View {
         .padding(.vertical, 5)
     }
 
-    private var generatemMusicButton: some View {
+    private var generateMusicButton: some View {
         Button(action: {
             Task {
-                await viewModel.generatemMusic()
+                await viewModel.generateMusic()
             }
         }) {
             Text("Generate")

@@ -24,7 +24,7 @@ class GenerateMusicViewModel: BaseViewModel {
 
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
 
-        let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
+        let audioUrls = await sunoGenerateAPI.generateMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
         videoToMusicData.generatedAudioUrls = audioUrls
         Task {
             loadingState = .download_file

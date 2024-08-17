@@ -10,8 +10,8 @@ struct GeneratedAudioView: View {
 
                 ForEach(generatedAudioUrls, id: \.self) { AudioUrl in
                     AudioPlayerView(url: AudioUrl)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
                 }
             }
         }

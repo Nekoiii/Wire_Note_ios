@@ -42,7 +42,7 @@ class ImageToMusicViewModel: ObservableObject {
 
         let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
 
-        let audioUrls = await sunoGenerateAPI.generatemMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
+        let audioUrls = await sunoGenerateAPI.generateMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
         generatedAudioUrls = audioUrls
         Task {
             await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
