@@ -1,15 +1,31 @@
 import SwiftUI
 
 struct GenerateModePicker: View {
-    @Binding var generateMode: GenerateMode
+    @Binding var selectedMode: GenerateMode
 
     var body: some View {
-        Picker("Generate Mode", selection: $generateMode) {
-            Text("Generate").tag(GenerateMode.generate)
-            Text("Custom Generate").tag(GenerateMode.customGenerate)
-        }
-        .pickerStyle(SegmentedPickerStyle())
-        .padding(.vertical, 10)
+        TabView(
+            selectedIndex: Binding(
+                get: {
+                    selectedMode.index
+                },
+                set: { newIndex in
+                    selectedMode = GenerateMode.allCases[newIndex]
+                }
+            ), tabs: GenerateMode.allCases.map { $0.title }
+        ) {}
+    }
+}
+
+struct InstrumentalToggleView: View {
+    @Binding var isMakeInstrumental: Bool
+
+    var body: some View {
+        Toggle(isOn: $isMakeInstrumental) {
+            Text("Make It Instrumental").font(.headline)
+        }.toggleStyle(
+            SwitchToggleStyle(tint: .accent2)
+        )
     }
 }
 
@@ -44,7 +60,7 @@ struct GeneratePromptTextField: View {
             text: $prompt,
             title: generateMode == .customGenerate ? "Lyrics" : "Song description",
             maxCharacters: generateMode == .customGenerate ? 3000 : 200,
-            minHeight: 200
+            minHeight: 150
         )
     }
 }

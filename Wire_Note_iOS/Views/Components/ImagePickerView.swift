@@ -23,7 +23,7 @@ struct ImagePickerView: View {
             }) {
                 Text("Upload Image")
                     .padding()
-                    .background(Color("AccentColor"))
+                    .background(.accent)
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }

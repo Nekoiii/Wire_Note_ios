@@ -30,7 +30,7 @@ extension VideoToMusicPages {
                         Text("Detect Wire")
                     }
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isCompositeVideoDisable))
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isCompositeVideoDisable))
                 .disabled(isCompositeVideoDisable)
             }
             .onAppear {
@@ -62,7 +62,7 @@ extension VideoToMusicPages {
                 }) {
                     Text("Generate Music Again")
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isGenerateMusicButtonDisable))
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isGenerateMusicButtonDisable))
                 .disabled(isGenerateMusicButtonDisable)
 
                 InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)

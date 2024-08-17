@@ -20,7 +20,7 @@ extension VideoToMusicPages {
                 NavigationLink(destination: VideoToMusicPages.ExtractAndDescribeFramesPage().environmentObject(videoToMusicData)) {
                     Text("-> Extract And Describe Frames")
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isVideoUrlNil))
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isVideoUrlNil))
                 .disabled(isVideoUrlNil)
             }
             .onAppear {
@@ -44,7 +44,7 @@ extension VideoToMusicPages {
                 Button("Upload Video") {
                     viewModel.isPickerPresented = true
                 }
-                .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
+                .buttonStyle(SolidButtonStyle(buttonColor: .accent))
                 .padding()
                 .sheet(isPresented: $viewModel.isPickerPresented, onDismiss: viewModel.setupVideoPlayer) {
                     VideoPicker(videoURL: $videoToMusicData.originVideoUrl)

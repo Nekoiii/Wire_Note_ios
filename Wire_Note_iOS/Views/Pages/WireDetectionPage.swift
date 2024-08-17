@@ -16,7 +16,7 @@ struct WireDetectionPage: View {
                         Text("Show Origin Video")
                             .font(.system(size: 15))
                     }
-                    .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
+                    .buttonStyle(SolidButtonStyle(buttonColor: .accent))
                     .onLongPressGesture(minimumDuration: 0.1, pressing: { isPressing in
                         viewModel.isShowingOriginVideo = isPressing
                         viewModel.originPlayer?.isMuted = !isPressing

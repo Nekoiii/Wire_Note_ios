@@ -5,7 +5,8 @@ struct TextToMusicPage: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            GenerateModePicker(generateMode: $viewModel.generateMode)
+            GenerateModePicker(selectedMode: $viewModel.generateMode)
+
             ScrollView {
                 InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
                 generateFields
@@ -36,7 +37,7 @@ struct TextToMusicPage: View {
         }) {
             Text("Generate")
         }
-        .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
+        .buttonStyle(SolidButtonStyle(buttonColor: .accent))
     }
 }
 

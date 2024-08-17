@@ -21,7 +21,7 @@ extension VideoToMusicPages {
                     }
                     InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isDescrptionNil))
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isDescrptionNil))
                 .disabled(isDescrptionNil)
             }
             .sheet(isPresented: $viewModel.isImageViewerPresented) { // *problem
@@ -68,7 +68,7 @@ extension VideoToMusicPages {
                 Button(action: { viewModel.doExtractRandomFrames() }) {
                     Text("Extract Frames Again")
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor")))
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent))
             }
         }
 
@@ -81,7 +81,7 @@ extension VideoToMusicPages {
                 Button(action: { viewModel.describeFrames() }) {
                     Text("Describe Image")
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isExtractedFramesEmpty))
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isExtractedFramesEmpty))
                 .disabled(isExtractedFramesEmpty)
 
                 if !videoToMusicData.description.isEmpty {

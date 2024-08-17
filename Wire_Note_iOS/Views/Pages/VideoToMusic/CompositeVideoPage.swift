@@ -42,7 +42,7 @@ extension VideoToMusicPages {
                 }) {
                     Text("Create Composite Video Again")
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isCreateCompositeVideoButtonDisable))
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isCreateCompositeVideoButtonDisable))
                 .disabled(isCreateCompositeVideoButtonDisable)
             }
             .onAppear {

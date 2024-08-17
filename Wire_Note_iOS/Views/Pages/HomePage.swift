@@ -32,7 +32,7 @@ struct HomePage: View {
                         Text("Wire Detection")
                     }
                 }
-                .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: false))
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: false))
                 .padding(.vertical, 10)
 
                 NavigationLink(destination: HistoryAudiosView(folderPath: Paths.downloadedFilesFolderPath)) {

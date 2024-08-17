@@ -26,7 +26,7 @@ struct ImageToMusicPage: View {
             Button(action: { viewModel.doImageToText() }) {
                 Text("Describe Image")
             }
-            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isImageToTextButtonDisable))
+            .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isImageToTextButtonDisable))
             .disabled(isImageToTextButtonDisable)
 
             if let errorMessage = viewModel.errorMessage {
@@ -49,7 +49,7 @@ struct ImageToMusicPage: View {
             }) {
                 Text("Generate music with image description")
             }
-            .buttonStyle(BorderedButtonStyle(borderColor: Color("AccentColor"), isDisable: isGenerateMusicButtonDisable))
+            .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isGenerateMusicButtonDisable))
             .disabled(isGenerateMusicButtonDisable)
 
             InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)

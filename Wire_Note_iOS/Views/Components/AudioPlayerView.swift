@@ -27,7 +27,7 @@ struct AudioPlayerView: View {
                 Text(audioPlayerManager.isCurrentPlayingUrl(url) && audioPlayerManager.isPlaying ? "Pause" : "Play")
                     .fixedSize(horizontal: true, vertical: false)
             }
-            .buttonStyle(SolidButtonStyle(buttonColor: Color("AccentColor")))
+            .buttonStyle(SolidButtonStyle(buttonColor: .accent))
         }
         .onDisappear {
             if audioPlayerManager.isCurrentPlayingUrl(url) {
