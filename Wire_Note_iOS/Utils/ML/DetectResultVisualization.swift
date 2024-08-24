@@ -1,10 +1,3 @@
-//
-//  DetectResultVisualization.swift
-//  Wire_Note_iOS
-//
-//  Created by 猫草 on 2024/05/26.
-//
-
 import UIKit
 import Vision
 
@@ -30,15 +23,21 @@ func visualizeDetectResults(ciContext: CIContext, detections: [Detection], pixel
     return UIImage(cgImage: newImage)
 }
 
+func drawAttributedString(_ text: String, in rect: CGRect, with attributes: [NSAttributedString.Key: Any], in context: CGContext) {
+    let attributedString = NSAttributedString(string: text, attributes: attributes)
+    let setter = CTFramesetterCreateWithAttributedString(attributedString)
+    let path = CGPath(rect: rect, transform: nil)
+    let frame = CTFramesetterCreateFrame(setter, CFRange(), path, nil)
+    context.textMatrix = CGAffineTransform.identity
+    CTFrameDraw(frame, context)
+}
+
 func drawBBox(_ detection: Detection, _ invertedBox: CGRect, _ cgContext: CGContext, _ size: CGSize) {
     if let labelText = detection.label {
         cgContext.textMatrix = .identity
-
         let text = "\(labelText) : \(round(detection.confidence * 100))"
-
         let textRect = CGRect(x: invertedBox.minX + size.width * 0.01, y: invertedBox.minY - size.width * 0.01, width: invertedBox.width, height: invertedBox.height)
         let textStyle = NSMutableParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
-
         let textFontAttributes = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: textRect.width * 0.1, weight: .bold),
             NSAttributedString.Key.foregroundColor: detection.color,
@@ -47,14 +46,8 @@ func drawBBox(_ detection: Detection, _ invertedBox: CGRect, _ cgContext: CGCont
 
         cgContext.saveGState()
         defer { cgContext.restoreGState() }
-        let astr = NSAttributedString(string: text, attributes: textFontAttributes)
-        let setter = CTFramesetterCreateWithAttributedString(astr)
-        let path = CGPath(rect: textRect, transform: nil)
 
-        let frame = CTFramesetterCreateFrame(setter, CFRange(), path, nil)
-        cgContext.textMatrix = CGAffineTransform.identity
-        CTFrameDraw(frame, cgContext)
-
+        drawAttributedString(text, in: textRect, with: textFontAttributes, in: cgContext)
         cgContext.setStrokeColor(detection.color.cgColor)
         cgContext.setLineWidth(3)
         cgContext.stroke(invertedBox)
@@ -82,9 +75,5 @@ func drawNote(_ detection: Detection, _ invertedBox: CGRect, _ cgContext: CGCont
         height: noteSize.height
     )
 
-    let setter = CTFramesetterCreateWithAttributedString(astr)
-    let path = CGPath(rect: noteRect, transform: nil)
-    let frame = CTFramesetterCreateFrame(setter, CFRange(), path, nil)
-    cgContext.textMatrix = CGAffineTransform.identity
-    CTFrameDraw(frame, cgContext)
+    drawAttributedString(randomNote, in: noteRect, with: noteAttributes, in: cgContext)
 }

@@ -22,10 +22,11 @@ struct InstrumentalToggleView: View {
 
     var body: some View {
         Toggle(isOn: $isMakeInstrumental) {
-            Text("Make It Instrumental").font(.headline)
-        }.toggleStyle(
-            SwitchToggleStyle(tint: .accent2)
-        )
+            Text("Make It Instrumental")
+                .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.trailing, 5)
+        }.toggleStyle(SwitchToggleStyle(tint: .accent2))
     }
 }
 
@@ -62,5 +63,45 @@ struct GeneratePromptTextField: View {
             maxCharacters: generateMode == .customGenerate ? 3000 : 200,
             minHeight: 150
         )
+    }
+}
+
+struct GenerateMusicButton: View {
+    @Binding var isDisable: Bool
+    @Binding var generatedAudioUrls: [URL]
+
+    var prompt: String
+    var style: String
+    var title: String
+    var isMakeInstrumental: Bool
+    var generateMode: GenerateMode
+
+    var body: some View {
+        Button(action: {
+            Task {
+                await generateMusic()
+            }
+        }) {
+            Text("Generate music")
+        }
+        .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isDisable))
+        .disabled(isDisable)
+    }
+
+    private func generateMusic() async {
+        let generatePrompt = prompt.isEmpty ?
+            (title.isEmpty ? DefaultPrompts.sunoGeneratePrompt : title)
+            : prompt
+        let generateTags = style.isEmpty ? DefaultPrompts.sunoGenerateTags : style
+        let generateTitle = title.isEmpty ? DefaultPrompts.sunoGenerateTitle : title
+        let generateIsMakeInstrumental = (prompt.isEmpty && generateMode == .customGenerate) ? true : isMakeInstrumental
+
+        let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
+
+        let audioUrls = await sunoGenerateAPI.generateMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental)
+        generatedAudioUrls = audioUrls
+        Task {
+            await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
+        }
     }
 }

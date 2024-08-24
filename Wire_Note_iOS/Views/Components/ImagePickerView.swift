@@ -10,7 +10,6 @@ struct ImagePickerView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 300, height: 300)
             } else {
                 Text("Choose a photo")
                     .foregroundColor(.gray)

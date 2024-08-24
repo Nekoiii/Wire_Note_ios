@@ -3,6 +3,8 @@ import SwiftUI
 struct TextToMusicPage: View {
     @StateObject private var viewModel = TextToMusicViewModel()
 
+    @State private var isGenerateButtonDisable = true
+
     var body: some View {
         VStack(spacing: 20) {
             GenerateModePicker(selectedMode: $viewModel.generateMode)
@@ -13,11 +15,21 @@ struct TextToMusicPage: View {
             }.padding(.horizontal, 20)
 
             GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
-            generateMusicButton
-        }.onAppear {
+            GenerateMusicButton(isDisable: $isGenerateButtonDisable,
+                                generatedAudioUrls: $viewModel.generatedAudioUrls,
+                                prompt: viewModel.prompt,
+                                style: viewModel.style,
+                                title: viewModel.title,
+                                isMakeInstrumental: viewModel.isMakeInstrumental,
+                                generateMode: viewModel.generateMode)
+        }
+        .onAppear {
             if EnvironmentConfigs.debugMode {
                 viewModel.generatedAudioUrls = DemoFiles.audioUrls
             }
+        }
+        .onChange(of: [viewModel.prompt, viewModel.style, viewModel.title]) {
+            isGenerateButtonDisable = viewModel.prompt.isEmpty && viewModel.style.isEmpty && viewModel.title.isEmpty
         }
     }
 
@@ -31,17 +43,6 @@ struct TextToMusicPage: View {
         }
         .textFieldStyle(RoundedBorderTextFieldStyle())
         .padding(.vertical, 5)
-    }
-
-    private var generateMusicButton: some View {
-        Button(action: {
-            Task {
-                await viewModel.generateMusic()
-            }
-        }) {
-            Text("Generate")
-        }
-        .buttonStyle(SolidButtonStyle(buttonColor: .accent))
     }
 }
 

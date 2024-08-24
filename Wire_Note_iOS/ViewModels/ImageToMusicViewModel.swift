@@ -5,6 +5,7 @@ class ImageToMusicViewModel: ObservableObject {
     @Published var isImagePickerPresented = false
 
     @Published var description: String = ""
+
     @Published var errorMessage: String?
     @Published var isLoadingDescription: Bool = false
 
@@ -32,20 +33,6 @@ class ImageToMusicViewModel: ObservableObject {
                 }
             }
             self.isLoadingDescription = false
-        }
-    }
-
-    func generateMusicWithDescription() async {
-        let generatePrompt = description
-        let generateIsMakeInstrumental = isMakeInstrumental
-        let generateMode = GenerateMode.generate
-
-        let sunoGenerateAPI = SunoGenerateAPI(generateMode: generateMode)
-
-        let audioUrls = await sunoGenerateAPI.generateMusic(generateMode: generateMode, prompt: generatePrompt, makeInstrumental: generateIsMakeInstrumental)
-        generatedAudioUrls = audioUrls
-        Task {
-            await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
         }
     }
 
