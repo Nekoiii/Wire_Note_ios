@@ -14,33 +14,33 @@ struct HomePage: View {
                 }.padding(.vertical, 30)
                 VStack {
                     NavigationLink(destination: TextToMusicPage()) {
-                        Text("Text To Music")
+                        Text(TextToMusicPage.pageTitle)
                     }
                     NavigationLink(destination: ImageToMusicPage()) {
-                        Text("Image To Music")
+                        Text(ImageToMusicPage.pageTitle)
                     }
                     NavigationLink(destination: VideoToMusicPages.UploadVideoPage().environmentObject(videoToMusicData)) {
-                        Text("Video To Music")
+                        Text(VideoToMusicPages.UploadVideoPage.pageTitle)
                     }
                     Spacer().frame(height: 50)
                     NavigationLink(destination: CameraView(isDetectWire: true)) {
                         Text("Open Camera")
                     }
-                    NavigationLink {
-                        WireDetectionPage()
-                    } label: {
-                        Text("Wire Detection")
+                    NavigationLink(destination: WireDetectionPage()) {
+                        Text(WireDetectionPage.pageTitle)
                     }
                 }
                 .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: false))
                 .padding(.vertical, 10)
 
                 NavigationLink(destination: HistoryAudiosView(folderPath: Paths.downloadedFilesFolderPath)) {
-                    Label("History", systemImage: "music.note.list")
-                        .font(.system(size: 20))
+                    HStack {
+                        Image(systemName: "music.note.list")
+                        Text(HistoryAudiosView.pageTitle)
+                    }
+                    .font(.system(size: 20))
                 }
-                .padding(.vertical, 30)
-                .padding(.leading, 40)
+                .padding(EdgeInsets(top: 30, leading: 40, bottom: 0, trailing: 0))
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }

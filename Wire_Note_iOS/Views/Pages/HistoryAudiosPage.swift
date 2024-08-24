@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct HistoryAudiosView: View {
+    static let pageTitle: String = "History"
+
     @State private var audioUrls: [URL] = []
     var folderPath: URL
 
@@ -17,7 +19,7 @@ struct HistoryAudiosView: View {
         .onAppear {
             loadDownloadedAudioUrls()
         }
-        .navigationTitle("Music Generation History")
+        .navigationTitle(HistoryAudiosView.pageTitle)
         .navigationBarTitleDisplayMode(.inline)
     }
 

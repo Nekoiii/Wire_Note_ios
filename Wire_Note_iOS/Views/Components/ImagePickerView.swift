@@ -15,6 +15,7 @@ struct ImagePickerView: View {
                     .foregroundColor(.gray)
                     .frame(width: 150, height: 150)
                     .background(Color(UIColor.systemFill))
+                    .padding(.top, 20)
             }
 
             Button(action: {

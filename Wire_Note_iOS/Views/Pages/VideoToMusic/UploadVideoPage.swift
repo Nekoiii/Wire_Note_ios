@@ -5,6 +5,7 @@ enum VideoToMusicPages {}
 
 extension VideoToMusicPages {
     struct UploadVideoPage: View {
+        static let pageTitle: String = "Video To Music"
         @EnvironmentObject private var videoToMusicData: VideoToMusicData
         @StateObject private var viewModel: UploadVideoViewModel
 
@@ -37,6 +38,7 @@ extension VideoToMusicPages {
                 }
             }
             .environmentObject(videoToMusicData)
+            .navigationTitle(VideoToMusicPages.UploadVideoPage.pageTitle)
         }
 
         private var videoArea: some View {
@@ -58,7 +60,9 @@ extension VideoToMusicPages {
 }
 
 struct VideoToMusicPage_UploadVideoPage_Previews: PreviewProvider {
+    @StateObject private static var videoToMusicData = VideoToMusicData()
     static var previews: some View {
         VideoToMusicPages.UploadVideoPage()
+            .environmentObject(videoToMusicData)
     }
 }

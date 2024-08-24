@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ImageToMusicPage: View {
+    static let pageTitle: String = "Image To Music"
     @StateObject private var viewModel = ImageToMusicViewModel()
 
     @State private var style: String = ""
@@ -27,10 +28,11 @@ struct ImageToMusicPage: View {
             viewModel.saveImageToDefaultPath(image: newImage)
             isImageToTextButtonDisable = false
         }
-        .padding([.top, .horizontal], 20)
+        .padding(EdgeInsets(top: 30, leading: 20, bottom: 0, trailing: 20))
         .onChange(of: viewModel.description) {
             isGenerateMusicButtonDisable = viewModel.description.isEmpty
         }
+        .navigationTitle(ImageToMusicPage.pageTitle)
     }
 
     private var imageDescribtion: some View {

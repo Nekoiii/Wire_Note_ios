@@ -3,6 +3,7 @@ import SwiftUI
 
 extension VideoToMusicPages {
     struct CompositeVideoPage: View {
+        static let pageTitle: String = "Composite Video"
         @EnvironmentObject var videoToMusicData: VideoToMusicData
         @StateObject private var viewModel: CompositeVideoViewModel
 
@@ -55,6 +56,7 @@ extension VideoToMusicPages {
                     try await viewModel.createCompositeVideo()
                 }
             }
+            .navigationTitle(VideoToMusicPages.CompositeVideoPage.pageTitle)
         }
     }
 }

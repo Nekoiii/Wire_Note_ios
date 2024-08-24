@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct TextToMusicPage: View {
+    static let pageTitle: String = "Text To Music"
     @StateObject private var viewModel = TextToMusicViewModel()
 
     @State private var isGenerateButtonDisable = true
@@ -31,6 +32,7 @@ struct TextToMusicPage: View {
         .onChange(of: [viewModel.prompt, viewModel.style, viewModel.title]) {
             isGenerateButtonDisable = viewModel.prompt.isEmpty && viewModel.style.isEmpty && viewModel.title.isEmpty
         }
+        .navigationTitle(TextToMusicPage.pageTitle)
     }
 
     private var generateFields: some View {

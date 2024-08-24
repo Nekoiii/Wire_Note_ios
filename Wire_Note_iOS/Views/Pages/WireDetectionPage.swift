@@ -2,6 +2,7 @@ import AVKit
 import SwiftUI
 
 struct WireDetectionPage: View {
+    static let pageTitle: String = "Wire Detection"
     @StateObject private var viewModel = WireDetectionViewModel()
 
     var isProcessButtonDisabled: Bool {
@@ -112,7 +113,7 @@ struct WireDetectionPage: View {
                 }
             }
         }
-        .navigationTitle("Wire Detection")
+        .navigationTitle(WireDetectionPage.pageTitle)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $viewModel.isPickerPresented, onDismiss: viewModel.setupOriginPlayers) {
             VideoPicker(videoURL: $viewModel.originVideoURL)

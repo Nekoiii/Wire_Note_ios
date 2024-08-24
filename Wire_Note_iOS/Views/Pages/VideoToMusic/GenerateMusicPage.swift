@@ -2,6 +2,7 @@ import SwiftUI
 
 extension VideoToMusicPages {
     struct GenerateMusicPage: View {
+        static let pageTitle: String = "Generate Music"
         @EnvironmentObject var videoToMusicData: VideoToMusicData
         @StateObject private var viewModel: GenerateMusicViewModel
 
@@ -43,6 +44,7 @@ extension VideoToMusicPages {
                     viewModel.loadingState = nil
                 }
             }
+            .navigationTitle(VideoToMusicPages.GenerateMusicPage.pageTitle)
         }
 
         // *unfinished: need to be refactor with same function in ImageToMusicPage.swift

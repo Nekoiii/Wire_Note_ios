@@ -265,13 +265,13 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		00AC98AE2C0485C400C3F325 /* Managers */ = {
+		00AC98AE2C0485C400C3F325 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				4B3941742BFA056300A5B694 /* ML */,
 				00AC98AF2C0485D400C3F325 /* AudioPlayerManager.swift */,
 			);
-			path = Managers;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		00AC98B82C060D4C00C3F325 /* Styles */ = {
@@ -281,13 +281,6 @@
 				00AC98BB2C06193400C3F325 /* SolidButtonStyle.swift */,
 			);
 			path = Styles;
-			sourceTree = "<group>";
-		};
-		00B8B2BB2C79FF5F0099076D /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		00C21E052C1C824800F3FA67 /* VideoToMusic */ = {
@@ -367,7 +360,6 @@
 		4B3941412BF9FC4000A5B694 = {
 			isa = PBXGroup;
 			children = (
-				00B8B2BB2C79FF5F0099076D /* Services */,
 				00AC989D2C02F1AB00C3F325 /* SunoAPI */,
 				4B39414C2BF9FC4000A5B694 /* Wire_Note_iOS */,
 				4B39414B2BF9FC4000A5B694 /* Products */,
@@ -389,7 +381,7 @@
 				00E45A972C0AFAB600F8599A /* Contorllers */,
 				4B3941602BF9FE9A00A5B694 /* Models */,
 				00AC98B82C060D4C00C3F325 /* Styles */,
-				00AC98AE2C0485C400C3F325 /* Managers */,
+				00AC98AE2C0485C400C3F325 /* Services */,
 				00AC98A62C036A7600C3F325 /* Config */,
 				00AC98942C02836A00C3F325 /* Utils */,
 				4B39416D2BF9FFE500A5B694 /* Extensions */,

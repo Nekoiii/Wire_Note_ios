@@ -2,6 +2,7 @@ import SwiftUI
 
 extension VideoToMusicPages {
     struct ExtractAndDescribeFramesPage: View {
+        static let pageTitle: String = "Extracted Frames"
         @EnvironmentObject var videoToMusicData: VideoToMusicData
         @StateObject private var viewModel: ExtractAndDescribeFramesViewModel
 
@@ -37,6 +38,7 @@ extension VideoToMusicPages {
                 }
                 viewModel.doExtractRandomFrames()
             }
+            .navigationTitle(VideoToMusicPages.ExtractAndDescribeFramesPage.pageTitle)
         }
 
         private var extractFramesArea: some View {
