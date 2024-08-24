@@ -9,6 +9,8 @@ extension VideoToMusicPages {
         @EnvironmentObject private var videoToMusicData: VideoToMusicData
         @StateObject private var viewModel: UploadVideoViewModel
 
+        private var isExtractFramesButtonDisable: Bool { videoToMusicData.originVideoUrl == nil }
+
         init() {
             _viewModel = StateObject(wrappedValue: UploadVideoViewModel(videoToMusicData: nil))
         }
@@ -16,26 +18,13 @@ extension VideoToMusicPages {
         var body: some View {
             VStack {
                 videoArea
-
-                let isVideoUrlNil = videoToMusicData.originVideoUrl == nil
-                NavigationLink(destination: VideoToMusicPages.ExtractAndDescribeFramesPage().environmentObject(videoToMusicData)) {
-                    Text("-> Extract And Describe Frames")
-                }
-                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isVideoUrlNil))
-                .disabled(isVideoUrlNil)
+                extractFramesButton
             }
             .onAppear {
-                if viewModel.videoToMusicData == nil {
-                    viewModel.setVideoToMusicData(videoToMusicData)
-                }
-                if EnvironmentConfigs.debugMode {
-                    let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
+                guard viewModel.videoToMusicData == nil else { return }
+                viewModel.setVideoToMusicData(videoToMusicData)
 
-                    checkFileExistAndNonEmpty(at: url, onSuccess: { url in
-                        videoToMusicData.originVideoUrl = url
-                        viewModel.videoPlayer = AVPlayer(url: url)
-                    })
-                }
+                if EnvironmentConfigs.debugMode { setDebugData() }
             }
             .environmentObject(videoToMusicData)
             .navigationTitle(VideoToMusicPages.UploadVideoPage.pageTitle)
@@ -54,6 +43,22 @@ extension VideoToMusicPages {
 
                 VideoPlayer(player: viewModel.videoPlayer)
                     .frame(height: 200)
+            }
+        }
+
+        private var extractFramesButton: some View {
+            NavigationLink(destination: VideoToMusicPages.ExtractAndDescribeFramesPage().environmentObject(videoToMusicData)) {
+                Text(VideoToMusicPages.ExtractAndDescribeFramesPage.pageTitle)
+            }
+            .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isExtractFramesButtonDisable))
+            .disabled(isExtractFramesButtonDisable)
+        }
+
+        private func setDebugData() {
+            let url = Paths.projectRootPath.appendingPathComponent("Assets.xcassets/Videos/sky-1.dataset/sky-1.MOV")
+            checkFileExistAndNonEmpty(at: url) { url in
+                videoToMusicData.originVideoUrl = url
+                viewModel.videoPlayer = AVPlayer(url: url)
             }
         }
     }

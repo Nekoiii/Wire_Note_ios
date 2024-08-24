@@ -2,7 +2,7 @@ import SwiftUI
 
 extension VideoToMusicPages {
     struct ExtractAndDescribeFramesPage: View {
-        static let pageTitle: String = "Extracted Frames"
+        static let pageTitle: String = "Extract Frames"
         @EnvironmentObject var videoToMusicData: VideoToMusicData
         @StateObject private var viewModel: ExtractAndDescribeFramesViewModel
 
