@@ -47,9 +47,6 @@ extension VideoToMusicPages {
 
         private func updateIsCompositeVideoDisable() {
             isCompositeVideoDisable = videoToMusicData.downloadedGeneratedAudioUrls.isEmpty || viewModel.loadingState != nil
-            print("isCompositeVideoDisable--\(isCompositeVideoDisable)")
-            print("isCompositeVideoDisable--viewModel.loadingState \(viewModel.loadingState?.description ?? "xx")")
-            print("isCompositeVideoDisable--.isEmpty\(videoToMusicData.downloadedGeneratedAudioUrls.isEmpty)")
         }
 
         private var generateMusicArea: some View {
@@ -65,12 +62,7 @@ extension VideoToMusicPages {
         }
 
         private var toggleIsDetectWireButton: some View {
-            Toggle(isOn: $viewModel.isDetectWire) {
-                Text("Detect Wire")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(.trailing, 5)
-            }.toggleStyle(SwitchToggleStyle(tint: .accent2))
+            DetectWireButton(isDetectWire: $viewModel.isDetectWire)
                 .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isCompositeVideoDisable))
                 .disabled(isCompositeVideoDisable)
                 .padding()

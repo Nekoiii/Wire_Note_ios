@@ -13,11 +13,30 @@ extension VideoToMusicPages {
 
         var body: some View {
             VStack {
-                if viewModel.isProcessing {
-                    ProgressView(value: viewModel.progress)
-                        .progressViewStyle(LinearProgressViewStyle())
-                }
+                Text(String(format: "%.1f %%", viewModel.progress * 100))
+                viewModel.loadingState == .composite_video ? ProgressView(value: viewModel.progress)
+                    .progressViewStyle(LinearProgressViewStyle()) : nil
 
+                videosArea
+
+                Text(viewModel.loadingState == .composite_video || viewModel.loadingState == .load ? viewModel.loadingState?.description ?? " " : " ")
+
+                DetectWireButton(isDetectWire: $viewModel.isDetectWire)
+                createCompositeVideoButton
+            }
+            .padding()
+            .onAppear {
+                viewModel.initializeViewModel(videoToMusicData)
+
+                Task {
+                    try await viewModel.doCreateCompositeVideo()
+                }
+            }
+            .navigationTitle(Self.pageTitle)
+        }
+
+        private var videosArea: some View {
+            VStack {
                 ForEach(viewModel.players.indices, id: \.self) { index in
                     VideoPlayer(player: viewModel.players[index])
                         .frame(height: 300)
@@ -25,38 +44,18 @@ extension VideoToMusicPages {
                             viewModel.players[index].pause()
                         }
                 }
-
-                if let state = viewModel.loadingState, state == .composite_video {
-                    Text(state.description)
-                }
-
-                Toggle(isOn: $viewModel.isDetectWire) {
-                    Text("Detect Wire")
-                }
-
-                let isCreateCompositeVideoButtonDisable = viewModel.loadingState != nil
-                Button(action: {
-                    Task {
-                        viewModel.loadingState = .composite_video
-                        try await viewModel.createCompositeVideo()
-                    }
-                }) {
-                    Text("Create Composite Video Again")
-                }
-                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isCreateCompositeVideoButtonDisable))
-                .disabled(isCreateCompositeVideoButtonDisable)
             }
-            .onAppear {
-                if viewModel.videoToMusicData == nil {
-                    viewModel.setVideoToMusicData(videoToMusicData)
-                }
-                Task {
-                    viewModel.loadingState = .composite_video
-                    viewModel.setupOutputDirectory()
-                    try await viewModel.createCompositeVideo()
-                }
+        }
+
+        private var createCompositeVideoButton: some View {
+            let isButtonDisable = viewModel.loadingState != nil
+            return Button(action: {
+                Task { try await viewModel.doCreateCompositeVideo() }
+            }) {
+                Text("Create Composite Video Again")
             }
-            .navigationTitle(Self.pageTitle)
+            .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isButtonDisable))
+            .disabled(isButtonDisable)
         }
     }
 }
