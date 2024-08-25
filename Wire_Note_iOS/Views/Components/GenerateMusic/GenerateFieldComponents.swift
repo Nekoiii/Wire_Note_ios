@@ -90,6 +90,8 @@ struct GenerateMusicButton: View {
     }
 
     private func generateMusic() async {
+        loadingState = .generate_music
+        
         let generatePrompt = prompt.isEmpty ?
             (title.isEmpty ? DefaultPrompts.sunoGeneratePrompt : title)
             : prompt
@@ -101,8 +103,11 @@ struct GenerateMusicButton: View {
 
         let audioUrls = await sunoGenerateAPI.generateMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental)
         generatedAudioUrls = audioUrls
+        
+        loadingState = nil
+        
         Task {
-            loadingState = .generate_music
+            loadingState = .download_file
             _ = await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
             loadingState = nil
         }

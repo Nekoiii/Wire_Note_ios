@@ -52,12 +52,6 @@ extension VideoToMusicPages {
 
         private var generateMusicArea: some View {
             VStack {
-                if let state = viewModel.loadingState, state == .generate_music || state == .download_file {
-                    Text(state.description)
-                } else {
-                    Text(" ")
-                }
-
                 GenerateMusicArea(title: $title,
                                   style: $style,
                                   isGenerateMusicButtonDisable: $isGenerateMusicButtonDisable,

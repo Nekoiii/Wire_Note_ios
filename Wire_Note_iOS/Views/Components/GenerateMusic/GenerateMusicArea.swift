@@ -23,6 +23,9 @@ struct GenerateMusicArea: View {
                 .padding(.vertical, 10)
                 .padding(.horizontal, 5)
 
+            Text(loadingState == .generate_music || loadingState == .download_file ? loadingState?.description ?? " " : " ")
+
+            
             GenerateMusicButton(isDisable: $isGenerateMusicButtonDisable,
                                 generatedAudioUrls: $generatedAudioUrls,
                                 loadingState: $loadingState,
