@@ -7,14 +7,14 @@ struct ImageToMusicPage: View {
     @State private var style: String = ""
     @State private var title: String = ""
     @State private var isImageToTextButtonDisable = true
-    @State private var isGenerateMusicButtonDisable = false
+    @State private var isGenerateMusicButtonDisable = true
 
     var body: some View {
         ScrollView {
             ImagePickerView(image: $viewModel.image, isImagePickerPresented: $viewModel.isImagePickerPresented)
 
             imageDescribtion
-            musicGeneration
+            generateMusicArea
             GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
         }
         .sheet(isPresented: $viewModel.isImagePickerPresented) {
@@ -30,9 +30,16 @@ struct ImageToMusicPage: View {
         }
         .padding(EdgeInsets(top: 30, leading: 20, bottom: 0, trailing: 20))
         .onChange(of: viewModel.description) {
-            isGenerateMusicButtonDisable = viewModel.description.isEmpty
+            updateGenerateMusicButtonState()
+        }
+        .onChange(of: viewModel.loadingState) {
+            updateGenerateMusicButtonState()
         }
         .navigationTitle(Self.pageTitle)
+    }
+
+    private func updateGenerateMusicButtonState() {
+        isGenerateMusicButtonDisable = viewModel.description.isEmpty || viewModel.loadingState == .generate_music
     }
 
     private var imageDescribtion: some View {
@@ -57,26 +64,15 @@ struct ImageToMusicPage: View {
         }
     }
 
-    private var musicGeneration: some View {
-        Group {
-            Group {
-                GenerateTitleTextField(title: $title)
-                GenerateStyleTextField(style: $style)
-            }
-            .frame(maxHeight: 60)
-
-            InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
-                .padding(.horizontal, 5)
-
-            GenerateMusicButton(isDisable: $isGenerateMusicButtonDisable,
-                                generatedAudioUrls: $viewModel.generatedAudioUrls,
-                                prompt: viewModel.description,
-                                style: style,
-                                title: title,
-                                isMakeInstrumental: viewModel.isMakeInstrumental,
-                                generateMode: GenerateMode.customGenerate)
-        }
-        .padding(.vertical, 15)
+    private var generateMusicArea: some View {
+        GenerateMusicArea(title: $title,
+                          style: $style,
+                          isGenerateMusicButtonDisable: $isGenerateMusicButtonDisable,
+                          generatedAudioUrls: $viewModel.generatedAudioUrls,
+                          isMakeInstrumental: $viewModel.isMakeInstrumental,
+                          loadingState: $viewModel.loadingState,
+                          description: viewModel.description,
+                          generateMode: GenerateMode.customGenerate)
     }
 }
 

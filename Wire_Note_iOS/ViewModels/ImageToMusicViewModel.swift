@@ -1,6 +1,6 @@
 import SwiftUI
 
-class ImageToMusicViewModel: ObservableObject {
+class ImageToMusicViewModel: BaseViewModel {
     @Published var image: UIImage?
     @Published var isImagePickerPresented = false
 

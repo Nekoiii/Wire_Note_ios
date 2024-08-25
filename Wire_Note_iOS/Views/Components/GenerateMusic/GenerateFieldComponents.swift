@@ -69,6 +69,7 @@ struct GeneratePromptTextField: View {
 struct GenerateMusicButton: View {
     @Binding var isDisable: Bool
     @Binding var generatedAudioUrls: [URL]
+    @Binding var loadingState: LoadingState?
 
     var prompt: String
     var style: String
@@ -101,7 +102,9 @@ struct GenerateMusicButton: View {
         let audioUrls = await sunoGenerateAPI.generateMusic(generateMode: generateMode, prompt: generatePrompt, tags: generateTags, title: generateTitle, makeInstrumental: generateIsMakeInstrumental)
         generatedAudioUrls = audioUrls
         Task {
-            await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
+            loadingState = .generate_music
+            _ = await sunoGenerateAPI.downloadAndSaveFiles(audioUrls: audioUrls)
+            loadingState = nil
         }
     }
 }

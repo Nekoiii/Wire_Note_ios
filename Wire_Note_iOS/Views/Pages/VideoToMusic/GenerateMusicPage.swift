@@ -6,17 +6,17 @@ extension VideoToMusicPages {
         @EnvironmentObject var videoToMusicData: VideoToMusicData
         @StateObject private var viewModel: GenerateMusicViewModel
 
+        @State private var style: String = ""
+        @State private var title: String = ""
+        @State private var isGenerateMusicButtonDisable = true
+
         init(isMakeInstrumental: Bool = false) {
             _viewModel = StateObject(wrappedValue: GenerateMusicViewModel(videoToMusicData: nil, isMakeInstrumental: isMakeInstrumental))
         }
 
         var body: some View {
             VStack {
-                if !videoToMusicData.description.isEmpty {
-                    Text("Description: \(videoToMusicData.description)")
-                } else {
-                    Text("No description.")
-                }
+                Text("\(videoToMusicData.description.isEmpty ? "No description." : videoToMusicData.description)")
 
                 generateMusicArea
 
@@ -25,7 +25,7 @@ extension VideoToMusicPages {
                 let isCompositeVideoDisable = viewModel.loadingState != nil || videoToMusicData.downloadedGeneratedAudioUrls.isEmpty
                 VStack {
                     NavigationLink(destination: VideoToMusicPages.CompositeVideoPage(isDetectWire: viewModel.isDetectWire).environmentObject(videoToMusicData)) {
-                        Text("-> Composite Video")
+                        Text(VideoToMusicPages.CompositeVideoPage.pageTitle)
                     }
                     Toggle(isOn: $viewModel.isDetectWire) {
                         Text("Detect Wire")
@@ -35,41 +35,46 @@ extension VideoToMusicPages {
                 .disabled(isCompositeVideoDisable)
             }
             .onAppear {
+                updateGenerateMusicButtonState()
                 if viewModel.videoToMusicData == nil {
                     viewModel.setVideoToMusicData(videoToMusicData)
                 }
-                Task {
-                    viewModel.loadingState = .generate_music
-                    await viewModel.generateMusicWithDescription()
-                    viewModel.loadingState = nil
-                }
+            }
+            .onChange(of: viewModel.loadingState) {
+                updateGenerateMusicButtonState()
             }
             .navigationTitle(Self.pageTitle)
         }
 
-        // *unfinished: need to be refactor with same function in ImageToMusicPage.swift
+        private func updateGenerateMusicButtonState() {
+            isGenerateMusicButtonDisable = videoToMusicData.description.isEmpty || viewModel.loadingState == .generate_music
+        }
+
         private var generateMusicArea: some View {
-            Group {
+            VStack {
                 if let state = viewModel.loadingState, state == .generate_music || state == .download_file {
                     Text(state.description)
+                } else {
+                    Text(" ")
                 }
 
-                let isGenerateMusicButtonDisable = videoToMusicData.description.isEmpty || viewModel.loadingState != nil
-                Button(action: {
-                    Task {
-                        viewModel.loadingState = .generate_music
-                        await viewModel.generateMusicWithDescription()
-                        viewModel.loadingState = nil
-                    }
-                }) {
-                    Text("Generate Music Again")
-                }
-                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isGenerateMusicButtonDisable))
-                .disabled(isGenerateMusicButtonDisable)
-
-                InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
-                    .padding()
+                GenerateMusicArea(title: $title,
+                                  style: $style,
+                                  isGenerateMusicButtonDisable: $isGenerateMusicButtonDisable,
+                                  generatedAudioUrls: $videoToMusicData.generatedAudioUrls,
+                                  isMakeInstrumental: $viewModel.isMakeInstrumental,
+                                  loadingState: $viewModel.loadingState,
+                                  description: videoToMusicData.description,
+                                  generateMode: GenerateMode.customGenerate)
             }
         }
+    }
+}
+
+struct GenerateMusicPage_ExtractAndDescribeFramesPage_Previews: PreviewProvider {
+    @StateObject private static var videoToMusicData = VideoToMusicData()
+    static var previews: some View {
+        VideoToMusicPages.GenerateMusicPage()
+            .environmentObject(videoToMusicData)
     }
 }

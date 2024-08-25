@@ -1,6 +1,6 @@
 import SwiftUI
 
-class TextToMusicViewModel: ObservableObject {
+class TextToMusicViewModel: BaseViewModel {
     @Published var generateMode: GenerateMode = .generate
     @Published var prompt: String = ""
     @Published var style: String = ""

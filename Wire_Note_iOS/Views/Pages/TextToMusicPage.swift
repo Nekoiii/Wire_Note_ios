@@ -18,6 +18,7 @@ struct TextToMusicPage: View {
             GeneratedAudioView(generatedAudioUrls: $viewModel.generatedAudioUrls)
             GenerateMusicButton(isDisable: $isGenerateButtonDisable,
                                 generatedAudioUrls: $viewModel.generatedAudioUrls,
+                                loadingState: $viewModel.loadingState,
                                 prompt: viewModel.prompt,
                                 style: viewModel.style,
                                 title: viewModel.title,
