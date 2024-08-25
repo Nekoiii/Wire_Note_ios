@@ -5,6 +5,7 @@ struct GenerateMusicArea: View {
     @Binding var style: String
     @Binding var isGenerateMusicButtonDisable: Bool
     @Binding var generatedAudioUrls: [URL]
+    @Binding var downloadedGeneratedAudioUrls: [URL]
     @Binding var isMakeInstrumental: Bool
     @Binding var loadingState: LoadingState?
     var description: String
@@ -25,9 +26,9 @@ struct GenerateMusicArea: View {
 
             Text(loadingState == .generate_music || loadingState == .download_file ? loadingState?.description ?? " " : " ")
 
-            
             GenerateMusicButton(isDisable: $isGenerateMusicButtonDisable,
                                 generatedAudioUrls: $generatedAudioUrls,
+                                downloadedGeneratedAudioUrls: $downloadedGeneratedAudioUrls,
                                 loadingState: $loadingState,
                                 prompt: description,
                                 style: style,
@@ -45,6 +46,7 @@ struct GenerateMusicArea_Previews: PreviewProvider {
     @State static var style = "Sample Style"
     @State static var isGenerateMusicButtonDisable = true
     @State static var generatedAudioUrls: [URL] = []
+    @State static var downloadedGeneratedAudioUrls: [URL] = []
     @State static var isMakeInstrumental = false
     @State static var loadingState: LoadingState?
     static var description = "Sample Description"
@@ -56,6 +58,7 @@ struct GenerateMusicArea_Previews: PreviewProvider {
             style: $style,
             isGenerateMusicButtonDisable: $isGenerateMusicButtonDisable,
             generatedAudioUrls: $generatedAudioUrls,
+            downloadedGeneratedAudioUrls: $downloadedGeneratedAudioUrls,
             isMakeInstrumental: $isMakeInstrumental,
             loadingState: $loadingState,
             description: description,

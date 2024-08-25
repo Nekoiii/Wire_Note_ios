@@ -7,4 +7,5 @@ class TextToMusicViewModel: BaseViewModel {
     @Published var title: String = ""
     @Published var isMakeInstrumental: Bool = false
     @Published var generatedAudioUrls: [URL] = []
+    @Published var downloadedGeneratedAudioUrls: [URL] = []
 }

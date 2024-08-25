@@ -69,6 +69,7 @@ struct ImageToMusicPage: View {
                           style: $style,
                           isGenerateMusicButtonDisable: $isGenerateMusicButtonDisable,
                           generatedAudioUrls: $viewModel.generatedAudioUrls,
+                          downloadedGeneratedAudioUrls: $viewModel.downloadedGeneratedAudioUrls,
                           isMakeInstrumental: $viewModel.isMakeInstrumental,
                           loadingState: $viewModel.loadingState,
                           description: viewModel.description,

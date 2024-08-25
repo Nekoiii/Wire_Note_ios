@@ -11,6 +11,7 @@ class ImageToMusicViewModel: BaseViewModel {
 
     @Published var isMakeInstrumental: Bool = false
     @Published var generatedAudioUrls: [URL] = []
+    @Published var downloadedGeneratedAudioUrls: [URL] = []
 
     private let sunoGenerateAPI = SunoGenerateAPI()
 
