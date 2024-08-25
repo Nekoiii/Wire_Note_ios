@@ -19,7 +19,7 @@ struct HistoryAudiosView: View {
         .onAppear {
             loadDownloadedAudioUrls()
         }
-        .navigationTitle(HistoryAudiosView.pageTitle)
+        .navigationTitle(Self.pageTitle)
         .navigationBarTitleDisplayMode(.inline)
     }
 

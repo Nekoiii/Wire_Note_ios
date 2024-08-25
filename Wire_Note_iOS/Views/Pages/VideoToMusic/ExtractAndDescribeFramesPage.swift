@@ -14,59 +14,53 @@ extension VideoToMusicPages {
             VStack {
                 extractFramesArea
                 describeFramesArea
-
-                let isDescrptionNil = videoToMusicData.description.isEmpty
-                VStack {
-                    NavigationLink(destination: VideoToMusicPages.GenerateMusicPage(isMakeInstrumental: viewModel.isMakeInstrumental).environmentObject(videoToMusicData)) {
-                        Text("-> Generate Music")
-                    }
-                    InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental)
-                }
-                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isDescrptionNil))
-                .disabled(isDescrptionNil)
+                InstrumentalToggleView(isMakeInstrumental: $viewModel.isMakeInstrumental).padding()
+                navigateToVideoToMusicPageButton
             }
-            .sheet(isPresented: $viewModel.isImageViewerPresented) { // *problem
-                if let selectedImage = viewModel.selectedImage {
-                    ImageViewer(image: selectedImage)
-                } else {
-                    Text("No Image Selected")
-                }
+            .sheet(isPresented: $viewModel.isImageViewerPresented) {
+                imageViewerSheet
             }
             .onAppear {
-                if viewModel.videoToMusicData == nil {
-                    viewModel.setVideoToMusicData(videoToMusicData)
-                }
+                initializeViewModel()
                 viewModel.doExtractRandomFrames()
             }
-            .navigationTitle(VideoToMusicPages.ExtractAndDescribeFramesPage.pageTitle)
+            .navigationTitle(Self.pageTitle)
+        }
+
+        private func initializeViewModel() {
+            guard viewModel.videoToMusicData == nil else { return }
+            viewModel.setVideoToMusicData(videoToMusicData)
         }
 
         private var extractFramesArea: some View {
             Group {
-                if let state = viewModel.loadingState, state == .extract_frames {
-                    Text(state.description)
-                }
-
                 if !viewModel.extractedFrames.isEmpty {
-                    ScrollView {
-                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                            ForEach(viewModel.extractedFrames, id: \.self) { frame in
-                                Image(uiImage: frame)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 100)
-                                    .onTapGesture {
-                                        viewModel.selectedImage = frame
-                                        print("onTapGesture -- Selected Image: \(viewModel.selectedImage!)")
-                                        viewModel.isImageViewerPresented = true
-                                    }
+                    let columns = [GridItem(.adaptive(minimum: 100))]
+                    GeometryReader { geometry in
+                        ScrollView {
+                            LazyVGrid(columns: columns, spacing: 10) {
+                                ForEach(viewModel.extractedFrames, id: \.self) { frame in
+                                    Image(uiImage: frame)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 100)
+                                        .onTapGesture {
+                                            viewModel.selectedImage = frame
+                                            viewModel.isImageViewerPresented = true
+                                        }
+                                }
                             }
+                            .frame(minHeight: geometry.size.height)
                         }
                     }
+                    .frame(height: 300)
                 } else {
                     Text("No frames extracted")
+                        .padding(.top, 100)
+                        .frame(height: 300)
                 }
-
+                Text(viewModel.loadingState == .extract_frames ? viewModel.loadingState?.description ?? " " : " ")
+                    .padding(.bottom, 10)
                 Button(action: { viewModel.doExtractRandomFrames() }) {
                     Text("Extract Frames Again")
                 }
@@ -75,21 +69,53 @@ extension VideoToMusicPages {
         }
 
         private var describeFramesArea: some View {
-            Group {
-                if let state = viewModel.loadingState, state == .image_to_text {
-                    Text(state.description)
-                }
-                let isExtractedFramesEmpty = viewModel.extractedFrames.isEmpty
-                Button(action: { viewModel.describeFrames() }) {
-                    Text("Describe Image")
-                }
-                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isExtractedFramesEmpty))
-                .disabled(isExtractedFramesEmpty)
+            GeometryReader { _ in
+                VStack {
+                    let isExtractedFramesEmpty = viewModel.extractedFrames.isEmpty
+                    HStack {
+                        Spacer()
+                        Button(action: { viewModel.describeFrames() }) {
+                            Text("Frames To Text")
+                        }
+                        .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isExtractedFramesEmpty))
+                        .disabled(isExtractedFramesEmpty)
+                        Spacer()
+                    }
 
-                if !videoToMusicData.description.isEmpty {
-                    Text("Description: \(videoToMusicData.description)")
+                    Text(viewModel.loadingState == .image_to_text ? viewModel.loadingState?.description ?? " " : videoToMusicData.description)
+                }
+            }
+            .padding(.vertical, 10)
+            .padding(.horizontal, 20)
+        }
+
+        private var navigateToVideoToMusicPageButton: some View {
+            let isDescrptionNil = videoToMusicData.description.isEmpty
+            return VStack {
+                NavigationLink(destination: VideoToMusicPages.GenerateMusicPage(isMakeInstrumental: viewModel.isMakeInstrumental).environmentObject(videoToMusicData)) {
+                    Text(VideoToMusicPages.GenerateMusicPage.pageTitle)
+                }
+                .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isDescrptionNil))
+                .disabled(isDescrptionNil)
+            }
+        }
+
+        private var imageViewerSheet: some View {
+            Group {
+                if let selectedImage = viewModel.selectedImage {
+                    ImageViewer(image: selectedImage)
+                } else {
+                    Text("No Image Selected.")
                 }
             }
         }
+    }
+}
+
+struct VideoToMusicPage_ExtractAndDescribeFramesPage_Previews: PreviewProvider {
+    @StateObject private static var videoToMusicData = VideoToMusicData()
+    static var previews: some View {
+        VideoToMusicPages.ExtractAndDescribeFramesPage()
+            .environmentObject(videoToMusicData)
     }
 }

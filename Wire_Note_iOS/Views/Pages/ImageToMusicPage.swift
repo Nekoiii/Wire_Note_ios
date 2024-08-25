@@ -32,7 +32,7 @@ struct ImageToMusicPage: View {
         .onChange(of: viewModel.description) {
             isGenerateMusicButtonDisable = viewModel.description.isEmpty
         }
-        .navigationTitle(ImageToMusicPage.pageTitle)
+        .navigationTitle(Self.pageTitle)
     }
 
     private var imageDescribtion: some View {

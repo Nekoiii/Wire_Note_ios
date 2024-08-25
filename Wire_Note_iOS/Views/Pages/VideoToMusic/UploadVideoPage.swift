@@ -9,8 +9,6 @@ extension VideoToMusicPages {
         @EnvironmentObject private var videoToMusicData: VideoToMusicData
         @StateObject private var viewModel: UploadVideoViewModel
 
-        private var isExtractFramesButtonDisable: Bool { videoToMusicData.originVideoUrl == nil }
-
         init() {
             _viewModel = StateObject(wrappedValue: UploadVideoViewModel(videoToMusicData: nil))
         }
@@ -18,7 +16,7 @@ extension VideoToMusicPages {
         var body: some View {
             VStack {
                 videoArea
-                extractFramesButton
+                navigateToVideoToMusicPageButton
             }
             .onAppear {
                 guard viewModel.videoToMusicData == nil else { return }
@@ -27,7 +25,7 @@ extension VideoToMusicPages {
                 if EnvironmentConfigs.debugMode { setDebugData() }
             }
             .environmentObject(videoToMusicData)
-            .navigationTitle(VideoToMusicPages.UploadVideoPage.pageTitle)
+            .navigationTitle(Self.pageTitle)
         }
 
         private var videoArea: some View {
@@ -46,8 +44,9 @@ extension VideoToMusicPages {
             }
         }
 
-        private var extractFramesButton: some View {
-            NavigationLink(destination: VideoToMusicPages.ExtractAndDescribeFramesPage().environmentObject(videoToMusicData)) {
+        private var navigateToVideoToMusicPageButton: some View {
+            let isExtractFramesButtonDisable = videoToMusicData.originVideoUrl == nil
+            return NavigationLink(destination: VideoToMusicPages.ExtractAndDescribeFramesPage().environmentObject(videoToMusicData)) {
                 Text(VideoToMusicPages.ExtractAndDescribeFramesPage.pageTitle)
             }
             .buttonStyle(BorderedButtonStyle(borderColor: .accent, isDisable: isExtractFramesButtonDisable))

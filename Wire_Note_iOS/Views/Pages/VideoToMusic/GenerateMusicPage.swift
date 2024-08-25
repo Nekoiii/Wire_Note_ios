@@ -44,7 +44,7 @@ extension VideoToMusicPages {
                     viewModel.loadingState = nil
                 }
             }
-            .navigationTitle(VideoToMusicPages.GenerateMusicPage.pageTitle)
+            .navigationTitle(Self.pageTitle)
         }
 
         // *unfinished: need to be refactor with same function in ImageToMusicPage.swift

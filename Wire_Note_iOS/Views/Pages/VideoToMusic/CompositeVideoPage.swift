@@ -56,7 +56,7 @@ extension VideoToMusicPages {
                     try await viewModel.createCompositeVideo()
                 }
             }
-            .navigationTitle(VideoToMusicPages.CompositeVideoPage.pageTitle)
+            .navigationTitle(Self.pageTitle)
         }
     }
 }

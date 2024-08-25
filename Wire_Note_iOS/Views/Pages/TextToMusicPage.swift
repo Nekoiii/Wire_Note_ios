@@ -32,7 +32,7 @@ struct TextToMusicPage: View {
         .onChange(of: [viewModel.prompt, viewModel.style, viewModel.title]) {
             isGenerateButtonDisable = viewModel.prompt.isEmpty && viewModel.style.isEmpty && viewModel.title.isEmpty
         }
-        .navigationTitle(TextToMusicPage.pageTitle)
+        .navigationTitle(Self.pageTitle)
     }
 
     private var generateFields: some View {

@@ -113,7 +113,7 @@ struct WireDetectionPage: View {
                 }
             }
         }
-        .navigationTitle(WireDetectionPage.pageTitle)
+        .navigationTitle(Self.pageTitle)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $viewModel.isPickerPresented, onDismiss: viewModel.setupOriginPlayers) {
             VideoPicker(videoURL: $viewModel.originVideoURL)
